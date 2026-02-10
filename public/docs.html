@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Blueprint Compiler — Documentation</title>
+    <meta name="description"
+        content="Complete reference guide for Context Engineering and the Blueprint Compiler. Learn the 6-Layer architecture, explore domains, and master AI agent configuration.">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        :root {
+            --bg: #0a0f1a;
+            --bg2: #111827;
+            --bg3: #0f172a;
+            --border: #1e293b;
+            --border2: #1e3a5f;
+            --orange: #fb923c;
+            --orange-dark: #c2410c;
+            --green: #6ee7b7;
+            --green-dark: #065f46;
+            --blue: #7dd3fc;
+            --yellow: #fbbf24;
+            --text: #e2e8f0;
+            --text2: #94a3b8;
+            --text3: #64748b;
+            --text4: #475569;
+            --font: 'Inter', sans-serif;
+            --mono: 'JetBrains Mono', monospace
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            line-height: 1.7;
+            font-size: 15px
+        }
+
+        a {
+            color: var(--orange);
+            text-decoration: none
+        }
+
+        a:hover {
+            text-decoration: underline
+        }
+
+        ::selection {
+            background: var(--orange-dark);
+            color: #fff
+        }
+
+        /* Layout */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 15, 26, .92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .topbar h1 {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--orange)
+        }
+
+        .topbar nav a {
+            font-size: 13px;
+            color: var(--text2);
+            margin-left: 20px;
+            font-weight: 500
+        }
+
+        .topbar nav a:hover {
+            color: var(--orange);
+            text-decoration: none
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 56px;
+            left: 0;
+            width: 260px;
+            height: calc(100vh - 56px);
+            overflow-y: auto;
+            background: var(--bg2);
+            border-right: 1px solid var(--border);
+            padding: 20px 0;
+            z-index: 50
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 4px
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px
+        }
+
+        .sidebar .nav-group {
+            margin-bottom: 16px
+        }
+
+        .sidebar .nav-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            padding: 0 20px;
+            margin-bottom: 6px
+        }
+
+        .sidebar .nav-item {
+            display: block;
+            padding: 6px 20px 6px 24px;
+            font-size: 13px;
+            color: var(--text2);
+            border-left: 3px solid transparent;
+            transition: all .15s
+        }
+
+        .sidebar .nav-item:hover,
+        .sidebar .nav-item.active {
+            color: var(--orange);
+            background: rgba(251, 146, 60, .05);
+            border-left-color: var(--orange);
+            text-decoration: none
+        }
+
+        .main {
+            margin-left: 260px;
+            padding: 80px 48px 80px;
+            max-width: 900px
+        }
+
+        /* Typography */
+        h2 {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--orange);
+            margin: 48px 0 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border)
+        }
+
+        h2 .emoji {
+            margin-right: 10px
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            margin: 32px 0 12px
+        }
+
+        h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--blue);
+            margin: 24px 0 8px
+        }
+
+        p {
+            margin-bottom: 14px;
+            color: var(--text2)
+        }
+
+        strong {
+            color: var(--text)
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 16px 0
+        }
+
+        .card-accent {
+            border-left: 4px solid var(--orange)
+        }
+
+        .info-box {
+            padding: 14px 18px;
+            background: var(--bg3);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--blue);
+            margin: 14px 0
+        }
+
+        .info-box.green {
+            border-color: var(--green-dark);
+            color: var(--green);
+            background: #021c14
+        }
+
+        .info-box.yellow {
+            border-color: #92400e;
+            color: var(--yellow);
+            background: #1c1208
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 13px
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 14px;
+            background: var(--bg3);
+            color: var(--orange);
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            border: 1px solid var(--border)
+        }
+
+        td {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            color: var(--text2);
+            vertical-align: top
+        }
+
+        tr:hover td {
+            background: rgba(251, 146, 60, .03)
+        }
+
+        /* Layer badge */
+        .layer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px
+        }
+
+        .layer-badge.l1 {
+            background: #1e1b4b;
+            color: #a5b4fc
+        }
+
+        .layer-badge.l2 {
+            background: #172554;
+            color: #93c5fd
+        }
+
+        .layer-badge.l3 {
+            background: #052e16;
+            color: #6ee7b7
+        }
+
+        .layer-badge.l4 {
+            background: #431407;
+            color: #fdba74
+        }
+
+        .layer-badge.l5 {
+            background: #3b0764;
+            color: #d8b4fe
+        }
+
+        .layer-badge.l6 {
+            background: #450a0a;
+            color: #fca5a5
+        }
+
+        /* Domain card */
+        .domain-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 12px 0;
+            cursor: pointer;
+            transition: all .2s
+        }
+
+        .domain-card:hover {
+            border-color: var(--orange)
+        }
+
+        .domain-card .icon {
+            font-size: 28px;
+            margin-right: 12px
+        }
+
+        .domain-card h4 {
+            margin: 0;
+            color: var(--text)
+        }
+
+        .domain-card p {
+            font-size: 12px;
+            margin: 4px 0 0
+        }
+
+        .domain-detail {
+            display: none;
+            margin: 12px 0;
+            padding: 20px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 10px
+        }
+
+        .domain-detail.open {
+            display: block
+        }
+
+        /* Glossary */
+        .glossary-term {
+            margin: 8px 0;
+            padding: 14px 18px;
+            background: var(--bg3);
+            border-radius: 8px;
+            border-left: 3px solid var(--orange)
+        }
+
+        .glossary-term dt {
+            font-weight: 700;
+            color: var(--orange);
+            font-size: 15px;
+            margin-bottom: 4px;
+            font-family: var(--mono)
+        }
+
+        .glossary-term dd {
+            color: var(--text2);
+            font-size: 13px;
+            line-height: 1.7
+        }
+
+        /* Code */
+        code {
+            font-family: var(--mono);
+            font-size: 12px;
+            background: var(--bg3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--orange)
+        }
+
+        pre {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 12px;
+            overflow-x: auto;
+            line-height: 1.6;
+            color: var(--text2);
+            margin: 12px 0
+        }
+
+        pre code {
+            background: none;
+            padding: 0
+        }
+
+        /* Tech option row */
+        .tech-row {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 0;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin: 8px 0;
+            overflow: hidden
+        }
+
+        .tech-row .tech-name {
+            padding: 10px 14px;
+            background: var(--bg3);
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--text);
+            display: flex;
+            align-items: center
+        }
+
+        .tech-row .tech-desc {
+            padding: 10px 14px;
+            font-size: 12px;
+            color: var(--text2);
+            line-height: 1.6
+        }
+
+        .tech-row .default-badge {
+            display: inline-block;
+            font-size: 9px;
+            background: var(--green-dark);
+            color: var(--green);
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+            font-weight: 700;
+            text-transform: uppercase
+        }
+
+        /* Step indicator */
+        .step-flow {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin: 20px 0;
+            flex-wrap: wrap
+        }
+
+        .step-box {
+            padding: 10px 18px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text)
+        }
+
+        .step-arrow {
+            color: var(--orange);
+            font-size: 18px;
+            margin: 0 8px
+        }
+
+        /* Responsive */
+        @media(max-width:900px) {
+            .sidebar {
+                display: none
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 72px 20px 60px
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="topbar">
+        <h1>⚡ Blueprint Compiler Docs</h1>
+        <nav>
+            <a href="/">← Back to Compiler</a>
+            <a href="#overview">Overview</a>
+            <a href="#layers">Layers</a>
+            <a href="#domains">Domains</a>
+            <a href="#glossary">Glossary</a>
+        </nav>
+    </div>
+
+    <div class="sidebar">
+        <div class="nav-group">
+            <div class="nav-label">Getting Started</div>
+            <a class="nav-item" href="#overview">What is Context Engineering?</a>
+            <a class="nav-item" href="#how-it-works">How It Works</a>
+            <a class="nav-item" href="#principles">6 Fundamental Principles</a>
+        </div>
+        <div class="nav-group">
+            <div class="nav-label">Architecture</div>
+            <a class="nav-item" href="#layers">The 6-Layer System</a>
+            <a class="nav-item" href="#layer1">L1 — Global Config</a>
+            <a class="nav-item" href="#layer2">L2 — Workspace Rules</a>
+            <a class="nav-item" href="#layer3">L3 — Skills</a>
+            <a class="nav-item" href="#layer4">L4 — Workflows</a>
+            <a class="nav-item" href="#layer5">L5 — Context</a>
+            <a class="nav-item" href="#layer6">L6 — Enforcement Map</a>
+        </div>
+        <div class="nav-group">
+            <div class="nav-label">Domain Reference</div>
+            <a class="nav-item" href="#domains">All Domains</a>
+            <a class="nav-item" href="#domain-saas">SaaS B2B</a>
+            <a class="nav-item" href="#domain-wordpress">WordPress</a>
+            <a class="nav-item" href="#domain-ecommerce">E-commerce Headless</a>
+            <a class="nav-item" href="#domain-mobile">Mobile App</a>
+            <a class="nav-item" href="#domain-data">Data Platform</a>
+            <a class="nav-item" href="#domain-custom">Custom Domain</a>
+        </div>
+        <div class="nav-group">
+            <div class="nav-label">Reference</div>
+            <a class="nav-item" href="#glossary">Complete Glossary</a>
+            <a class="nav-item" href="#output-files">Output Files</a>
+            <a class="nav-item" href="#faq">FAQ</a>
+        </div>
+    </div>
+
+    <div class="main">
+
+        <!-- ═══ OVERVIEW ═══ -->
+        <h2 id="overview"><span class="emoji">🧠</span> What is Context Engineering?</h2>
+        <p><strong>Context Engineering</strong> is the discipline of designing structured configuration systems that
+            transform generic AI coding agents into specialized, opinionated architects for your specific project.</p>
+        <div class="info-box">Without a Blueprint, an AI agent produces generic code. <strong>With a Blueprint</strong>,
+            it produces code that follows your exact stack, your architecture patterns, your security policies, and your
+            quality standards — consistently, every time.</div>
+        <p>Think of it like this: a fresh AI agent is a brilliant intern on Day 1 — talented but with zero context about
+            your project. A <strong>Blueprint</strong> is the onboarding package that makes them productive immediately:
+            it tells them which technologies you use, how your code is organized, what your naming conventions are, and
+            what shortcuts are forbidden.</p>
+        <div class="card card-accent">
+            <h4>Why does this matter?</h4>
+            <p>AI coding agents (Google Antigravity, GitHub Copilot, Cursor) are only as good as the context you give
+                them. Most developers provide minimal context — a file or two. Context Engineering provides
+                <strong>systematic, layered context</strong> that covers architecture, security, testing, deployment,
+                and coding style. The result: dramatically better code output with fewer iterations.</p>
+        </div>
+
+        <h3>The Blueprint Compiler</h3>
+        <p>The <strong>Blueprint Compiler</strong> is a web application that generates production-ready Blueprint files
+            through a guided 4-step wizard. You select your domain, configure your technology stack, define your
+            project, and the Compiler generates 5 complete Blueprint files — ready to drop into your AI agent's
+            configuration.</p>
+
+        <!-- ═══ HOW IT WORKS ═══ -->
+        <h2 id="how-it-works"><span class="emoji">🔄</span> How It Works</h2>
+        <div class="step-flow">
+            <div class="step-box">🎯 1. Choose Domain</div><span class="step-arrow">→</span>
+            <div class="step-box">⚙️ 2. Configure Stack</div><span class="step-arrow">→</span>
+            <div class="step-box">📝 3. Define Project</div><span class="step-arrow">→</span>
+            <div class="step-box">⚡ 4. Generate</div>
+        </div>
+
+        <h4>Step 1 — Choose Your Domain</h4>
+        <p>Select the type of project you're building: SaaS B2B, WordPress, E-commerce Headless, Mobile App, Data
+            Platform, or Custom. Each domain comes with pre-configured technology options, specialized skills, and
+            architecture patterns tailored to that domain's unique challenges.</p>
+
+        <h4>Step 2 — Configure Your Tech Stack</h4>
+        <p>Each domain presents 5-6 technology categories (e.g., Frontend Framework, API Layer, Database,
+            Authentication). Every option includes a detailed guide explaining <strong>what it does</strong>,
+            <strong>when to choose it</strong>, and <strong>trade-offs</strong>. Defaults are battle-tested — change
+            them only with a clear reason.</p>
+
+        <h4>Step 3 — Define Your Project</h4>
+        <p>Enter your project name, mission statement, conversation language, code language, and arrange your
+            architectural priorities (performance, security, maintainability, scalability). These details personalize
+            the generated Blueprint.</p>
+
+        <h4>Step 4 — Generate Blueprint Files</h4>
+        <p>The Compiler calls the Anthropic Claude API with the Meta-Template system prompt and your configuration. It
+            generates 5 production-ready files. You can generate all at once or one at a time. Each file can be
+            regenerated independently.</p>
+
+        <div class="info-box green">💰 <strong>Cost:</strong> Each file costs approximately $0.02-0.05. A full Blueprint
+            (all 5 files) costs about $0.15-0.25. Your API key stays in your browser's session storage — it never
+            touches any server except Anthropic's API.</div>
+
+        <!-- ═══ PRINCIPLES ═══ -->
+        <h2 id="principles"><span class="emoji">⚖️</span> The 6 Fundamental Principles</h2>
+        <p>Every Blueprint generated by the Compiler adheres to these six principles. They are the foundation of Context
+            Engineering methodology.</p>
+
+        <div class="card">
+            <h4>1. Enforcement > Guidelines</h4>
+            <p>Every rule must have a <strong>technical enforcement mechanism</strong>. Saying "use TypeScript strict
+                mode" is a guideline. Adding <code>"strict": true</code> in <code>tsconfig.json</code> plus a CI step
+                that fails on type errors — that's enforcement. Blueprints don't suggest; they enforce.</p>
+        </div>
+
+        <div class="card">
+            <h4>2. Progressive Disclosure</h4>
+            <p>Load context only when needed. Skills are loaded <strong>on-demand</strong>, not always-on. The agent
+                doesn't need to know how to deploy when it's writing a database migration. This prevents context window
+                pollution and keeps the agent focused.</p>
+        </div>
+
+        <div class="card">
+            <h4>3. Plan First, Code Second</h4>
+            <p>The agent must never write code without an <strong>approved implementation plan</strong>. The Plan Mode
+                Contract requires: create plan → present to user → wait for approval → only then implement. This
+                prevents wasted effort and ensures alignment.</p>
+        </div>
+
+        <div class="card">
+            <h4>4. Compilable Snippets</h4>
+            <p>Every code example in a Blueprint must be <strong>syntactically valid and copy-pasteable</strong>. No
+                pseudo-code, no <code>[TODO: fill in]</code>, no hand-waving. If a snippet is in the Blueprint, it must
+                work when pasted into the project.</p>
+        </div>
+
+        <div class="card">
+            <h4>5. Total Internal Coherence</h4>
+            <p>No rule can contradict another. If the rules say "use Drizzle ORM" then the skills, workflows, and code
+                templates must all reference Drizzle — never Prisma. All file paths, tool names, and references must
+                exist and be consistent across all layers.</p>
+        </div>
+
+        <div class="card">
+            <h4>6. Global/Project Separation</h4>
+            <p>Global configuration (<code>~/.gemini/GEMINI.md</code>) contains <strong>only</strong> the thinking
+                protocol and git discipline. Language preferences, identity, plan mode, security rules — everything else
+                lives at the project level. This separation makes the framework reusable across any project.</p>
+        </div>
+
+        <!-- ═══ 6-LAYER SYSTEM ═══ -->
+        <h2 id="layers"><span class="emoji">🏗️</span> The 6-Layer Architecture</h2>
+        <p>A Blueprint is organized into 6 distinct layers, each with a specific purpose. Layers are loaded in order,
+            with higher layers building on lower ones.</p>
+
+        <table>
+            <tr>
+                <th>Layer</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td><span class="layer-badge l1">L1</span></td>
+                <td>Global Config</td>
+                <td><code>~/.gemini/</code></td>
+                <td>Universal rules — thinking protocol + git discipline</td>
+            </tr>
+            <tr>
+                <td><span class="layer-badge l2">L2</span></td>
+                <td>Workspace Rules</td>
+                <td><code>.antigravity/rules.md</code></td>
+                <td>Project-specific stack, architecture, conventions</td>
+            </tr>
+            <tr>
+                <td><span class="layer-badge l3">L3</span></td>
+                <td>Skills</td>
+                <td><code>.agent/skills/</code></td>
+                <td>On-demand competencies with templates</td>
+            </tr>
+            <tr>
+                <td><span class="layer-badge l4">L4</span></td>
+                <td>Workflows</td>
+                <td><code>.agent/workflows/</code></td>
+                <td>Step-by-step procedures enforcing order</td>
+            </tr>
+            <tr>
+                <td><span class="layer-badge l5">L5</span></td>
+                <td>Context</td>
+                <td><code>.context/</code></td>
+                <td>Architecture Decision Records + style guide</td>
+            </tr>
+            <tr>
+                <td><span class="layer-badge l6">L6</span></td>
+                <td>Enforcement Map</td>
+                <td>Embedded in L2</td>
+                <td>Maps rules → tools → failure modes</td>
+            </tr>
+        </table>
+
+        <!-- Layer 1 -->
+        <h3 id="layer1"><span class="layer-badge l1">Layer 1</span> Global Configuration</h3>
+        <p>The global layer lives in <code>~/.gemini/</code> and is <strong>identical for all projects</strong>. It
+            contains exactly two things:</p>
+        <div class="card">
+            <h4>GEMINI.md (~15 lines)</h4>
+            <p><strong>Thinking Protocol:</strong> Instructions for how the agent should reason — think step-by-step,
+                consider trade-offs, explain decisions.</p>
+            <p><strong>Git Discipline:</strong> Commit frequency, message format, branch naming conventions.</p>
+            <h4>settings.json</h4>
+            <p>Defines <code>coreTools</code> (terminal, filesystem, web), <code>excludeTools</code> (dangerous commands
+                like <code>rm -rf</code>, <code>sudo</code>), and <code>mcpServers</code> for external integrations.</p>
+        </div>
+        <div class="info-box yellow">⚠️ <strong>Critical design decision:</strong> Language, identity, and security
+            rules do NOT belong in L1. They are project-specific and live in L2. This is what makes the framework truly
+            reusable across domains.</div>
+
+        <!-- Layer 2 -->
+        <h3 id="layer2"><span class="layer-badge l2">Layer 2</span> Workspace Rules</h3>
+        <p>The heart of the Blueprint. A single file (<code>.antigravity/rules.md</code>) containing 13 precisely
+            defined sections, typically 400-500 lines.</p>
+
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Section</th>
+                <th>What It Defines</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Language & Identity</td>
+                <td>Conversation language, code language, agent's senior role</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Plan Mode Contract</td>
+                <td>Implementation plan template with mandatory STOP-and-wait</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Terminal Restrictions</td>
+                <td>Project-specific blocked commands beyond global excludes</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Code Quality Standards</td>
+                <td>Language-specific: strict types, no <code>any</code>, validation rules</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Security First</td>
+                <td>Framework-specific security checklist</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>Project Mission</td>
+                <td>One-line product description</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>Tech Stack LOCKED</td>
+                <td>Technology table with rationale — agent cannot deviate</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>Architecture Pattern</td>
+                <td>Core pattern (e.g., Clean Architecture) with enforcement</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>Data Isolation</td>
+                <td>Multi-tenancy, access control, Row Level Security</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>Folder Structure</td>
+                <td>Complete directory tree the agent must follow</td>
+            </tr>
+            <tr>
+                <td>11</td>
+                <td>Data Fetching</td>
+                <td>Server components, client components, caching strategy</td>
+            </tr>
+            <tr>
+                <td>12</td>
+                <td>Frontend Conventions</td>
+                <td>UI patterns, component structure, accessibility</td>
+            </tr>
+            <tr>
+                <td>13</td>
+                <td>Testing Strategy</td>
+                <td>Unit/integration/E2E split, coverage targets, tools</td>
+            </tr>
+            <tr>
+                <td>14</td>
+                <td>Environment Config</td>
+                <td>Env variables, secrets management, deployment targets</td>
+            </tr>
+        </table>
+
+        <!-- Layer 3 -->
+        <h3 id="layer3"><span class="layer-badge l3">Layer 3</span> Skills</h3>
+        <p>Skills are <strong>modular competencies</strong> stored as individual Markdown files in
+            <code>.agent/skills/</code>. Each skill teaches the agent HOW to perform a specific task. Skills are loaded
+            <strong>on-demand</strong> — the agent reads them only when needed.</p>
+        <div class="card">
+            <h4>Skill Structure</h4>
+            <pre><code>## Goal
+What this skill achieves (one paragraph)
+
+## Instructions
+1. Step-by-step procedure
+2. With specific commands and checks
+3. Including error handling
+
+## Template
+```typescript
+// Compilable code snippet ready to paste
+export function exampleFunction(): Result {
+  // Real implementation, not pseudo-code
+}
+```
+
+## Constraints
+- What NOT to do
+- Edge cases to handle
+- Performance requirements</code></pre>
+        </div>
+        <p>A typical Blueprint generates <strong>5-8 skills</strong> tailored to the domain. Examples:
+            <code>new-api-endpoint.md</code>, <code>database-migration.md</code>, <code>auth-flow.md</code>,
+            <code>component-creation.md</code>.</p>
+
+        <!-- Layer 4 -->
+        <h3 id="layer4"><span class="layer-badge l4">Layer 4</span> Workflows</h3>
+        <p>Workflows are <strong>step-by-step procedures</strong> that enforce the correct order of operations. Unlike
+            Skills (which teach HOW), Workflows define WHEN and IN WHAT ORDER.</p>
+        <div class="card">
+            <h4>Universal Workflows (included in every Blueprint)</h4>
+            <p><strong>new-feature.md</strong> — The mandatory sequence: Plan → Data Model → Business Logic → UI → Tests
+                → Verify. The agent cannot skip steps.</p>
+            <p><strong>deploy-check.md</strong> — Pre-deployment checklist: lint → typecheck → test → build → security
+                audit. Must all pass before deployment.</p>
+        </div>
+
+        <!-- Layer 5 -->
+        <h3 id="layer5"><span class="layer-badge l5">Layer 5</span> Context Files</h3>
+        <p>Context files live in <code>.context/</code> and provide the WHY behind technical decisions.</p>
+        <div class="card">
+            <h4>architecture.md — Architecture Decision Records (ADR)</h4>
+            <p>5-6 formal records documenting why each major technology was chosen. Each ADR contains:
+                <strong>Title</strong>, <strong>Status</strong> (accepted/deprecated), <strong>Context</strong> (what
+                problem we faced), <strong>Decision</strong> (what we chose), <strong>Alternatives Considered</strong>,
+                <strong>Consequences</strong> (trade-offs accepted).</p>
+            <h4>coding_style.md — Coding Conventions</h4>
+            <p>Naming conventions (camelCase vs snake_case), file naming patterns, import ordering, comment style, error
+                handling patterns. Specific to the chosen stack.</p>
+        </div>
+
+        <!-- Layer 6 -->
+        <h3 id="layer6"><span class="layer-badge l6">Layer 6</span> Enforcement Map</h3>
+        <p>The Enforcement Map connects every critical rule to its enforcement mechanism. It answers three questions for
+            each rule:</p>
+        <table>
+            <tr>
+                <th>Question</th>
+                <th>Example</th>
+            </tr>
+            <tr>
+                <td><strong>What tool enforces it?</strong></td>
+                <td>ESLint, TypeScript compiler, CI pipeline</td>
+            </tr>
+            <tr>
+                <td><strong>When does it run?</strong></td>
+                <td>On save, pre-commit, CI, deploy</td>
+            </tr>
+            <tr>
+                <td><strong>What happens if it fails?</strong></td>
+                <td>Build fails, PR blocked, deployment aborted</td>
+            </tr>
+        </table>
+        <div class="info-box">This is what separates Context Engineering from "just writing good prompts." Every rule
+            has teeth — a mechanism that prevents violations rather than merely discouraging them.</div>
+
+        <!-- ═══ DOMAINS ═══ -->
+        <h2 id="domains"><span class="emoji">🎯</span> Domain Reference</h2>
+        <p>The Blueprint Compiler supports 6 domains. Each domain pre-configures technology options, skills, and
+            architecture patterns for its specific challenges.</p>
+
+        <!-- SaaS B2B -->
+        <h3 id="domain-saas">🏢 SaaS B2B</h3>
+        <p><strong>Software as a Service for businesses.</strong> Multi-tenant cloud applications where companies pay
+            monthly/yearly. Examples: project management tools, CRM, analytics dashboards, invoicing platforms.</p>
+        <div class="info-box green">✅ <strong>Ideal for:</strong> Freelancers building subscription products, startups
+            with B2B model, agencies creating white-label platforms.</div>
+        <div class="info-box yellow">⚠️ <strong>Key challenge:</strong> Multi-tenancy — ensuring Company A never sees
+            Company B's data while sharing the same database and codebase.</div>
+
+        <h4>Technology Stack Options</h4>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Options</th>
+                <th>Default</th>
+            </tr>
+            <tr>
+                <td><strong>Frontend Framework</strong><br><small>Determines page rendering, routing, server/client
+                        code</small></td>
+                <td>Next.js 15, Nuxt 3, SvelteKit, Remix</td>
+                <td>Next.js 15</td>
+            </tr>
+            <tr>
+                <td><strong>API Layer</strong><br><small>Frontend-backend communication, type safety</small></td>
+                <td>tRPC, GraphQL (Apollo), REST (Express), Hono</td>
+                <td>tRPC</td>
+            </tr>
+            <tr>
+                <td><strong>ORM & Database</strong><br><small>Data storage, type-safe queries, multi-tenancy</small>
+                </td>
+                <td>Drizzle+PostgreSQL, Prisma+PostgreSQL, TypeORM+PostgreSQL, Mongoose+MongoDB</td>
+                <td>Drizzle+PostgreSQL</td>
+            </tr>
+            <tr>
+                <td><strong>Authentication</strong><br><small>Login, sessions, OAuth, team management</small></td>
+                <td>NextAuth.js, Clerk, Auth0, Supabase Auth, Custom JWT</td>
+                <td>NextAuth.js</td>
+            </tr>
+            <tr>
+                <td><strong>Billing</strong><br><small>Subscriptions, invoicing, tax compliance</small></td>
+                <td>Stripe, Paddle, LemonSqueezy, None</td>
+                <td>Stripe</td>
+            </tr>
+            <tr>
+                <td><strong>Hosting & Deploy</strong><br><small>Production infrastructure, scaling</small></td>
+                <td>Vercel, AWS, Railway, Fly.io</td>
+                <td>Vercel</td>
+            </tr>
+        </table>
+
+        <!-- WordPress -->
+        <h3 id="domain-wordpress">📝 WordPress</h3>
+        <p><strong>Themes, plugins, WooCommerce sites.</strong> From simple corporate sites to complex e-commerce
+            stores. WordPress powers 43% of the web — this Blueprint covers the most common web development scenario.
+        </p>
+        <div class="info-box green">✅ <strong>Ideal for:</strong> Web agencies, freelance developers, anyone building
+            client websites or WordPress products (themes/plugins for sale).</div>
+        <div class="info-box yellow">⚠️ <strong>Key challenge:</strong> Code quality — WordPress's flexibility makes it
+            easy to write bad code. The Blueprint enforces WordPress Coding Standards, proper hook architecture, and
+            security best practices.</div>
+
+        <h4>Technology Stack Options</h4>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Options</th>
+                <th>Default</th>
+            </tr>
+            <tr>
+                <td><strong>WordPress Version</strong></td>
+                <td>WordPress 6.7+, WordPress 6.5+, WordPress 6.0+</td>
+                <td>WordPress 6.7+</td>
+            </tr>
+            <tr>
+                <td><strong>Page Builder / Editor</strong></td>
+                <td>Gutenberg (Block Editor), Bricks Builder, Elementor Pro, Oxygen</td>
+                <td>Gutenberg</td>
+            </tr>
+            <tr>
+                <td><strong>E-commerce</strong></td>
+                <td>WooCommerce, Easy Digital Downloads, None</td>
+                <td>WooCommerce</td>
+            </tr>
+            <tr>
+                <td><strong>SEO Plugin</strong></td>
+                <td>Yoast SEO, Rank Math, SEOPress</td>
+                <td>Yoast SEO</td>
+            </tr>
+            <tr>
+                <td><strong>Caching Strategy</strong></td>
+                <td>WP Rocket + Redis, LiteSpeed Cache, W3 Total Cache</td>
+                <td>WP Rocket + Redis</td>
+            </tr>
+            <tr>
+                <td><strong>Hosting</strong></td>
+                <td>Kinsta, Cloudways, SiteGround, WP Engine, Custom VPS</td>
+                <td>Kinsta</td>
+            </tr>
+        </table>
+
+        <!-- E-commerce Headless -->
+        <h3 id="domain-ecommerce">🛒 E-commerce Headless</h3>
+        <p><strong>Decoupled storefront + commerce backend.</strong> The frontend (what customers see) is separate from
+            the commerce engine (products, cart, checkout). Full control over the shopping experience with a proven
+            commerce backend.</p>
+        <div class="info-box green">✅ <strong>Ideal for:</strong> Brands wanting unique shopping experiences, agencies
+            building high-performance stores, D2C companies with custom requirements.</div>
+        <div class="info-box yellow">⚠️ <strong>Key challenge:</strong> Checkout reliability — the path from "Add to
+            Cart" to "Order Confirmed" must be bulletproof. Race conditions, inventory sync, and payment verification
+            are critical.</div>
+
+        <h4>Technology Stack Options</h4>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Options</th>
+                <th>Default</th>
+            </tr>
+            <tr>
+                <td><strong>Commerce Platform</strong></td>
+                <td>Shopify + Hydrogen, Medusa.js, Saleor, Commerce.js</td>
+                <td>Shopify + Hydrogen</td>
+            </tr>
+            <tr>
+                <td><strong>Storefront Framework</strong></td>
+                <td>Next.js 15, Nuxt 3, Remix, Astro</td>
+                <td>Next.js 15</td>
+            </tr>
+            <tr>
+                <td><strong>Search & Discovery</strong></td>
+                <td>Algolia, Meilisearch, Typesense, Built-in</td>
+                <td>Algolia</td>
+            </tr>
+            <tr>
+                <td><strong>Payment Processing</strong></td>
+                <td>Stripe, PayPal + Stripe, Adyen, Platform native</td>
+                <td>Stripe</td>
+            </tr>
+            <tr>
+                <td><strong>Image & Media CDN</strong></td>
+                <td>Cloudinary, Imgix, Vercel Image, Cloudflare Images</td>
+                <td>Cloudinary</td>
+            </tr>
+            <tr>
+                <td><strong>Hosting & Deploy</strong></td>
+                <td>Vercel, Netlify, AWS, Shopify Oxygen</td>
+                <td>Vercel</td>
+            </tr>
+        </table>
+
+        <!-- Mobile App -->
+        <h3 id="domain-mobile">📱 Mobile App</h3>
+        <p><strong>iOS & Android applications.</strong> Cross-platform frameworks (one codebase for both platforms) and
+            native development. Includes offline-first patterns, push notifications, and app store deployment.</p>
+        <div class="info-box green">✅ <strong>Ideal for:</strong> Startups launching mobile products, companies adding
+            mobile apps to existing services, indie developers.</div>
+        <div class="info-box yellow">⚠️ <strong>Key challenge:</strong> Offline resilience — mobile users lose
+            connectivity constantly. The Blueprint ensures your app works offline and syncs gracefully when back online.
+        </div>
+
+        <h4>Technology Stack Options</h4>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Options</th>
+                <th>Default</th>
+            </tr>
+            <tr>
+                <td><strong>Mobile Framework</strong></td>
+                <td>React Native (Expo), Flutter, SwiftUI (iOS), Kotlin (Android)</td>
+                <td>React Native (Expo)</td>
+            </tr>
+            <tr>
+                <td><strong>State Management</strong></td>
+                <td>Zustand, Redux Toolkit, Riverpod, MobX</td>
+                <td>Zustand</td>
+            </tr>
+            <tr>
+                <td><strong>Backend / BaaS</strong></td>
+                <td>Supabase, Firebase, Custom API (Node), Appwrite</td>
+                <td>Supabase</td>
+            </tr>
+            <tr>
+                <td><strong>Navigation</strong></td>
+                <td>React Navigation, Expo Router, Go Router, Native</td>
+                <td>React Navigation</td>
+            </tr>
+            <tr>
+                <td><strong>Offline Storage</strong></td>
+                <td>WatermelonDB, SQLite (Expo), Hive, None</td>
+                <td>WatermelonDB</td>
+            </tr>
+            <tr>
+                <td><strong>Build & Distribution</strong></td>
+                <td>EAS Build, Fastlane, Codemagic, Manual</td>
+                <td>EAS Build</td>
+            </tr>
+        </table>
+
+        <!-- Data Platform -->
+        <h3 id="domain-data">📊 Data Platform</h3>
+        <p><strong>ETL pipelines, warehouses, dashboards.</strong> Collecting data from multiple sources, transforming
+            it, storing it in a warehouse, and visualizing it. "We have data everywhere and need to make sense of it."
+        </p>
+        <div class="info-box green">✅ <strong>Ideal for:</strong> Data engineers, companies building internal analytics,
+            startups offering data products, BI consultants.</div>
+        <div class="info-box yellow">⚠️ <strong>Key challenge:</strong> Data quality — bad data in means bad decisions
+            out. The Blueprint enforces validation at every pipeline stage, monitoring, and alerting.</div>
+
+        <h4>Technology Stack Options</h4>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Options</th>
+                <th>Default</th>
+            </tr>
+            <tr>
+                <td><strong>Orchestrator</strong></td>
+                <td>Apache Airflow, Dagster, Prefect, n8n</td>
+                <td>Apache Airflow</td>
+            </tr>
+            <tr>
+                <td><strong>Data Warehouse</strong></td>
+                <td>BigQuery, Snowflake, ClickHouse, DuckDB</td>
+                <td>BigQuery</td>
+            </tr>
+            <tr>
+                <td><strong>Transformation</strong></td>
+                <td>dbt, SQLMesh, Custom Python, Spark</td>
+                <td>dbt</td>
+            </tr>
+            <tr>
+                <td><strong>Visualization</strong></td>
+                <td>Metabase, Grafana, Power BI, Superset</td>
+                <td>Metabase</td>
+            </tr>
+            <tr>
+                <td><strong>Real-time Streaming</strong></td>
+                <td>Kafka, Redis Streams, None, Flink</td>
+                <td>Kafka</td>
+            </tr>
+            <tr>
+                <td><strong>Raw Data Storage</strong></td>
+                <td>S3 / MinIO, GCS, Azure Blob, Local</td>
+                <td>S3 / MinIO</td>
+            </tr>
+        </table>
+
+        <!-- Custom Domain -->
+        <h3 id="domain-custom">⚙️ Custom Domain</h3>
+        <p><strong>Define your own project type.</strong> For projects that don't fit the predefined domains. You
+            describe your domain and stack manually, and the Compiler generates a Blueprint tailored to your specific
+            needs.</p>
+        <div class="info-box">Examples: IoT dashboard, game backend, AI/ML platform, DevOps tooling, embedded systems,
+            blockchain DApp, AR/VR applications.</div>
+
+        <!-- ═══ OUTPUT FILES ═══ -->
+        <h2 id="output-files"><span class="emoji">📄</span> Output Files</h2>
+        <p>The Compiler generates 5 files. Each corresponds to a specific layer of the Blueprint architecture.</p>
+
+        <table>
+            <tr>
+                <th>File</th>
+                <th>Layer</th>
+                <th>Lines</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td><code>rules.md</code></td>
+                <td><span class="layer-badge l2">L2</span></td>
+                <td>400-500</td>
+                <td>Workspace Rules — the core. Defines identity, stack, architecture, conventions, security. This is
+                    the most important file.</td>
+            </tr>
+            <tr>
+                <td><code>Skills</code></td>
+                <td><span class="layer-badge l3">L3</span></td>
+                <td>500-700</td>
+                <td>5-8 modular competencies loaded on-demand. Each teaches the agent HOW to do a specific task with
+                    compilable templates.</td>
+            </tr>
+            <tr>
+                <td><code>Workflows</code></td>
+                <td><span class="layer-badge l4">L4</span></td>
+                <td>200-300</td>
+                <td>Step-by-step procedures: new-feature, deploy-check, plus domain-specific. The agent follows these
+                    like a checklist.</td>
+            </tr>
+            <tr>
+                <td><code>Context</code></td>
+                <td><span class="layer-badge l5">L5</span></td>
+                <td>300-400</td>
+                <td>Architecture Decision Records (ADR) documenting WHY each technology was chosen, plus coding style
+                    conventions.</td>
+            </tr>
+            <tr>
+                <td><code>PROMPT_START</code></td>
+                <td>Entry</td>
+                <td>60-80</td>
+                <td>Bootstrap file — project overview, file tree, quick start commands. The agent reads this first.</td>
+            </tr>
+        </table>
+
+        <!-- ═══ GLOSSARY ═══ -->
+        <h2 id="glossary"><span class="emoji">📚</span> Complete Glossary</h2>
+        <p>An exhaustive, alphabetical reference of every term, concept, and technology used in the Blueprint Compiler
+            ecosystem.</p>
+
+        <dl>
+            <div class="glossary-term">
+                <dt>ADR (Architecture Decision Record)</dt>
+                <dd>A formal document recording a significant architectural decision: the context, the decision itself,
+                    alternatives considered, and consequences. Part of Layer 5. ADRs are immutable — when a decision
+                    changes, a new ADR supersedes the old one rather than editing it.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Agent</dt>
+                <dd>An AI coding assistant (e.g., Google Antigravity, GitHub Copilot, Cursor) that reads your code,
+                    understands instructions, and generates or modifies code. Without a Blueprint, an agent has no
+                    project-specific context and produces generic output.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>API Layer</dt>
+                <dd>The communication protocol between frontend and backend. Options include tRPC (type-safe, zero
+                    documentation needed), GraphQL (flexible queries for complex data), REST (universally understood),
+                    and Hono (edge-first, ultra-lightweight).</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Authentication</dt>
+                <dd>The system that verifies user identity (login). Options range from self-hosted (NextAuth.js — full
+                    control, free) to managed services (Clerk — beautiful pre-built UI) to enterprise-grade (Auth0 —
+                    SAML, LDAP, SSO support).</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>BaaS (Backend as a Service)</dt>
+                <dd>A cloud service providing pre-built backend functionality: database, authentication, file storage,
+                    serverless functions. Examples: Supabase (open-source, PostgreSQL), Firebase (Google, NoSQL),
+                    Appwrite (self-hosted). Eliminates the need to build a custom backend.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Blueprint</dt>
+                <dd>A complete set of configuration files (typically 5) that transforms a generic AI agent into a
+                    specialized architect for your specific project. A Blueprint defines your stack, architecture,
+                    conventions, security policies, and coding standards. It consists of Layer 2-6 files.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Blueprint Compiler</dt>
+                <dd>The web application that generates Blueprints. A 4-step wizard: Domain → Stack → Project → Generate.
+                    100% client-side React, zero backend. Calls the Anthropic Claude API directly from the browser using
+                    the user's own API key.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>CDN (Content Delivery Network)</dt>
+                <dd>A global network of servers that cache and serve content close to users. For e-commerce: Cloudinary
+                    (image transformation), Imgix (URL-based processing), Vercel Image (zero-config with Next.js),
+                    Cloudflare Images (competitive pricing).</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>CI/CD</dt>
+                <dd>Continuous Integration / Continuous Deployment. Automated pipelines that test, build, and deploy
+                    code. The deploy-check workflow (Layer 4) defines the exact steps: lint → typecheck → test → build →
+                    security audit.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Context Engineering</dt>
+                <dd>The discipline of designing structured, layered configuration systems for AI coding agents. Goes
+                    beyond prompt engineering (which focuses on individual prompts) by creating systematic, reusable,
+                    enforceable configuration that persists across sessions.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Context Window</dt>
+                <dd>The maximum amount of text an AI model can process at once. Progressive Disclosure (Principle 2)
+                    prevents filling the context window with irrelevant information, keeping the agent focused on the
+                    current task.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Custom Domain</dt>
+                <dd>The 6th domain option in the Compiler. For projects that don't fit predefined categories. Users
+                    describe their domain and stack manually. Examples: IoT, game dev, AI/ML platforms, DevOps tooling.
+                </dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Data Platform</dt>
+                <dd>One of the 6 domains. Covers ETL/ELT pipelines, data warehouses, transformation frameworks, and
+                    visualization tools. Key technologies: Airflow/Dagster (orchestration), BigQuery/Snowflake
+                    (warehouse), dbt (transformation), Metabase/Grafana (visualization).</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Domain</dt>
+                <dd>A category of software project with distinct architectural patterns, technology choices, and
+                    challenges. The Compiler supports 6 domains: SaaS B2B, WordPress, E-commerce Headless, Mobile App,
+                    Data Platform, and Custom.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>E-commerce Headless</dt>
+                <dd>One of the 6 domains. Architecture where the shopping frontend (storefront) is decoupled from the
+                    commerce backend (products, cart, checkout). Key technologies: Shopify+Hydrogen, Medusa.js
+                    (open-source), Algolia (search), Stripe (payments).</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Enforcement Map</dt>
+                <dd>Layer 6 of the Blueprint. Maps every critical rule to: (1) what tool enforces it, (2) when it runs,
+                    (3) what happens if it fails. Ensures rules have technical enforcement, not just documentation.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>ETL / ELT</dt>
+                <dd>Extract, Transform, Load / Extract, Load, Transform. Data pipeline patterns. ETL transforms data
+                    before loading into the warehouse. ELT loads raw data first, then transforms inside the warehouse.
+                    Modern stacks favor ELT with tools like dbt.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Global Config</dt>
+                <dd>Layer 1 of the Blueprint. Lives in <code>~/.gemini/</code>. Contains only the thinking protocol and
+                    git discipline. Identical across all projects — never includes project-specific settings.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Headless</dt>
+                <dd>An architecture where the frontend presentation layer is completely separated from the backend
+                    business logic. The frontend communicates with the backend only through APIs. Common in e-commerce
+                    (Shopify Headless) and CMS (Headless WordPress).</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Layer</dt>
+                <dd>One of the 6 structural levels of a Blueprint. Layers are loaded in order, with each adding context:
+                    L1 (global) → L2 (rules) → L3 (skills) → L4 (workflows) → L5 (context) → L6 (enforcement).</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Meta-Template</dt>
+                <dd>The master system prompt (~1,052 lines) that defines HOW to generate Blueprints. It is the
+                    "Blueprint that generates Blueprints." Embedded in the Compiler as a system prompt sent to Claude.
+                    This is the core intellectual property of the project.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Mobile App</dt>
+                <dd>One of the 6 domains. Covers cross-platform and native development. Key technologies: React
+                    Native+Expo (cross-platform), Flutter (Google, Dart), Zustand (state), Supabase/Firebase (backend),
+                    WatermelonDB (offline storage).</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Multi-tenancy</dt>
+                <dd>An architecture where multiple organizations share the same application and database infrastructure,
+                    but each sees only their own data. The SaaS B2B Blueprint enforces this through PostgreSQL Row Level
+                    Security and middleware-level tenant validation.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>ORM (Object-Relational Mapping)</dt>
+                <dd>A library that lets you interact with databases using your programming language instead of raw SQL.
+                    Options: Drizzle (lightweight, SQL-like), Prisma (abstracted, own schema language), TypeORM
+                    (decorator-based, enterprise), Mongoose (MongoDB documents).</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Plan Mode Contract</dt>
+                <dd>Section 2 of Layer 2 (Workspace Rules). Requires the agent to create an implementation plan, present
+                    it to the user, and STOP until approved. Prevents the agent from writing code before confirming the
+                    approach. Enforces Principle 3 (Plan First, Code Second).</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Progressive Disclosure</dt>
+                <dd>Principle 2 of Context Engineering. Only load context into the agent's attention when it's relevant
+                    to the current task. Skills are on-demand, workflows are invoked only when needed. Prevents context
+                    window pollution.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>PROMPT_START</dt>
+                <dd>The entry point file generated by the Compiler. Contains a project overview, file tree, and quick
+                    start commands. The agent reads this first when starting work on a project. Typically 60-80 lines.
+                </dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Row Level Security (RLS)</dt>
+                <dd>A PostgreSQL feature that restricts which rows a user can access based on policies. Used in SaaS
+                    multi-tenancy: a policy like <code>tenant_id = current_user_tenant()</code> ensures each company
+                    sees only its own data, enforced at the database level.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>SaaS B2B</dt>
+                <dd>One of the 6 domains. Software as a Service sold to businesses. Multi-tenant architecture. Key
+                    technologies: Next.js (frontend), tRPC (API), Drizzle+PostgreSQL (database), NextAuth.js (auth),
+                    Stripe (billing), Vercel (hosting).</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Skill</dt>
+                <dd>A Layer 3 file that teaches the agent a specific competency. Each skill has: Goal (what),
+                    Instructions (how), Template (compilable code), Constraints (boundaries). Loaded on-demand, not
+                    always active. Examples: <code>new-api-endpoint.md</code>, <code>database-migration.md</code>.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Stack</dt>
+                <dd>The complete set of technology choices for a project. Each domain has 5-6 categories with multiple
+                    options. The Stack is "LOCKED" in the Blueprint (Section 7 of L2) — the agent cannot substitute
+                    technologies without explicit approval.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>System Prompt</dt>
+                <dd>Initial instructions given to an AI model before any user messages. The Meta-Template serves as the
+                    system prompt when the Compiler generates Blueprint files. It tells Claude how to structure the
+                    output according to Context Engineering methodology.</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Workflow</dt>
+                <dd>A Layer 4 file defining a step-by-step procedure. Unlike Skills (which teach HOW to do something),
+                    Workflows define WHEN and IN WHAT ORDER steps must happen. Universal workflows:
+                    <code>new-feature.md</code> (Plan→Data→Logic→UI→Test→Verify), <code>deploy-check.md</code>
+                    (lint→typecheck→test→build→audit).</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>WordPress</dt>
+                <dd>One of the 6 domains. World's most popular CMS (43% of websites). Key technologies: WordPress 6.7+
+                    (latest), Gutenberg Block Editor (native, zero overhead), WooCommerce (e-commerce), Yoast SEO, WP
+                    Rocket+Redis (caching), Kinsta (hosting).</dd>
+            </div>
+
+            <div class="glossary-term">
+                <dt>Workspace Rules</dt>
+                <dd>Layer 2 of the Blueprint. The single most important file (<code>.antigravity/rules.md</code>).
+                    Contains 13-14 sections defining everything project-specific: language, plan mode, code quality,
+                    security, stack, architecture, folder structure, testing, and more. Typically 400-500 lines.</dd>
+            </div>
+        </dl>
+
+        <!-- ═══ FAQ ═══ -->
+        <h2 id="faq"><span class="emoji">❓</span> Frequently Asked Questions</h2>
+
+        <div class="card">
+            <h4>Do I need to know how to code to use the Blueprint Compiler?</h4>
+            <p>Not necessarily. The Compiler generates configuration files that tell an AI agent how to code for you.
+                However, basic understanding of your chosen technologies helps you make better stack choices. The
+                contextual guides next to each option are designed to educate you during the process.</p>
+        </div>
+
+        <div class="card">
+            <h4>Which AI agent works with these Blueprints?</h4>
+            <p>Blueprints are primarily designed for <strong>Google Antigravity</strong>, but the concepts are
+                transferable to any AI coding agent that supports custom instructions or system prompts (Cursor, GitHub
+                Copilot, etc.).</p>
+        </div>
+
+        <div class="card">
+            <h4>How much does it cost?</h4>
+            <p>The Compiler itself is free. You need an <strong>Anthropic API key</strong> to generate files. Each file
+                costs $0.02-0.05 in API usage. A complete Blueprint (5 files) costs approximately $0.15-0.25.</p>
+        </div>
+
+        <div class="card">
+            <h4>Is my API key safe?</h4>
+            <p>Yes. Your API key is stored in <code>sessionStorage</code> (browser tab only — disappears when you close
+                the tab). API calls go <strong>directly from your browser to Anthropic</strong> — the key never touches
+                any intermediate server.</p>
+        </div>
+
+        <div class="card">
+            <h4>Can I regenerate individual files?</h4>
+            <p>Yes. Each of the 5 files can be generated and regenerated independently. If the Skills output doesn't
+                match your needs, regenerate just that file without affecting the others.</p>
+        </div>
+
+        <div class="card">
+            <h4>What if my project doesn't fit any domain?</h4>
+            <p>Choose <strong>Custom Domain</strong>. You'll describe your domain and technology stack manually. The
+                Compiler will generate a Blueprint tailored to your specific needs, following the same 6-Layer
+                methodology.</p>
+        </div>
+
+        <div class="card">
+            <h4>Can I modify the generated files?</h4>
+            <p>Absolutely — and you should. Generated Blueprints are a strong starting point (rated 8.5/10 by an
+                independent reviewer). Customize them to match your team's exact conventions, add project-specific
+                skills, and evolve them as your project grows.</p>
+        </div>
+
+        <!-- Footer -->
+        <div
+            style="margin-top:64px;padding-top:24px;border-top:1px solid var(--border);text-align:center;color:var(--text3);font-size:12px">
+            <p>Built with Context Engineering methodology. <a href="/">← Back to Blueprint Compiler</a></p>
+            <p style="margin-top:8px">© 2026 Gianluca Amati. All rights reserved.</p>
+        </div>
+
+    </div>
+
+    <script>
+        // Sidebar active state
+        const items = document.querySelectorAll('.sidebar .nav-item');
+        const obs = new IntersectionObserver(e => { e.forEach(en => { if (en.isIntersecting) { items.forEach(i => i.classList.remove('active')); const a = document.querySelector('.sidebar a[href="#' + en.target.id + '"]'); if (a) a.classList.add('active') } }) }, { rootMargin: '-80px 0px -70% 0px' });
+        document.querySelectorAll('h2[id],h3[id]').forEach(el => obs.observe(el));
+        // Domain toggle
+        function toggleDomain(id) { const el = document.getElementById('detail-' + id); if (el) el.classList.toggle('open') }
+    </script>
+</body>
+
+</html>

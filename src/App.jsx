@@ -687,6 +687,7 @@ ${stackStr}`;
         <div style={{ textAlign: "center", marginBottom: 8 }}>
           <h1 style={{ fontSize: 26, fontWeight: 800, color: "#fb923c", margin: 0 }}>⚡ Blueprint Compiler</h1>
           <p style={{ fontSize: 13, color: "#64748b", margin: "6px 0 0" }}>Transform your project requirements into a production-ready AI agent Blueprint</p>
+          <a href="/docs.html" style={{ fontSize: 12, color: "#94a3b8", marginTop: 6, display: "inline-block", textDecoration: "none", borderBottom: "1px solid #334155", paddingBottom: 1 }}>📖 Documentation & Glossary</a>
         </div>
         <InfoBox type="info">
           A <strong>Blueprint</strong> is a set of configuration files that transforms a generic AI agent into a specialized architect for YOUR project.
@@ -713,12 +714,12 @@ ${stackStr}`;
           {showKeyInfo && (
             <div style={{ width: "100%", marginTop: 8 }}>
               <InfoBox type="tip">
-                <strong>How to get your Anthropic API key:</strong><br/>
-                1. Go to <strong>console.anthropic.com</strong><br/>
-                2. Sign up or log in<br/>
-                3. Click "API Keys" in the left sidebar<br/>
-                4. Click "Create Key" and copy it<br/>
-                5. Paste it above — it stays in your browser only (session storage), never sent to any server except Anthropic's API directly.<br/><br/>
+                <strong>How to get your Anthropic API key:</strong><br />
+                1. Go to <strong>console.anthropic.com</strong><br />
+                2. Sign up or log in<br />
+                3. Click "API Keys" in the left sidebar<br />
+                4. Click "Create Key" and copy it<br />
+                5. Paste it above — it stays in your browser only (session storage), never sent to any server except Anthropic's API directly.<br /><br />
                 <strong>Cost:</strong> Each Blueprint generation costs approximately $0.02-0.05 (a few cents). A full Blueprint (all 5 files) costs about $0.15-0.25.
               </InfoBox>
             </div>
