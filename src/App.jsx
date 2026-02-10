@@ -682,12 +682,21 @@ ${stackStr}`;
 
   return (
     <div style={{ minHeight: "100vh", background: "#0a0f1a", color: "#e2e8f0" }}>
+      {/* Top Navigation Bar */}
+      <nav style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(10,15,26,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid #1e293b", padding: "0 24px", height: 48, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <span style={{ fontSize: 14, fontWeight: 800, color: "#fb923c", letterSpacing: 0.5 }}>⚡ Blueprint Compiler</span>
+        <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
+          <a href="/" style={{ fontSize: 13, color: "#e2e8f0", textDecoration: "none", fontWeight: 600 }}>🏠 Home</a>
+          <a href="/docs.html" style={{ fontSize: 13, color: "#94a3b8", textDecoration: "none", fontWeight: 500, transition: "color .15s" }} onMouseOver={e => e.target.style.color = "#fb923c"} onMouseOut={e => e.target.style.color = "#94a3b8"}>📖 Documentation</a>
+          <a href="/docs.html#glossary" style={{ fontSize: 13, color: "#94a3b8", textDecoration: "none", fontWeight: 500, transition: "color .15s" }} onMouseOver={e => e.target.style.color = "#fb923c"} onMouseOut={e => e.target.style.color = "#94a3b8"}>📚 Glossary</a>
+          <a href="/docs.html#faq" style={{ fontSize: 13, color: "#94a3b8", textDecoration: "none", fontWeight: 500, transition: "color .15s" }} onMouseOver={e => e.target.style.color = "#fb923c"} onMouseOut={e => e.target.style.color = "#94a3b8"}>❓ FAQ</a>
+        </div>
+      </nav>
       <div style={{ maxWidth: 820, margin: "0 auto", padding: "28px 16px" }}>
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 8 }}>
           <h1 style={{ fontSize: 26, fontWeight: 800, color: "#fb923c", margin: 0 }}>⚡ Blueprint Compiler</h1>
           <p style={{ fontSize: 13, color: "#64748b", margin: "6px 0 0" }}>Transform your project requirements into a production-ready AI agent Blueprint</p>
-          <a href="/docs.html" style={{ fontSize: 12, color: "#94a3b8", marginTop: 6, display: "inline-block", textDecoration: "none", borderBottom: "1px solid #334155", paddingBottom: 1 }}>📖 Documentation & Glossary</a>
         </div>
         <InfoBox type="info">
           A <strong>Blueprint</strong> is a set of configuration files that transforms a generic AI agent into a specialized architect for YOUR project.
