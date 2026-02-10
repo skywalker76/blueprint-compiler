@@ -39,30 +39,14 @@ npm run dev
 
 Open `http://localhost:5173` and paste your Anthropic API key.
 
-### Deploy to Vercel (recommended)
+### Deploy to Vercel (Recommended)
 
 1. Push this repo to GitHub
 2. Go to [vercel.com](https://vercel.com)
-3. Click "Import Project" → select your repo
-4. Click "Deploy" — no configuration needed
-5. Your app is live at `your-project.vercel.app`
-
-### Deploy to Netlify
-
-1. Push this repo to GitHub
-2. Go to [netlify.com](https://netlify.com)
-3. Click "Add new site" → "Import an existing project"
-4. Select your repo
-5. Build command: `npm run build`
-6. Publish directory: `dist`
-7. Click "Deploy"
-
-### Deploy to GitHub Pages
-
-```bash
-npm run build
-# Upload contents of dist/ folder to your GitHub Pages repo
-```
+3. Click "Add New..." → "Project"
+4. Import `skywalker76/blueprint-compiler`
+5. Click "Deploy" — zero configuration needed because it detects Vite automatically.
+6. Your app will be live at `blueprint-compiler.vercel.app` (or similar).
 
 ## How it works
 
