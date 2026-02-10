@@ -31,7 +31,7 @@ A **Blueprint** is a set of configuration files that transforms a generic AI cod
 ### Run locally
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/blueprint-compiler.git
+git clone https://github.com/skywalker76/blueprint-compiler.git
 cd blueprint-compiler
 npm install
 npm run dev
