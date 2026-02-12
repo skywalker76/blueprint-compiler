@@ -1,8 +1,26 @@
 {
   "name": "blueprint-compiler",
   "private": true,
-  "version": "1.0.0",
-  "description": "Transform project requirements into production-ready AI agent Blueprints",
+  "version": "2.0.0",
+  "description": "Transform project requirements into production-ready AI agent Blueprints — Multi-IDE, Agentic Generation, Quality Scoring",
+  "author": "skywalker76",
+  "license": "MIT",
+  "keywords": [
+    "blueprint",
+    "ai-agent",
+    "context-engineering",
+    "cursor",
+    "copilot",
+    "windsurf",
+    "antigravity",
+    "vite",
+    "react"
+  ],
+  "homepage": "https://github.com/skywalker76/blueprint-compiler",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skywalker76/blueprint-compiler.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
