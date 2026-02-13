@@ -8,7 +8,11 @@ import { LANGUAGES, FILE_TYPES, IDE_TARGETS, TIERS, RIGOR_LEVELS } from "./data/
 // ─── Engine ───
 import { generateFile as engineGenerateFile, generateAll as engineGenerateAll } from "./engine/generator.js";
 import { scanPackageJson } from "./engine/scanner.js";
-import { saveBlueprint, loadLibrary, deleteBlueprint, exportAsZip, exportAsJson, getUsageCount, incrementUsage } from "./engine/persistence.js";
+import { saveBlueprint, loadLibrary, deleteBlueprint, exportAsZip, exportAsJson, getUsageCount, trackUsage, migrateLocalToCloud } from "./engine/persistence.js";
+
+// ─── Auth ───
+import { useAuth } from "./context/AuthContext.jsx";
+import { AuthModal } from "./components/AuthModal.jsx";
 
 // ─── Components ───
 import { InfoBox } from "./components/InfoBox.jsx";
@@ -26,6 +30,10 @@ const STEPS = ["Domain", "IDE", "Stack", "Project", "Generate"];
 
 // ─── MAIN APP ───
 export default function App() {
+  // ─── Auth ───
+  const { user, profile, loading: authLoading, signOut } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
   // ─── State ───
   const [apiKey, setApiKey] = useState(() => sessionStorage.getItem("bc_api_key") || "");
   const [showKeyInfo, setShowKeyInfo] = useState(false);
@@ -46,8 +54,25 @@ export default function App() {
   const [scannerInput, setScannerInput] = useState("");
   const [scanResult, setScanResult] = useState(null);
   const [showLibrary, setShowLibrary] = useState(false);
-  const [library, setLibrary] = useState(() => loadLibrary());
+  const [library, setLibrary] = useState([]);
   const resultRef = useRef(null);
+
+  // ─── Load library (async, depends on auth) ───
+  useEffect(() => {
+    if (authLoading) return;
+    loadLibrary(user?.id).then(setLibrary).catch(console.error);
+  }, [user, authLoading]);
+
+  // ─── Auto-migrate localStorage → Supabase on first login ───
+  useEffect(() => {
+    if (!user?.id) return;
+    migrateLocalToCloud(user.id).then(({ migrated }) => {
+      if (migrated > 0) {
+        console.log(`Migrated ${migrated} blueprints to cloud`);
+        loadLibrary(user.id).then(setLibrary);
+      }
+    });
+  }, [user?.id]);
 
   // ─── Helpers ───
   const upd = (k, v) => setConfig(p => ({ ...p, [k]: v }));
@@ -112,24 +137,29 @@ export default function App() {
     for (const ft of FILE_TYPES) {
       await handleGenerateFile(ft.id);
     }
-    incrementUsage();
+    await trackUsage(user?.id, "generate", { fileType: "all" });
     resultRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   // ─── Persistence ───
-  const handleSave = () => {
+  const handleSave = async () => {
     const bp = {
       id: config.projectName + "-" + Date.now().toString(36),
       config: { ...config },
       ideTarget,
       generated: { ...generated },
     };
-    const result = saveBlueprint(bp);
-    if (result.success) {
-      setLibrary(loadLibrary());
-      setError(null);
-    } else {
-      setError(result.error);
+    try {
+      const result = await saveBlueprint(bp, user?.id);
+      if (result.success) {
+        const updated = await loadLibrary(user?.id);
+        setLibrary(updated);
+        setError(null);
+      } else {
+        setError(result.error);
+      }
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -141,9 +171,13 @@ export default function App() {
     setStep(4); // Go to Generate step
   };
 
-  const handleDeleteBlueprint = (id) => {
-    const updated = deleteBlueprint(id);
-    setLibrary(updated);
+  const handleDeleteBlueprint = async (id) => {
+    try {
+      const updated = await deleteBlueprint(id, user?.id);
+      setLibrary(updated);
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   // ─── Priority reorder ───
@@ -181,8 +215,18 @@ export default function App() {
             📁 Library ({library.length})
           </button>
           <a href="/docs.html" style={{ fontSize: 12, color: "#94a3b8", textDecoration: "none", fontWeight: 500 }}>📖 Docs</a>
+          {user ? (
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 11, color: "#64748b" }}>{user.email?.split("@")[0]}</span>
+              <span style={{ fontSize: 9, padding: "2px 6px", borderRadius: 4, background: profile?.tier === "pro" ? "#f59e0b" : profile?.tier === "team" ? "#8b5cf6" : "#334155", color: "#fff", fontWeight: 700, textTransform: "uppercase" }}>{profile?.tier || "free"}</span>
+              <button onClick={signOut} style={{ background: "none", border: "none", color: "#64748b", cursor: "pointer", fontSize: 12 }}>Logout</button>
+            </div>
+          ) : (
+            <button onClick={() => setShowAuthModal(true)} style={{ background: "linear-gradient(135deg, #fb923c, #f97316)", border: "none", borderRadius: 6, color: "#0a0f1a", cursor: "pointer", padding: "4px 14px", fontSize: 12, fontWeight: 700 }}>Sign In</button>
+          )}
         </div>
       </nav>
+      {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
 
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "28px 16px" }}>
         {/* ═══ HEADER ═══ */}

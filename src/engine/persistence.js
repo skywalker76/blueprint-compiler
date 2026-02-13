@@ -1,60 +1,162 @@
 // ─── BLUEPRINT PERSISTENCE ───
-// Save/load Blueprints from localStorage
+// Dual-mode: Supabase (authenticated) → localStorage (fallback)
+import { supabase, isSupabaseConfigured } from "../lib/supabaseClient";
 
 const STORAGE_KEY = "blueprint-compiler-library";
+const USAGE_KEY = "blueprint-compiler-usage";
 const MAX_FREE_BLUEPRINTS = 3;
 
 // ─── SAVE BLUEPRINT ───
-export function saveBlueprint(blueprint) {
-    const library = loadLibrary();
-    const existing = library.findIndex(b => b.id === blueprint.id);
+export async function saveBlueprint(blueprint, userId = null) {
+    // Cloud save if authenticated
+    if (userId && isSupabaseConfigured()) {
+        const record = {
+            user_id: userId,
+            project_name: blueprint.config?.projectName || "Untitled",
+            domain: blueprint.config?.domain || "custom",
+            mission: blueprint.config?.mission || "",
+            ide_target: blueprint.ideTarget || "antigravity",
+            rigor: blueprint.config?.rigor || "balanced",
+            config: blueprint.config || {},
+            generated: blueprint.generated || {},
+            quality_score: blueprint.quality?.score || null,
+        };
 
-    if (existing >= 0) {
-        library[existing] = { ...blueprint, updatedAt: new Date().toISOString() };
-    } else {
-        library.unshift({
-            ...blueprint,
-            id: blueprint.id || generateId(),
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-        });
+        if (blueprint.supabaseId) {
+            // Update existing
+            const { data, error } = await supabase
+                .from("blueprints")
+                .update({ ...record, updated_at: new Date().toISOString() })
+                .eq("id", blueprint.supabaseId)
+                .select()
+                .single();
+            if (error) throw error;
+            return { success: true, id: data.id, source: "cloud" };
+        } else {
+            // Insert new
+            const { data, error } = await supabase
+                .from("blueprints")
+                .insert(record)
+                .select()
+                .single();
+            if (error) throw error;
+            return { success: true, id: data.id, source: "cloud" };
+        }
     }
 
-    try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(library));
-        return { success: true, id: blueprint.id || library[0].id };
-    } catch (e) {
-        return { success: false, error: "Storage full. Delete some blueprints to save new ones." };
-    }
+    // Fallback: localStorage
+    return saveBlueprintLocal(blueprint);
 }
 
 // ─── LOAD LIBRARY ───
-export function loadLibrary() {
-    try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
-    } catch {
-        return [];
+export async function loadLibrary(userId = null) {
+    if (userId && isSupabaseConfigured()) {
+        const { data, error } = await supabase
+            .from("blueprints")
+            .select("*")
+            .eq("user_id", userId)
+            .order("updated_at", { ascending: false });
+
+        if (error) throw error;
+
+        // Map DB rows to app format
+        return (data || []).map(row => ({
+            id: row.id,
+            supabaseId: row.id,
+            config: row.config,
+            generated: row.generated,
+            ideTarget: row.ide_target,
+            quality: { score: row.quality_score },
+            createdAt: row.created_at,
+            updatedAt: row.updated_at,
+        }));
     }
+
+    return loadLibraryLocal();
 }
 
 // ─── DELETE BLUEPRINT ───
-export function deleteBlueprint(id) {
-    const library = loadLibrary().filter(b => b.id !== id);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(library));
-    return library;
+export async function deleteBlueprint(id, userId = null) {
+    if (userId && isSupabaseConfigured()) {
+        const { error } = await supabase
+            .from("blueprints")
+            .delete()
+            .eq("id", id)
+            .eq("user_id", userId);
+        if (error) throw error;
+        return await loadLibrary(userId);
+    }
+
+    return deleteBlueprintLocal(id);
 }
 
-// ─── EXPORT AS JSON ───
+// ─── IMPORT LOCALSTORAGE → SUPABASE (one-time migration) ───
+export async function migrateLocalToCloud(userId) {
+    if (!userId || !isSupabaseConfigured()) return { migrated: 0 };
+
+    const local = loadLibraryLocal();
+    if (local.length === 0) return { migrated: 0 };
+
+    let migrated = 0;
+    for (const bp of local) {
+        try {
+            await saveBlueprint(bp, userId);
+            migrated++;
+        } catch (e) {
+            console.warn("Migration failed for blueprint:", bp.id, e);
+        }
+    }
+
+    // Clear localStorage after migration
+    if (migrated > 0) {
+        localStorage.removeItem(STORAGE_KEY);
+    }
+
+    return { migrated };
+}
+
+// ─── USAGE TRACKING ───
+export async function trackUsage(userId, action, details = {}) {
+    if (userId && isSupabaseConfigured()) {
+        await supabase.from("usage_tracking").insert({
+            user_id: userId,
+            action,
+            blueprint_id: details.blueprintId || null,
+            file_type: details.fileType || null,
+            tokens_used: details.tokensUsed || null,
+            quality_score: details.qualityScore || null,
+        });
+    }
+
+    // Always track locally too
+    incrementUsageLocal();
+}
+
+export async function getUsageCount(userId = null) {
+    if (userId && isSupabaseConfigured()) {
+        const now = new Date();
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+
+        const { count, error } = await supabase
+            .from("usage_tracking")
+            .select("*", { count: "exact", head: true })
+            .eq("user_id", userId)
+            .eq("action", "generate")
+            .gte("created_at", startOfMonth);
+
+        if (!error) return count || 0;
+    }
+
+    return getUsageCountLocal();
+}
+
+// ─── EXPORT FUNCTIONS (unchanged — client-side only) ───
 export function exportAsJson(blueprint) {
     const json = JSON.stringify(blueprint, null, 2);
     downloadFile(`${blueprint.config?.projectName || "blueprint"}.json`, json, "application/json");
 }
 
-// ─── EXPORT AS ZIP (simplified — creates a folder structure in a single download) ───
 export function exportAsZip(blueprint) {
-    // Since we're client-side only, we export as a structured JSON that can be unpacked
-    // A real ZIP would require a library like JSZip
     const files = {};
     const ide = blueprint.ideTarget || "antigravity";
 
@@ -83,7 +185,6 @@ export function exportAsZip(blueprint) {
     );
 }
 
-// ─── IMPORT FROM JSON ───
 export function importFromJson(jsonString) {
     try {
         const data = JSON.parse(jsonString);
@@ -94,6 +195,70 @@ export function importFromJson(jsonString) {
     } catch {
         return { success: false, error: "Invalid JSON file." };
     }
+}
+
+// ═══════════════════════════════════════════════
+// LOCAL STORAGE HELPERS (private, fallback only)
+// ═══════════════════════════════════════════════
+
+function saveBlueprintLocal(blueprint) {
+    const library = loadLibraryLocal();
+    const existing = library.findIndex(b => b.id === blueprint.id);
+
+    if (existing >= 0) {
+        library[existing] = { ...blueprint, updatedAt: new Date().toISOString() };
+    } else {
+        library.unshift({
+            ...blueprint,
+            id: blueprint.id || generateId(),
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+        });
+    }
+
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(library));
+        return { success: true, id: blueprint.id || library[0].id, source: "local" };
+    } catch (e) {
+        return { success: false, error: "Storage full. Delete some blueprints to save new ones." };
+    }
+}
+
+function loadLibraryLocal() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+    } catch {
+        return [];
+    }
+}
+
+function deleteBlueprintLocal(id) {
+    const library = loadLibraryLocal().filter(b => b.id !== id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(library));
+    return library;
+}
+
+function getUsageCountLocal() {
+    try {
+        const raw = localStorage.getItem(USAGE_KEY);
+        const data = raw ? JSON.parse(raw) : { count: 0, month: new Date().getMonth() };
+        if (data.month !== new Date().getMonth()) {
+            data.count = 0;
+            data.month = new Date().getMonth();
+            localStorage.setItem(USAGE_KEY, JSON.stringify(data));
+        }
+        return data.count;
+    } catch {
+        return 0;
+    }
+}
+
+function incrementUsageLocal() {
+    const raw = localStorage.getItem(USAGE_KEY);
+    const data = raw ? JSON.parse(raw) : { count: 0, month: new Date().getMonth() };
+    data.count++;
+    localStorage.setItem(USAGE_KEY, JSON.stringify(data));
 }
 
 // ─── HELPERS ───
@@ -121,32 +286,4 @@ function getOutputFilename(fileType, ideTarget) {
         windsurf: { rules: ".windsurfrules", skills: ".windsurf/skills/SKILL.md", workflows: ".windsurf/workflows/workflow.md", context: ".context/ADR.md", prompt: ".windsurf/overview.md" },
     };
     return paths[ideTarget]?.[fileType] || `${fileType}.md`;
-}
-
-// ─── USAGE COUNT TRACKING (for free tier limits) ───
-const USAGE_KEY = "blueprint-compiler-usage";
-
-export function getUsageCount() {
-    try {
-        const raw = localStorage.getItem(USAGE_KEY);
-        const data = raw ? JSON.parse(raw) : { count: 0, month: new Date().getMonth() };
-
-        // Reset count if new month
-        if (data.month !== new Date().getMonth()) {
-            data.count = 0;
-            data.month = new Date().getMonth();
-            localStorage.setItem(USAGE_KEY, JSON.stringify(data));
-        }
-
-        return data.count;
-    } catch {
-        return 0;
-    }
-}
-
-export function incrementUsage() {
-    const raw = localStorage.getItem(USAGE_KEY);
-    const data = raw ? JSON.parse(raw) : { count: 0, month: new Date().getMonth() };
-    data.count++;
-    localStorage.setItem(USAGE_KEY, JSON.stringify(data));
 }
