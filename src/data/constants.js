@@ -95,3 +95,10 @@ export const TIERS = {
         hasExportZip: true,
     },
 };
+
+// ─── BLUEPRINT RIGOR LEVELS ───
+export const RIGOR_LEVELS = [
+    { id: "strict", label: "🏛️ Strict", name: "Enterprise / Production", desc: "Full planning, 90%+ test coverage, complete OWASP security. For production systems and regulated industries." },
+    { id: "balanced", label: "⚖️ Balanced", name: "Recommended", desc: "Complexity-gated planning, 80%+ coverage, essential security. Best for most projects." },
+    { id: "rapid", label: "🚀 Rapid", name: "Prototype / MVP", desc: "Minimal planning, critical-path testing only, ship fast. For hackathons and quick prototypes." },
+];

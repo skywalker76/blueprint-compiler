@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 // ─── Data ───
 import { DOMAINS } from "./data/domains.js";
 import { STACK_INFO } from "./data/stacks.js";
-import { LANGUAGES, FILE_TYPES, IDE_TARGETS, TIERS } from "./data/constants.js";
+import { LANGUAGES, FILE_TYPES, IDE_TARGETS, TIERS, RIGOR_LEVELS } from "./data/constants.js";
 
 // ─── Engine ───
 import { generateFile as engineGenerateFile, generateAll as engineGenerateAll } from "./engine/generator.js";
@@ -35,6 +35,7 @@ export default function App() {
     langConvo: "it", langCode: "en",
     stack: {}, customDomain: "", customStack: "",
     priorities: ["performance", "security", "maintainability", "scalability"],
+    rigor: "balanced",
   });
   const [ideTarget, setIdeTarget] = useState("antigravity");
   const [generated, setGenerated] = useState({});
@@ -496,6 +497,26 @@ export default function App() {
                   </div>
                 ))}
               </div>
+              <div>
+                <label style={S.label}>Blueprint Rigor</label>
+                <div style={{ fontSize: 12, color: "#64748b", marginBottom: 10 }}>Controls planning depth, test coverage, and security requirements in generated Blueprints.</div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+                  {RIGOR_LEVELS.map(r => (
+                    <button key={r.id}
+                      onClick={() => upd("rigor", r.id)}
+                      style={{
+                        padding: "14px 12px", borderRadius: 10, cursor: "pointer", textAlign: "left",
+                        background: config.rigor === r.id ? "#1e293b" : "#0f172a",
+                        border: `2px solid ${config.rigor === r.id ? (r.id === "strict" ? "#3b82f6" : r.id === "rapid" ? "#f59e0b" : "#fb923c") : "#1e293b"}`,
+                        transition: "all 0.2s",
+                      }}>
+                      <div style={{ fontSize: 16, marginBottom: 4 }}>{r.label}</div>
+                      <div style={{ fontSize: 11, color: config.rigor === r.id ? "#e2e8f0" : "#64748b", fontWeight: 600, marginBottom: 4 }}>{r.name}</div>
+                      <div style={{ fontSize: 10, color: "#475569", lineHeight: 1.4 }}>{r.desc}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
             <div style={S.nav}>
               <button style={S.btn(false)} onClick={() => setStep(2)}>← Stack</button>
@@ -525,6 +546,7 @@ export default function App() {
                     <span style={S.badge(true)}>{currentIde.icon} {currentIde.name}</span>
                   </div>
                   <div style={{ fontSize: 11, color: "#475569", marginTop: 6 }}>Priorities: {config.priorities.join(" > ")}</div>
+                  <div style={{ marginTop: 4 }}><span style={{ ...S.badge(true), background: config.rigor === "strict" ? "#1e3a5f" : config.rigor === "rapid" ? "#422006" : "#3b1a08" }}>{RIGOR_LEVELS.find(r => r.id === config.rigor)?.label} {RIGOR_LEVELS.find(r => r.id === config.rigor)?.name}</span></div>
                 </div>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginTop: 16 }}>
