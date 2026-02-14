@@ -1,0 +1,335 @@
+import { useState } from "react";
+import { QualityScore } from "./QualityScore.jsx";
+import { CopyButton } from "./CopyButton.jsx";
+
+// ─── TAB DEFINITIONS ───
+const TABS = [
+    { id: "overview", icon: "📋", label: "Overview" },
+    { id: "architecture", icon: "🏗️", label: "Architecture" },
+    { id: "tools", icon: "🛠️", label: "Tools & Skills" },
+    { id: "prompts", icon: "💬", label: "Prompts" },
+    { id: "raw", icon: "📁", label: "Raw Files" },
+];
+
+// ─── SECTION PARSER ───
+// Splits raw blueprint text into titled sections by looking for markdown headers
+function parseSections(text) {
+    if (!text) return [];
+    const lines = text.split("\n");
+    const sections = [];
+    let current = null;
+
+    for (const line of lines) {
+        const h2 = line.match(/^## (.+)/);
+        const h3 = line.match(/^### (.+)/);
+        if (h2 || h3) {
+            if (current) sections.push(current);
+            current = { title: (h2 || h3)[1].trim(), level: h2 ? 2 : 3, content: "" };
+        } else if (current) {
+            current.content += line + "\n";
+        } else {
+            // Content before first header — add as "intro"
+            if (!sections.length && line.trim()) {
+                current = { title: "Introduction", level: 2, content: line + "\n" };
+            }
+        }
+    }
+    if (current) sections.push(current);
+    return sections;
+}
+
+// ─── FILTER SECTIONS BY KEYWORDS ───
+function filterSections(allSections, keywords) {
+    return allSections.filter(s => {
+        const lower = s.title.toLowerCase();
+        return keywords.some(kw => lower.includes(kw));
+    });
+}
+
+// ─── SECTION CARD ───
+function SectionCard({ title, content, level }) {
+    const [expanded, setExpanded] = useState(true);
+    const isLong = content.length > 500;
+
+    return (
+        <div style={{
+            background: "#0c1929",
+            border: "1px solid #1e3a5f",
+            borderRadius: 10,
+            marginBottom: 10,
+            overflow: "hidden",
+            transition: "all 0.2s",
+        }}>
+            <div
+                onClick={() => isLong && setExpanded(!expanded)}
+                style={{
+                    padding: "10px 16px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    cursor: isLong ? "pointer" : "default",
+                    borderBottom: expanded ? "1px solid #1e3a5f22" : "none",
+                }}
+            >
+                <div style={{
+                    fontSize: level === 2 ? 14 : 13,
+                    fontWeight: 700,
+                    color: level === 2 ? "#7dd3fc" : "#94a3b8",
+                }}>
+                    {title}
+                </div>
+                {isLong && (
+                    <span style={{ fontSize: 11, color: "#475569" }}>
+                        {expanded ? "▼" : "▶"} {Math.ceil(content.length / 100)} blocks
+                    </span>
+                )}
+            </div>
+            {expanded && (
+                <div style={{
+                    padding: "10px 16px 14px",
+                    fontSize: 12,
+                    lineHeight: 1.7,
+                    color: "#cbd5e1",
+                    whiteSpace: "pre-wrap",
+                    maxHeight: 400,
+                    overflowY: "auto",
+                    fontFamily: "JetBrains Mono, monospace",
+                }}>
+                    {content.trim()}
+                </div>
+            )}
+        </div>
+    );
+}
+
+// ─── OVERVIEW TAB ───
+function OverviewPanel({ config, ideTarget, generated, avgQuality, domain, currentIde, FILE_TYPES }) {
+    const fileCount = Object.values(generated).filter(r => r?.output).length;
+    const totalLines = Object.values(generated)
+        .filter(r => r?.output)
+        .reduce((sum, r) => sum + r.output.split("\n").length, 0);
+    const refinedCount = Object.values(generated).filter(r => r?.refined).length;
+
+    return (
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {/* Project Card */}
+            <div style={{
+                background: "linear-gradient(135deg, #0c1929 0%, #1c120888 100%)",
+                border: "1px solid #1e3a5f",
+                borderRadius: 12,
+                padding: 20,
+            }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                    <div>
+                        <div style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", fontWeight: 600, letterSpacing: 1 }}>Blueprint</div>
+                        <div style={{ fontSize: 22, fontWeight: 800, color: "#fb923c", marginTop: 4 }}>{config.projectName}</div>
+                        <div style={{ fontSize: 13, color: "#94a3b8", marginTop: 6, lineHeight: 1.5, maxWidth: 500 }}>{config.mission}</div>
+                    </div>
+                    <div style={{ textAlign: "right" }}>
+                        <span style={{ fontSize: 36 }}>{domain?.icon}</span>
+                        <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>{domain?.name}</div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Metrics Grid */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
+                {[
+                    { label: "Files Generated", value: `${fileCount}/5`, icon: "📄", color: "#7dd3fc" },
+                    { label: "Total Lines", value: totalLines.toLocaleString(), icon: "📏", color: "#a78bfa" },
+                    { label: "Quality Score", value: avgQuality !== null ? `${avgQuality}/100` : "—", icon: "⭐", color: avgQuality >= 80 ? "#6ee7b7" : "#fbbf24" },
+                    { label: "Auto-Refined", value: refinedCount, icon: "♻️", color: "#f472b6" },
+                ].map((m, i) => (
+                    <div key={i} style={{
+                        background: "#0f172a",
+                        border: "1px solid #1e293b",
+                        borderRadius: 10,
+                        padding: "14px 16px",
+                        textAlign: "center",
+                    }}>
+                        <div style={{ fontSize: 22, marginBottom: 4 }}>{m.icon}</div>
+                        <div style={{ fontSize: 20, fontWeight: 800, color: m.color }}>{m.value}</div>
+                        <div style={{ fontSize: 10, color: "#475569", marginTop: 2, textTransform: "uppercase", fontWeight: 600 }}>{m.label}</div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Config Summary */}
+            <div style={{
+                background: "#0f172a",
+                border: "1px solid #1e293b",
+                borderRadius: 10,
+                padding: 16,
+            }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: "#7dd3fc", marginBottom: 10 }}>⚙️ Configuration</div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                    <div style={metaRow}><span style={metaLabel}>IDE Target</span><span style={metaValue}>{currentIde?.icon} {currentIde?.name}</span></div>
+                    <div style={metaRow}><span style={metaLabel}>Rigor</span><span style={metaValue}>{config.rigor}</span></div>
+                    <div style={metaRow}><span style={metaLabel}>Priorities</span><span style={metaValue}>{config.priorities?.join(" > ")}</span></div>
+                    <div style={metaRow}><span style={metaLabel}>Domain</span><span style={metaValue}>{domain?.name}</span></div>
+                </div>
+                {Object.keys(config.stack || {}).length > 0 && (
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
+                        {Object.entries(config.stack).map(([k, v]) => (
+                            <span key={k} style={{
+                                padding: "3px 10px",
+                                background: "#1e293b",
+                                borderRadius: 20,
+                                fontSize: 11,
+                                color: "#e2e8f0",
+                            }}>
+                                {k}: <strong>{v}</strong>
+                            </span>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+const metaRow = { display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #1e293b22" };
+const metaLabel = { fontSize: 11, color: "#64748b" };
+const metaValue = { fontSize: 12, color: "#e2e8f0", fontWeight: 600 };
+
+// ─── PARSED CONTENT TAB ───
+function ParsedPanel({ generated, fileIds, keywords, emptyMsg }) {
+    const allSections = [];
+    for (const fid of fileIds) {
+        const output = generated[fid]?.output;
+        if (output) {
+            const sections = parseSections(output);
+            if (keywords && keywords.length > 0) {
+                allSections.push(...filterSections(sections, keywords));
+            } else {
+                allSections.push(...sections);
+            }
+        }
+    }
+
+    if (allSections.length === 0) {
+        return (
+            <div style={{ textAlign: "center", padding: 40, color: "#334155" }}>
+                {emptyMsg || "No content generated yet. Click \"⚡ Generate All\" above."}
+            </div>
+        );
+    }
+
+    const allText = allSections.map(s => `## ${s.title}\n${s.content}`).join("\n");
+
+    return (
+        <div>
+            <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
+                <CopyButton text={allText} />
+            </div>
+            {allSections.map((s, i) => (
+                <SectionCard key={i} title={s.title} content={s.content} level={s.level} />
+            ))}
+        </div>
+    );
+}
+
+// ─── MAIN COMPONENT ───
+export function BlueprintTabs({ generated, config, ideTarget, avgQuality, domain, currentIde, FILE_TYPES, children }) {
+    const [viewTab, setViewTab] = useState("overview");
+    const hasOutput = Object.values(generated).some(r => r?.output);
+
+    // Don't show tabs if nothing generated
+    if (!hasOutput) return children;
+
+    return (
+        <div>
+            {/* ─── Tab Bar ─── */}
+            <div style={{
+                display: "flex",
+                gap: 2,
+                background: "#080d17",
+                borderRadius: "12px 12px 0 0",
+                padding: "6px 6px 0",
+                border: "1px solid #1e293b",
+                borderBottom: "none",
+                overflowX: "auto",
+            }}>
+                {TABS.map(tab => (
+                    <button
+                        key={tab.id}
+                        onClick={() => setViewTab(tab.id)}
+                        style={{
+                            padding: "10px 18px",
+                            borderRadius: "10px 10px 0 0",
+                            border: "none",
+                            borderBottom: viewTab === tab.id ? "2px solid #fb923c" : "2px solid transparent",
+                            background: viewTab === tab.id
+                                ? "linear-gradient(180deg, #1c1208 0%, #111827 100%)"
+                                : "transparent",
+                            color: viewTab === tab.id ? "#fb923c" : "#64748b",
+                            cursor: "pointer",
+                            fontSize: 12,
+                            fontWeight: 700,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 6,
+                            transition: "all 0.2s",
+                            whiteSpace: "nowrap",
+                            flex: "0 0 auto",
+                        }}
+                    >
+                        <span style={{ fontSize: 15 }}>{tab.icon}</span>
+                        {tab.label}
+                    </button>
+                ))}
+            </div>
+
+            {/* ─── Tab Content ─── */}
+            <div style={{
+                background: "#0a0f1a",
+                border: "1px solid #1e293b",
+                borderTop: "none",
+                borderRadius: "0 0 12px 12px",
+                padding: 20,
+                minHeight: 200,
+            }}>
+                {viewTab === "overview" && (
+                    <OverviewPanel
+                        config={config}
+                        ideTarget={ideTarget}
+                        generated={generated}
+                        avgQuality={avgQuality}
+                        domain={domain}
+                        currentIde={currentIde}
+                        FILE_TYPES={FILE_TYPES}
+                    />
+                )}
+
+                {viewTab === "architecture" && (
+                    <ParsedPanel
+                        generated={generated}
+                        fileIds={["rules", "context"]}
+                        keywords={["architect", "stack", "security", "convention", "decision", "pattern", "database", "api", "auth", "deploy", "infra", "core", "testing", "performance"]}
+                        emptyMsg="Generate the Rules and Context files to see architecture details."
+                    />
+                )}
+
+                {viewTab === "tools" && (
+                    <ParsedPanel
+                        generated={generated}
+                        fileIds={["skills", "workflows"]}
+                        keywords={[]}
+                        emptyMsg="Generate Skills and Workflows to see tools and competencies."
+                    />
+                )}
+
+                {viewTab === "prompts" && (
+                    <ParsedPanel
+                        generated={generated}
+                        fileIds={["prompt", "rules"]}
+                        keywords={["identity", "role", "persona", "prompt", "system", "instruction", "overview", "project", "entry", "mission", "thinking", "protocol"]}
+                        emptyMsg="Generate PROMPT_START and Rules to see prompt definitions."
+                    />
+                )}
+
+                {viewTab === "raw" && children}
+            </div>
+        </div>
+    );
+}

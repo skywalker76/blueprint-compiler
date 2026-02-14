@@ -17,6 +17,7 @@ import { AuthModal } from "./components/AuthModal.jsx";
 
 // ─── Components ───
 import { InfoBox } from "./components/InfoBox.jsx";
+import { BlueprintTabs } from "./components/BlueprintTabs.jsx";
 import { OptionGuide } from "./components/OptionGuide.jsx";
 import { CopyButton } from "./components/CopyButton.jsx";
 import { StepBar } from "./components/StepBar.jsx";
@@ -659,64 +660,74 @@ export default function App() {
               </div>
             )}
 
-            {/* File Output Tabs */}
+            {/* ═══ BLUEPRINT TABS (new tabbed view) ═══ */}
             <div ref={resultRef} style={S.card}>
-              <InfoBox type="info">Each file serves a specific purpose. Generate all, or click individual tabs. Quality scores show how production-ready each file is.</InfoBox>
-              <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginTop: 12 }}>
-                {FILE_TYPES.map(ft => {
-                  const result = generated[ft.id];
-                  const hasScore = result?.quality?.score;
-                  return (
-                    <button key={ft.id} style={{
-                      padding: "8px 14px", borderRadius: "8px 8px 0 0", border: "1px solid #1e293b",
-                      borderBottom: activeTab === ft.id ? "2px solid #fb923c" : "1px solid #1e293b",
-                      background: activeTab === ft.id ? "#111827" : "#0a0f1a",
-                      color: activeTab === ft.id ? "#fb923c" : "#64748b",
-                      cursor: "pointer", fontSize: 11, fontWeight: 600, display: "flex", alignItems: "center", gap: 4,
-                    }} onClick={() => setActiveTab(ft.id)}>
-                      {result?.output ? "✓ " : generating?.startsWith(ft.id) ? "⏳ " : ""}{ft.label}
-                      {hasScore && <QualityScore quality={result.quality} compact={true} />}
-                    </button>
-                  );
-                })}
-              </div>
-              {FILE_TYPES.map(ft => activeTab === ft.id && (
-                <div key={ft.id}>
-                  <div style={{ padding: "12px 16px", background: "#0c1929", border: "1px solid #1e3a5f", borderRadius: 0, fontSize: 12, color: "#7dd3fc", lineHeight: 1.6 }}>
-                    <strong>{ft.layer} — {ft.label}</strong>: {ft.desc} <span style={{ color: "#475569" }}>(~{ft.lines} lines)</span>
-                    {generated[ft.id]?.refined && <span style={{ ...S.tag, marginLeft: 8 }}>♻️ Auto-refined</span>}
-                  </div>
-                  <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, padding: "8px 12px", background: "#111827", borderBottom: "1px solid #1e293b" }}>
-                    {generated[ft.id]?.output && <CopyButton text={generated[ft.id].output} />}
-                    <button onClick={() => handleGenerateFile(ft.id)} disabled={!!generating || !apiKey} style={S.btn(false, !!generating || !apiKey)}>
-                      {generating?.startsWith(ft.id) ? "⏳ ..." : generated[ft.id]?.output ? "↻ Regen" : "▶ Generate"}
-                    </button>
-                  </div>
-
-                  {/* Quality Score for this file */}
-                  {generated[ft.id]?.quality && (
-                    <div style={{ padding: "12px 16px", background: "#0a0f1a", borderBottom: "1px solid #1e293b" }}>
-                      <QualityScore quality={generated[ft.id].quality} />
-                    </div>
-                  )}
-
-                  <div style={{ background: "#0a0f1a", border: "1px solid #1e293b", borderRadius: "0 0 8px 8px", padding: 16, fontSize: 12, lineHeight: 1.6, whiteSpace: "pre-wrap", overflowX: "auto", maxHeight: 500, overflowY: "auto", color: "#cbd5e1", fontFamily: "JetBrains Mono, monospace" }}>
-                    {generating?.startsWith(ft.id) ? (
-                      <div style={{ textAlign: "center", padding: 40 }}>
-                        <div style={{ fontSize: 28, marginBottom: 8, animation: "pulse 1.5s infinite" }}>⚡</div>
-                        <div style={{ color: "#fb923c", fontWeight: 600 }}>Compiling {ft.label}...</div>
-                        <div style={{ color: "#475569", fontSize: 11, marginTop: 6 }}>
-                          {generating.includes("validating") ? "🔍 Validating output quality..." :
-                            generating.includes("refining") ? "♻️ Auto-refining for better quality..." :
-                              "📡 Generating with Claude Sonnet 4..."}
-                        </div>
-                      </div>
-                    ) : generated[ft.id]?.output ? generated[ft.id].output : (
-                      <div style={{ textAlign: "center", padding: 40, color: "#334155" }}>Click "Generate" or use "Generate All" above</div>
-                    )}
-                  </div>
+              <BlueprintTabs
+                generated={generated}
+                config={config}
+                ideTarget={ideTarget}
+                avgQuality={avgQuality()}
+                domain={domain}
+                currentIde={currentIde}
+                FILE_TYPES={FILE_TYPES}
+              >
+                <InfoBox type="info">Each file serves a specific purpose. Generate all, or click individual tabs. Quality scores show how production-ready each file is.</InfoBox>
+                <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginTop: 12 }}>
+                  {FILE_TYPES.map(ft => {
+                    const result = generated[ft.id];
+                    const hasScore = result?.quality?.score;
+                    return (
+                      <button key={ft.id} style={{
+                        padding: "8px 14px", borderRadius: "8px 8px 0 0", border: "1px solid #1e293b",
+                        borderBottom: activeTab === ft.id ? "2px solid #fb923c" : "1px solid #1e293b",
+                        background: activeTab === ft.id ? "#111827" : "#0a0f1a",
+                        color: activeTab === ft.id ? "#fb923c" : "#64748b",
+                        cursor: "pointer", fontSize: 11, fontWeight: 600, display: "flex", alignItems: "center", gap: 4,
+                      }} onClick={() => setActiveTab(ft.id)}>
+                        {result?.output ? "✓ " : generating?.startsWith(ft.id) ? "⏳ " : ""}{ft.label}
+                        {hasScore && <QualityScore quality={result.quality} compact={true} />}
+                      </button>
+                    );
+                  })}
                 </div>
-              ))}
+                {FILE_TYPES.map(ft => activeTab === ft.id && (
+                  <div key={ft.id}>
+                    <div style={{ padding: "12px 16px", background: "#0c1929", border: "1px solid #1e3a5f", borderRadius: 0, fontSize: 12, color: "#7dd3fc", lineHeight: 1.6 }}>
+                      <strong>{ft.layer} — {ft.label}</strong>: {ft.desc} <span style={{ color: "#475569" }}>(~{ft.lines} lines)</span>
+                      {generated[ft.id]?.refined && <span style={{ ...S.tag, marginLeft: 8 }}>♻️ Auto-refined</span>}
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, padding: "8px 12px", background: "#111827", borderBottom: "1px solid #1e293b" }}>
+                      {generated[ft.id]?.output && <CopyButton text={generated[ft.id].output} />}
+                      <button onClick={() => handleGenerateFile(ft.id)} disabled={!!generating || !apiKey} style={S.btn(false, !!generating || !apiKey)}>
+                        {generating?.startsWith(ft.id) ? "⏳ ..." : generated[ft.id]?.output ? "↻ Regen" : "▶ Generate"}
+                      </button>
+                    </div>
+
+                    {/* Quality Score for this file */}
+                    {generated[ft.id]?.quality && (
+                      <div style={{ padding: "12px 16px", background: "#0a0f1a", borderBottom: "1px solid #1e293b" }}>
+                        <QualityScore quality={generated[ft.id].quality} />
+                      </div>
+                    )}
+
+                    <div style={{ background: "#0a0f1a", border: "1px solid #1e293b", borderRadius: "0 0 8px 8px", padding: 16, fontSize: 12, lineHeight: 1.6, whiteSpace: "pre-wrap", overflowX: "auto", maxHeight: 500, overflowY: "auto", color: "#cbd5e1", fontFamily: "JetBrains Mono, monospace" }}>
+                      {generating?.startsWith(ft.id) ? (
+                        <div style={{ textAlign: "center", padding: 40 }}>
+                          <div style={{ fontSize: 28, marginBottom: 8, animation: "pulse 1.5s infinite" }}>⚡</div>
+                          <div style={{ color: "#fb923c", fontWeight: 600 }}>Compiling {ft.label}...</div>
+                          <div style={{ color: "#475569", fontSize: 11, marginTop: 6 }}>
+                            {generating.includes("validating") ? "🔍 Validating output quality..." :
+                              generating.includes("refining") ? "♻️ Auto-refining for better quality..." :
+                                "📡 Generating with Claude Sonnet 4..."}
+                          </div>
+                        </div>
+                      ) : generated[ft.id]?.output ? generated[ft.id].output : (
+                        <div style={{ textAlign: "center", padding: 40, color: "#334155" }}>Click "Generate" or use "Generate All" above</div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </BlueprintTabs>
             </div>
 
             {error && <div style={{ ...S.card, borderColor: "#991b1b", background: "#1c0a0a" }}><span style={{ color: "#fca5a5", fontSize: 13 }}>⚠️ {error}</span></div>}
