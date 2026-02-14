@@ -11,37 +11,42 @@ const MAX_FREE_BLUEPRINTS = 3;
 export async function saveBlueprint(blueprint, userId = null) {
     // Cloud save if authenticated
     if (userId && isSupabaseConfigured()) {
-        const record = {
-            user_id: userId,
-            project_name: blueprint.config?.projectName || "Untitled",
-            domain: blueprint.config?.domain || "custom",
-            mission: blueprint.config?.mission || "",
-            ide_target: blueprint.ideTarget || "antigravity",
-            rigor: blueprint.config?.rigor || "balanced",
-            config: blueprint.config || {},
-            generated: blueprint.generated || {},
-            quality_score: blueprint.quality?.score || null,
-        };
+        try {
+            const record = {
+                user_id: userId,
+                project_name: blueprint.config?.projectName || "Untitled",
+                domain: blueprint.config?.domain || "custom",
+                mission: blueprint.config?.mission || "",
+                ide_target: blueprint.ideTarget || "antigravity",
+                rigor: blueprint.config?.rigor || "balanced",
+                config: blueprint.config || {},
+                generated: blueprint.generated || {},
+                quality_score: blueprint.quality?.score || null,
+            };
 
-        if (blueprint.supabaseId) {
-            // Update existing
-            const { data, error } = await supabase
-                .from("blueprints")
-                .update({ ...record, updated_at: new Date().toISOString() })
-                .eq("id", blueprint.supabaseId)
-                .select()
-                .single();
-            if (error) throw error;
-            return { success: true, id: data.id, source: "cloud" };
-        } else {
-            // Insert new
-            const { data, error } = await supabase
-                .from("blueprints")
-                .insert(record)
-                .select()
-                .single();
-            if (error) throw error;
-            return { success: true, id: data.id, source: "cloud" };
+            if (blueprint.supabaseId) {
+                // Update existing
+                const { data, error } = await supabase
+                    .from("blueprints")
+                    .update({ ...record, updated_at: new Date().toISOString() })
+                    .eq("id", blueprint.supabaseId)
+                    .select()
+                    .single();
+                if (error) throw error;
+                return { success: true, id: data.id, source: "cloud" };
+            } else {
+                // Insert new
+                const { data, error } = await supabase
+                    .from("blueprints")
+                    .insert(record)
+                    .select()
+                    .single();
+                if (error) throw error;
+                return { success: true, id: data.id, source: "cloud" };
+            }
+        } catch (err) {
+            console.warn("[Persistence] Cloud save failed, falling back to localStorage:", err.message);
+            // Fall through to localStorage
         }
     }
 
@@ -52,25 +57,36 @@ export async function saveBlueprint(blueprint, userId = null) {
 // ─── LOAD LIBRARY ───
 export async function loadLibrary(userId = null) {
     if (userId && isSupabaseConfigured()) {
-        const { data, error } = await supabase
-            .from("blueprints")
-            .select("*")
-            .eq("user_id", userId)
-            .order("updated_at", { ascending: false });
+        try {
+            const { data, error } = await supabase
+                .from("blueprints")
+                .select("*")
+                .eq("user_id", userId)
+                .order("updated_at", { ascending: false });
 
-        if (error) throw error;
+            if (error) throw error;
 
-        // Map DB rows to app format
-        return (data || []).map(row => ({
-            id: row.id,
-            supabaseId: row.id,
-            config: row.config,
-            generated: row.generated,
-            ideTarget: row.ide_target,
-            quality: { score: row.quality_score },
-            createdAt: row.created_at,
-            updatedAt: row.updated_at,
-        }));
+            // Merge cloud + local blueprints
+            const cloudBlueprints = (data || []).map(row => ({
+                id: row.id,
+                supabaseId: row.id,
+                config: row.config,
+                generated: row.generated,
+                ideTarget: row.ide_target,
+                quality: { score: row.quality_score },
+                createdAt: row.created_at,
+                updatedAt: row.updated_at,
+            }));
+
+            // Also load local blueprints so nothing is lost
+            const localBlueprints = loadLibraryLocal();
+            // Combine: cloud first, then local ones not already in cloud
+            const cloudIds = new Set(cloudBlueprints.map(b => b.config?.projectName));
+            const uniqueLocal = localBlueprints.filter(b => !cloudIds.has(b.config?.projectName));
+            return [...cloudBlueprints, ...uniqueLocal];
+        } catch (err) {
+            console.warn("[Persistence] Cloud load failed, using localStorage:", err.message);
+        }
     }
 
     return loadLibraryLocal();
@@ -79,13 +95,17 @@ export async function loadLibrary(userId = null) {
 // ─── DELETE BLUEPRINT ───
 export async function deleteBlueprint(id, userId = null) {
     if (userId && isSupabaseConfigured()) {
-        const { error } = await supabase
-            .from("blueprints")
-            .delete()
-            .eq("id", id)
-            .eq("user_id", userId);
-        if (error) throw error;
-        return await loadLibrary(userId);
+        try {
+            const { error } = await supabase
+                .from("blueprints")
+                .delete()
+                .eq("id", id)
+                .eq("user_id", userId);
+            if (error) throw error;
+            return await loadLibrary(userId);
+        } catch (err) {
+            console.warn("[Persistence] Cloud delete failed, using localStorage:", err.message);
+        }
     }
 
     return deleteBlueprintLocal(id);
@@ -179,7 +199,7 @@ export async function trackAnonymousEvent(event, data = {}) {
             });
         } catch (e) {
             // Provide a graceful fallback or silent fail for telemetry
-             console.log("[Telemetry] (Sent)", event, data);
+            console.log("[Telemetry] (Sent)", event, data);
         }
     } else {
         console.log("[Telemetry] (Simulated)", event, data);
