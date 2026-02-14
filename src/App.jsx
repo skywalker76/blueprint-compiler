@@ -4,11 +4,12 @@ import { useState, useEffect, useRef } from "react";
 import { DOMAINS } from "./data/domains.js";
 import { STACK_INFO } from "./data/stacks.js";
 import { LANGUAGES, FILE_TYPES, IDE_TARGETS, TIERS, RIGOR_LEVELS } from "./data/constants.js";
+import { GALLERY_BLUEPRINTS } from "./data/gallery.js";
 
 // ─── Engine ───
 import { generateFile as engineGenerateFile, generateAll as engineGenerateAll } from "./engine/generator.js";
 import { scanPackageJson } from "./engine/scanner.js";
-import { saveBlueprint, loadLibrary, deleteBlueprint, exportAsZip, exportAsJson, getUsageCount, trackUsage, migrateLocalToCloud } from "./engine/persistence.js";
+import { saveBlueprint, loadLibrary, deleteBlueprint, exportAsZip, exportAsJson, getUsageCount, trackUsage, migrateLocalToCloud, getTelemetryPreference, setTelemetryPreference, trackAnonymousEvent } from "./engine/persistence.js";
 
 // ─── Auth ───
 import { useAuth } from "./context/AuthContext.jsx";
@@ -55,12 +56,15 @@ export default function App() {
   const [scanResult, setScanResult] = useState(null);
   const [showLibrary, setShowLibrary] = useState(false);
   const [library, setLibrary] = useState([]);
+  const [libraryTab, setLibraryTab] = useState("my"); // "my" | "gallery"
+  const [telemetry, setTelemetry] = useState(getTelemetryPreference());
   const resultRef = useRef(null);
 
   // ─── Load library (async, depends on auth) ───
   useEffect(() => {
     if (authLoading) return;
     loadLibrary(user?.id).then(setLibrary).catch(console.error);
+    if (getTelemetryPreference()) trackAnonymousEvent("app_loaded");
   }, [user, authLoading]);
 
   // ─── Auto-migrate localStorage → Supabase on first login ───
@@ -129,6 +133,7 @@ export default function App() {
       setError(`${fileType}: ${err.message}`);
     }
     setGenerating(null);
+    trackAnonymousEvent("generate_file", { fileType });
   };
 
   const handleGenerateAll = async () => {
@@ -248,22 +253,48 @@ export default function App() {
         {/* ═══ LIBRARY PANEL ═══ */}
         {showLibrary && (
           <div style={{ ...S.card, borderColor: "#334155" }}>
-            <SectionTitle icon="📁" title="Blueprint Library" subtitle={`${library.length} saved blueprint(s)`} />
-            {library.length === 0 ? (
-              <p style={{ fontSize: 13, color: "#475569", textAlign: "center", padding: 20 }}>No saved blueprints yet. Generate one and click "Save".</p>
+            <SectionTitle icon="📁" title="Blueprint Library" subtitle={libraryTab === "my" ? `${library.length} saved blueprint(s)` : "Community & Official Blueprints"} />
+
+            <div style={{ display: "flex", gap: 16, marginBottom: 16, borderBottom: "1px solid #334155", paddingBottom: 0 }}>
+              <button onClick={() => setLibraryTab("my")} style={{ paddingBottom: 8, background: "none", border: "none", borderBottom: libraryTab === "my" ? "2px solid #fb923c" : "2px solid transparent", color: libraryTab === "my" ? "#fb923c" : "#64748b", cursor: "pointer", fontWeight: 600, fontSize: 13 }}>My Blueprints</button>
+              <button onClick={() => setLibraryTab("gallery")} style={{ paddingBottom: 8, background: "none", border: "none", borderBottom: libraryTab === "gallery" ? "2px solid #fb923c" : "2px solid transparent", color: libraryTab === "gallery" ? "#fb923c" : "#64748b", cursor: "pointer", fontWeight: 600, fontSize: 13 }}>Community Gallery</button>
+            </div>
+
+            {libraryTab === "my" ? (
+              library.length === 0 ? (
+                <p style={{ fontSize: 13, color: "#475569", textAlign: "center", padding: 20 }}>No saved blueprints yet. Generate one and click "Save".</p>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  {library.map(bp => (
+                    <div key={bp.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: 12, background: "#0f172a", borderRadius: 8, border: "1px solid #1e293b" }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: "#e2e8f0" }}>{bp.config?.projectName || "Untitled"}</div>
+                        <div style={{ fontSize: 11, color: "#64748b" }}>
+                          {bp.config?.domain} · {bp.ideTarget || "antigravity"} · {new Date(bp.createdAt).toLocaleDateString()}
+                        </div>
+                      </div>
+                      <button onClick={() => handleLoadBlueprint(bp)} style={S.btn(true, false)}>Load</button>
+                      <button onClick={() => exportAsJson(bp)} style={S.btn(false, false)}>JSON</button>
+                      <button onClick={() => handleDeleteBlueprint(bp.id)} style={{ ...S.btn(false, false), color: "#ef4444" }}>✕</button>
+                    </div>
+                  ))}
+                </div>
+              )
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {library.map(bp => (
+                {GALLERY_BLUEPRINTS.map(bp => (
                   <div key={bp.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: 12, background: "#0f172a", borderRadius: 8, border: "1px solid #1e293b" }}>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 14, fontWeight: 700, color: "#e2e8f0" }}>{bp.config?.projectName || "Untitled"}</div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: "#e2e8f0" }}>{bp.config?.projectName}</div>
+                        {bp.isOfficial && <span style={{ fontSize: 9, background: "#065f46", color: "#6ee7b7", padding: "1px 4px", borderRadius: 4, fontWeight: 700 }}>OFFICIAL</span>}
+                      </div>
+                      <div style={{ fontSize: 11, color: "#94a3b8", margin: "2px 0 4px" }}>{bp.config?.mission}</div>
                       <div style={{ fontSize: 11, color: "#64748b" }}>
-                        {bp.config?.domain} · {bp.ideTarget || "antigravity"} · {new Date(bp.createdAt).toLocaleDateString()}
+                        {bp.config?.domain} · {bp.ideTarget} · by {bp.author} · Quality: {bp.quality?.score}%
                       </div>
                     </div>
-                    <button onClick={() => handleLoadBlueprint(bp)} style={S.btn(true, false)}>Load</button>
-                    <button onClick={() => exportAsJson(bp)} style={S.btn(false, false)}>JSON</button>
-                    <button onClick={() => handleDeleteBlueprint(bp.id)} style={{ ...S.btn(false, false), color: "#ef4444" }}>✕</button>
+                    <button onClick={() => handleLoadBlueprint(bp)} style={S.btn(true, false)}>Clone</button>
                   </div>
                 ))}
               </div>
@@ -733,13 +764,21 @@ Before every complex action, use a <thought> block to:
         )}
 
         {/* ═══ FOOTER ═══ */}
-        <div style={{ textAlign: "center", padding: "24px 0", borderTop: "1px solid #1e293b", marginTop: 24 }}>
-          <p style={{ fontSize: 11, color: "#334155" }}>
+        <div style={{ textAlign: "center", padding: "24px 0", borderTop: "1px solid #1e293b", marginTop: 24, fontSize: 11, color: "#334155" }}>
+          <p>
             Blueprint Compiler v2.0 — Multi-IDE · Agentic Generation · Quality Scoring
           </p>
-          <p style={{ fontSize: 10, color: "#1e293b", marginTop: 4 }}>
-            Powered by Context Engineering · {IDE_TARGETS.length} IDE targets · {DOMAINS.length} domains
-          </p>
+          <div style={{ marginTop: 8, display: "flex", justifyContent: "center", alignItems: "center", gap: 12 }}>
+            <span>Powered by Context Engineering</span>
+            <span>·</span>
+            <button onClick={() => {
+              const newVal = !telemetry;
+              setTelemetry(newVal);
+              setTelemetryPreference(newVal);
+            }} style={{ background: "none", border: "none", color: telemetry ? "#64748b" : "#475569", cursor: "pointer", fontSize: 11, textDecoration: "underline" }}>
+              Telemetry: {telemetry ? "On" : "Off"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

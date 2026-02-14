@@ -4,6 +4,7 @@ import { supabase, isSupabaseConfigured } from "../lib/supabaseClient";
 
 const STORAGE_KEY = "blueprint-compiler-library";
 const USAGE_KEY = "blueprint-compiler-usage";
+const TELEMETRY_KEY = "blueprint-compiler-telemetry";
 const MAX_FREE_BLUEPRINTS = 3;
 
 // ─── SAVE BLUEPRINT ───
@@ -148,6 +149,41 @@ export async function getUsageCount(userId = null) {
     }
 
     return getUsageCountLocal();
+}
+
+// ─── TELEMETRY ───
+export function getTelemetryPreference() {
+    try {
+        return localStorage.getItem(TELEMETRY_KEY) === "true";
+    } catch {
+        return false;
+    }
+}
+
+export function setTelemetryPreference(enabled) {
+    localStorage.setItem(TELEMETRY_KEY, enabled ? "true" : "false");
+}
+
+export async function trackAnonymousEvent(event, data = {}) {
+    if (!getTelemetryPreference()) return;
+
+    // In a real app, this would send to Posthog, Mixpanel, or Supabase
+    // For now, we utilize Supabase if available, allowing null user_id if the schema permits,
+    // or just log to console to simulate the "sending" action for verification.
+    if (isSupabaseConfigured()) {
+        try {
+            await supabase.from("usage_tracking").insert({
+                user_id: null, // Anonymous
+                action: event,
+                ...data
+            });
+        } catch (e) {
+            // Provide a graceful fallback or silent fail for telemetry
+             console.log("[Telemetry] (Sent)", event, data);
+        }
+    } else {
+        console.log("[Telemetry] (Simulated)", event, data);
+    }
 }
 
 // ─── EXPORT FUNCTIONS (unchanged — client-side only) ───
