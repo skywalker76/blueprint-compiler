@@ -3,11 +3,47 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
+// Eye icon SVG (open / closed)
+function EyeIcon({ open, onClick }) {
+    return (
+        <button
+            type="button"
+            onClick={onClick}
+            style={{
+                position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)",
+                background: "none", border: "none", cursor: "pointer", padding: 4,
+                color: "#64748b", display: "flex", alignItems: "center",
+            }}
+            tabIndex={-1}
+            aria-label={open ? "Hide password" : "Show password"}
+        >
+            {open ? (
+                // Eye open
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                </svg>
+            ) : (
+                // Eye closed
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+                    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                    <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" />
+                    <line x1="1" y1="1" x2="23" y2="23" />
+                </svg>
+            )}
+        </button>
+    );
+}
+
 export function AuthModal({ onClose }) {
     const { signIn, signUp, signInWithGoogle } = useAuth();
     const [mode, setMode] = useState("login"); // "login" | "signup"
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(null);
@@ -16,6 +52,19 @@ export function AuthModal({ onClose }) {
         e.preventDefault();
         setError(null);
         setSuccess(null);
+
+        // Validate password confirmation on signup
+        if (mode === "signup") {
+            if (password !== confirmPassword) {
+                setError("Passwords do not match");
+                return;
+            }
+            if (password.length < 6) {
+                setError("Password must be at least 6 characters");
+                return;
+            }
+        }
+
         setLoading(true);
 
         try {
@@ -39,6 +88,15 @@ export function AuthModal({ onClose }) {
         } catch (err) {
             setError(err.message || "Google sign-in failed");
         }
+    };
+
+    const handleModeSwitch = (newMode) => {
+        setMode(newMode);
+        setError(null);
+        setSuccess(null);
+        setConfirmPassword("");
+        setShowPassword(false);
+        setShowConfirmPassword(false);
     };
 
     return (
@@ -88,18 +146,59 @@ export function AuthModal({ onClose }) {
                     </div>
                     <div>
                         <label style={styles.label}>Password</label>
-                        <input
-                            type="password" required minLength={6}
-                            value={password} onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Min 6 characters"
-                            style={styles.input}
-                        />
+                        <div style={styles.inputWrapper}>
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                required minLength={6}
+                                value={password} onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Min 6 characters"
+                                style={styles.inputInWrapper}
+                            />
+                            <EyeIcon open={showPassword} onClick={() => setShowPassword(!showPassword)} />
+                        </div>
                     </div>
+
+                    {/* Confirm Password — only in signup mode */}
+                    {mode === "signup" && (
+                        <div>
+                            <label style={styles.label}>Confirm Password</label>
+                            <div style={styles.inputWrapper}>
+                                <input
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    required minLength={6}
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    placeholder="Re-enter password"
+                                    style={{
+                                        ...styles.inputInWrapper,
+                                        borderColor: confirmPassword && confirmPassword !== password
+                                            ? "#ef4444" : "#1e293b",
+                                    }}
+                                />
+                                <EyeIcon
+                                    open={showConfirmPassword}
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                />
+                            </div>
+                            {confirmPassword && confirmPassword !== password && (
+                                <span style={{ fontSize: 11, color: "#ef4444", marginTop: 4, display: "block" }}>
+                                    Passwords do not match
+                                </span>
+                            )}
+                        </div>
+                    )}
 
                     {error && <div style={styles.error}>⚠️ {error}</div>}
                     {success && <div style={styles.success}>✅ {success}</div>}
 
-                    <button type="submit" disabled={loading} style={styles.submitBtn}>
+                    <button
+                        type="submit"
+                        disabled={loading || (mode === "signup" && password !== confirmPassword)}
+                        style={{
+                            ...styles.submitBtn,
+                            opacity: loading || (mode === "signup" && confirmPassword && password !== confirmPassword) ? 0.5 : 1,
+                        }}
+                    >
                         {loading ? "..." : mode === "login" ? "Sign In" : "Create Account"}
                     </button>
                 </form>
@@ -107,9 +206,9 @@ export function AuthModal({ onClose }) {
                 {/* Toggle */}
                 <div style={styles.toggle}>
                     {mode === "login" ? (
-                        <span>Don't have an account? <button onClick={() => { setMode("signup"); setError(null); }} style={styles.toggleBtn}>Sign Up</button></span>
+                        <span>Don't have an account? <button onClick={() => handleModeSwitch("signup")} style={styles.toggleBtn}>Sign Up</button></span>
                     ) : (
-                        <span>Already have an account? <button onClick={() => { setMode("login"); setError(null); }} style={styles.toggleBtn}>Sign In</button></span>
+                        <span>Already have an account? <button onClick={() => handleModeSwitch("login")} style={styles.toggleBtn}>Sign In</button></span>
                     )}
                 </div>
             </div>
@@ -156,6 +255,15 @@ const styles = {
     },
     input: {
         width: "100%", padding: "10px 14px", borderRadius: 8,
+        background: "#0a0f1a", border: "1px solid #1e293b",
+        color: "#e2e8f0", fontSize: 14, outline: "none",
+        boxSizing: "border-box",
+    },
+    inputWrapper: {
+        position: "relative", display: "flex", alignItems: "center",
+    },
+    inputInWrapper: {
+        width: "100%", padding: "10px 40px 10px 14px", borderRadius: 8,
         background: "#0a0f1a", border: "1px solid #1e293b",
         color: "#e2e8f0", fontSize: 14, outline: "none",
         boxSizing: "border-box",
