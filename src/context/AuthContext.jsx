@@ -97,8 +97,12 @@ export function AuthProvider({ children }) {
     }
 
     async function signOut() {
-        const { error } = await supabase.auth.signOut();
-        if (error) throw error;
+        try {
+            await supabase.auth.signOut();
+        } catch (err) {
+            console.warn("[Auth] signOut error (clearing local state anyway):", err.message);
+        }
+        // Always clear local state, even if Supabase call failed
         setUser(null);
         setSession(null);
         setProfile(null);

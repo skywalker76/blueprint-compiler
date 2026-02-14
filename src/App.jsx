@@ -213,9 +213,9 @@ export default function App() {
   return (
     <div style={{ minHeight: "100vh", background: "#0a0f1a", color: "#e2e8f0" }}>
       {/* ═══ TOP NAV ═══ */}
-      <nav style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(10,15,26,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid #1e293b", padding: "0 24px", height: 48, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <nav style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(10,15,26,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid #1e293b", padding: "6px 12px", minHeight: 48, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 4 }}>
         <span style={{ fontSize: 14, fontWeight: 800, color: "#fb923c", letterSpacing: 0.5 }}>⚡ Blueprint Compiler <span style={{ fontSize: 10, color: "#475569", fontWeight: 400 }}>v2.0</span></span>
-        <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+        <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
           <button onClick={() => setShowLibrary(!showLibrary)} style={{ background: "none", border: "1px solid #334155", borderRadius: 6, color: "#94a3b8", cursor: "pointer", padding: "4px 12px", fontSize: 12, fontWeight: 600 }}>
             📁 Library ({library.length})
           </button>
@@ -224,7 +224,7 @@ export default function App() {
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <span style={{ fontSize: 11, color: "#64748b" }}>{user.email?.split("@")[0]}</span>
               <span style={{ fontSize: 9, padding: "2px 6px", borderRadius: 4, background: profile?.tier === "pro" ? "#f59e0b" : profile?.tier === "team" ? "#8b5cf6" : "#334155", color: "#fff", fontWeight: 700, textTransform: "uppercase" }}>{profile?.tier || "free"}</span>
-              <button onClick={signOut} style={{ background: "none", border: "none", color: "#64748b", cursor: "pointer", fontSize: 12 }}>Logout</button>
+              <button onClick={() => { signOut().catch(err => console.warn('Logout error:', err)); }} style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: 6, color: "#f87171", cursor: "pointer", fontSize: 12, fontWeight: 600, padding: "6px 14px", minHeight: 36, minWidth: 44 }}>Logout</button>
             </div>
           ) : (
             <button onClick={() => setShowAuthModal(true)} style={{ background: "linear-gradient(135deg, #fb923c, #f97316)", border: "none", borderRadius: 6, color: "#0a0f1a", cursor: "pointer", padding: "4px 14px", fontSize: 12, fontWeight: 700 }}>Sign In</button>
