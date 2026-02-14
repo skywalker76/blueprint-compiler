@@ -1,6 +1,39 @@
-import { useState } from "react";
-import { QualityScore } from "./QualityScore.jsx";
+import { useState, Component } from "react";
 import { CopyButton } from "./CopyButton.jsx";
+
+// ─── ERROR BOUNDARY ───
+// Catches rendering errors and shows fallback instead of blank page
+class TabsErrorBoundary extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false, error: null };
+    }
+    static getDerivedStateFromError(error) {
+        return { hasError: true, error };
+    }
+    componentDidCatch(error, info) {
+        console.error("[BlueprintTabs] Render error:", error, info);
+    }
+    render() {
+        if (this.state.hasError) {
+            return (
+                <div style={{ padding: 20 }}>
+                    <div style={{ color: "#fca5a5", fontSize: 13, marginBottom: 8 }}>
+                        ⚠️ Tab view encountered an error. Showing raw files instead.
+                    </div>
+                    <button
+                        onClick={() => this.setState({ hasError: false, error: null })}
+                        style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: 6, color: "#fb923c", padding: "6px 12px", cursor: "pointer", fontSize: 12 }}
+                    >
+                        ↻ Retry Tab View
+                    </button>
+                    <div style={{ marginTop: 12 }}>{this.props.children}</div>
+                </div>
+            );
+        }
+        return this.props.render();
+    }
+}
 
 // ─── TAB DEFINITIONS ───
 const TABS = [
@@ -12,9 +45,8 @@ const TABS = [
 ];
 
 // ─── SECTION PARSER ───
-// Splits raw blueprint text into titled sections by looking for markdown headers
 function parseSections(text) {
-    if (!text) return [];
+    if (!text || typeof text !== "string") return [];
     const lines = text.split("\n");
     const sections = [];
     let current = null;
@@ -28,7 +60,6 @@ function parseSections(text) {
         } else if (current) {
             current.content += line + "\n";
         } else {
-            // Content before first header — add as "intro"
             if (!sections.length && line.trim()) {
                 current = { title: "Introduction", level: 2, content: line + "\n" };
             }
@@ -38,10 +69,11 @@ function parseSections(text) {
     return sections;
 }
 
-// ─── FILTER SECTIONS BY KEYWORDS ───
+// ─── FILTER SECTIONS ───
 function filterSections(allSections, keywords) {
+    if (!keywords || keywords.length === 0) return allSections;
     return allSections.filter(s => {
-        const lower = s.title.toLowerCase();
+        const lower = (s.title || "").toLowerCase();
         return keywords.some(kw => lower.includes(kw));
     });
 }
@@ -49,7 +81,8 @@ function filterSections(allSections, keywords) {
 // ─── SECTION CARD ───
 function SectionCard({ title, content, level }) {
     const [expanded, setExpanded] = useState(true);
-    const isLong = content.length > 500;
+    const safeContent = content || "";
+    const isLong = safeContent.length > 500;
 
     return (
         <div style={{
@@ -58,7 +91,6 @@ function SectionCard({ title, content, level }) {
             borderRadius: 10,
             marginBottom: 10,
             overflow: "hidden",
-            transition: "all 0.2s",
         }}>
             <div
                 onClick={() => isLong && setExpanded(!expanded)}
@@ -76,11 +108,11 @@ function SectionCard({ title, content, level }) {
                     fontWeight: 700,
                     color: level === 2 ? "#7dd3fc" : "#94a3b8",
                 }}>
-                    {title}
+                    {title || "Section"}
                 </div>
                 {isLong && (
                     <span style={{ fontSize: 11, color: "#475569" }}>
-                        {expanded ? "▼" : "▶"} {Math.ceil(content.length / 100)} blocks
+                        {expanded ? "▼" : "▶"}
                     </span>
                 )}
             </div>
@@ -95,7 +127,7 @@ function SectionCard({ title, content, level }) {
                     overflowY: "auto",
                     fontFamily: "JetBrains Mono, monospace",
                 }}>
-                    {content.trim()}
+                    {safeContent.trim()}
                 </div>
             )}
         </div>
@@ -103,12 +135,17 @@ function SectionCard({ title, content, level }) {
 }
 
 // ─── OVERVIEW TAB ───
-function OverviewPanel({ config, ideTarget, generated, avgQuality, domain, currentIde, FILE_TYPES }) {
-    const fileCount = Object.values(generated).filter(r => r?.output).length;
-    const totalLines = Object.values(generated)
-        .filter(r => r?.output)
+function OverviewPanel({ config, generated, avgQuality, domain, currentIde }) {
+    // Defensive: ensure generated is an object
+    const safeGenerated = generated || {};
+    const safeConfig = config || {};
+
+    const fileCount = Object.values(safeGenerated).filter(r => r?.output).length;
+    const totalLines = Object.values(safeGenerated)
+        .filter(r => r?.output && typeof r.output === "string")
         .reduce((sum, r) => sum + r.output.split("\n").length, 0);
-    const refinedCount = Object.values(generated).filter(r => r?.refined).length;
+    const refinedCount = Object.values(safeGenerated).filter(r => r?.refined).length;
+    const qScore = typeof avgQuality === "number" ? avgQuality : null;
 
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -122,23 +159,23 @@ function OverviewPanel({ config, ideTarget, generated, avgQuality, domain, curre
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                     <div>
                         <div style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", fontWeight: 600, letterSpacing: 1 }}>Blueprint</div>
-                        <div style={{ fontSize: 22, fontWeight: 800, color: "#fb923c", marginTop: 4 }}>{config.projectName}</div>
-                        <div style={{ fontSize: 13, color: "#94a3b8", marginTop: 6, lineHeight: 1.5, maxWidth: 500 }}>{config.mission}</div>
+                        <div style={{ fontSize: 22, fontWeight: 800, color: "#fb923c", marginTop: 4 }}>{safeConfig.projectName || "Unnamed"}</div>
+                        <div style={{ fontSize: 13, color: "#94a3b8", marginTop: 6, lineHeight: 1.5, maxWidth: 500 }}>{safeConfig.mission || ""}</div>
                     </div>
                     <div style={{ textAlign: "right" }}>
-                        <span style={{ fontSize: 36 }}>{domain?.icon}</span>
-                        <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>{domain?.name}</div>
+                        <span style={{ fontSize: 36 }}>{domain?.icon || "📦"}</span>
+                        <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>{domain?.name || ""}</div>
                     </div>
                 </div>
             </div>
 
             {/* Metrics Grid */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: 10 }}>
                 {[
                     { label: "Files Generated", value: `${fileCount}/5`, icon: "📄", color: "#7dd3fc" },
                     { label: "Total Lines", value: totalLines.toLocaleString(), icon: "📏", color: "#a78bfa" },
-                    { label: "Quality Score", value: avgQuality !== null ? `${avgQuality}/100` : "—", icon: "⭐", color: avgQuality >= 80 ? "#6ee7b7" : "#fbbf24" },
-                    { label: "Auto-Refined", value: refinedCount, icon: "♻️", color: "#f472b6" },
+                    { label: "Quality Score", value: qScore !== null ? `${qScore}/100` : "—", icon: "⭐", color: qScore !== null && qScore >= 80 ? "#6ee7b7" : "#fbbf24" },
+                    { label: "Auto-Refined", value: String(refinedCount), icon: "♻️", color: "#f472b6" },
                 ].map((m, i) => (
                     <div key={i} style={{
                         background: "#0f172a",
@@ -163,14 +200,14 @@ function OverviewPanel({ config, ideTarget, generated, avgQuality, domain, curre
             }}>
                 <div style={{ fontSize: 12, fontWeight: 700, color: "#7dd3fc", marginBottom: 10 }}>⚙️ Configuration</div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                    <div style={metaRow}><span style={metaLabel}>IDE Target</span><span style={metaValue}>{currentIde?.icon} {currentIde?.name}</span></div>
-                    <div style={metaRow}><span style={metaLabel}>Rigor</span><span style={metaValue}>{config.rigor}</span></div>
-                    <div style={metaRow}><span style={metaLabel}>Priorities</span><span style={metaValue}>{config.priorities?.join(" > ")}</span></div>
-                    <div style={metaRow}><span style={metaLabel}>Domain</span><span style={metaValue}>{domain?.name}</span></div>
+                    <div style={metaRow}><span style={metaLabel}>IDE Target</span><span style={metaValue}>{currentIde?.icon || ""} {currentIde?.name || "—"}</span></div>
+                    <div style={metaRow}><span style={metaLabel}>Rigor</span><span style={metaValue}>{safeConfig.rigor || "—"}</span></div>
+                    <div style={metaRow}><span style={metaLabel}>Priorities</span><span style={metaValue}>{Array.isArray(safeConfig.priorities) ? safeConfig.priorities.join(" > ") : "—"}</span></div>
+                    <div style={metaRow}><span style={metaLabel}>Domain</span><span style={metaValue}>{domain?.name || "—"}</span></div>
                 </div>
-                {Object.keys(config.stack || {}).length > 0 && (
+                {safeConfig.stack && Object.keys(safeConfig.stack).length > 0 && (
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
-                        {Object.entries(config.stack).map(([k, v]) => (
+                        {Object.entries(safeConfig.stack).map(([k, v]) => (
                             <span key={k} style={{
                                 padding: "3px 10px",
                                 background: "#1e293b",
@@ -178,7 +215,7 @@ function OverviewPanel({ config, ideTarget, generated, avgQuality, domain, curre
                                 fontSize: 11,
                                 color: "#e2e8f0",
                             }}>
-                                {k}: <strong>{v}</strong>
+                                {k}: <strong>{String(v)}</strong>
                             </span>
                         ))}
                     </div>
@@ -194,10 +231,12 @@ const metaValue = { fontSize: 12, color: "#e2e8f0", fontWeight: 600 };
 
 // ─── PARSED CONTENT TAB ───
 function ParsedPanel({ generated, fileIds, keywords, emptyMsg }) {
+    const safeGenerated = generated || {};
     const allSections = [];
-    for (const fid of fileIds) {
-        const output = generated[fid]?.output;
-        if (output) {
+
+    for (const fid of (fileIds || [])) {
+        const output = safeGenerated[fid]?.output;
+        if (output && typeof output === "string") {
             const sections = parseSections(output);
             if (keywords && keywords.length > 0) {
                 allSections.push(...filterSections(sections, keywords));
@@ -232,12 +271,13 @@ function ParsedPanel({ generated, fileIds, keywords, emptyMsg }) {
 // ─── MAIN COMPONENT ───
 export function BlueprintTabs({ generated, config, ideTarget, avgQuality, domain, currentIde, FILE_TYPES, children }) {
     const [viewTab, setViewTab] = useState("overview");
-    const hasOutput = Object.values(generated).some(r => r?.output);
+    const safeGenerated = generated || {};
+    const hasOutput = Object.values(safeGenerated).some(r => r?.output);
 
-    // Don't show tabs if nothing generated
-    if (!hasOutput) return children;
+    // Don't show tabs if nothing generated — just pass through children
+    if (!hasOutput) return <>{children}</>;
 
-    return (
+    const renderTabs = () => (
         <div>
             {/* ─── Tab Bar ─── */}
             <div style={{
@@ -293,17 +333,16 @@ export function BlueprintTabs({ generated, config, ideTarget, avgQuality, domain
                     <OverviewPanel
                         config={config}
                         ideTarget={ideTarget}
-                        generated={generated}
+                        generated={safeGenerated}
                         avgQuality={avgQuality}
                         domain={domain}
                         currentIde={currentIde}
-                        FILE_TYPES={FILE_TYPES}
                     />
                 )}
 
                 {viewTab === "architecture" && (
                     <ParsedPanel
-                        generated={generated}
+                        generated={safeGenerated}
                         fileIds={["rules", "context"]}
                         keywords={["architect", "stack", "security", "convention", "decision", "pattern", "database", "api", "auth", "deploy", "infra", "core", "testing", "performance"]}
                         emptyMsg="Generate the Rules and Context files to see architecture details."
@@ -312,7 +351,7 @@ export function BlueprintTabs({ generated, config, ideTarget, avgQuality, domain
 
                 {viewTab === "tools" && (
                     <ParsedPanel
-                        generated={generated}
+                        generated={safeGenerated}
                         fileIds={["skills", "workflows"]}
                         keywords={[]}
                         emptyMsg="Generate Skills and Workflows to see tools and competencies."
@@ -321,7 +360,7 @@ export function BlueprintTabs({ generated, config, ideTarget, avgQuality, domain
 
                 {viewTab === "prompts" && (
                     <ParsedPanel
-                        generated={generated}
+                        generated={safeGenerated}
                         fileIds={["prompt", "rules"]}
                         keywords={["identity", "role", "persona", "prompt", "system", "instruction", "overview", "project", "entry", "mission", "thinking", "protocol"]}
                         emptyMsg="Generate PROMPT_START and Rules to see prompt definitions."
@@ -331,5 +370,11 @@ export function BlueprintTabs({ generated, config, ideTarget, avgQuality, domain
                 {viewTab === "raw" && children}
             </div>
         </div>
+    );
+
+    return (
+        <TabsErrorBoundary render={renderTabs}>
+            {children}
+        </TabsErrorBoundary>
     );
 }
