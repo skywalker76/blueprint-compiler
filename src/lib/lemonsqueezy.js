@@ -1,7 +1,5 @@
 // ─── LEMON SQUEEZY INTEGRATION ───
-// Checkout overlay helper — opens LS payment modal without leaving the page.
-
-const LS_STORE_ID = "293675";
+// Checkout helper — creates checkout via API, then opens overlay or new tab.
 
 export const PLANS = {
     pro: {
@@ -18,31 +16,23 @@ export const PLANS = {
 
 /**
  * Load the Lemon Squeezy overlay script (idempotent).
- * Returns a promise that resolves when the script is loaded and initialized.
  */
 function ensureLemonSqueezyScript() {
     return new Promise((resolve, reject) => {
-        // Already initialized
         if (window.LemonSqueezy) {
             resolve();
             return;
         }
 
-        // Script already in DOM but not yet initialized
         if (document.querySelector('script[src*="lemonsqueezy"]')) {
             const wait = setInterval(() => {
                 if (window.createLemonSqueezy) {
                     clearInterval(wait);
                     window.createLemonSqueezy();
-                    // Give it a moment to initialize
-                    setTimeout(resolve, 200);
+                    setTimeout(resolve, 300);
                 }
             }, 100);
-            // Timeout after 5s
-            setTimeout(() => {
-                clearInterval(wait);
-                reject(new Error("Lemon Squeezy script timed out"));
-            }, 5000);
+            setTimeout(() => { clearInterval(wait); reject(new Error("Timeout")); }, 5000);
             return;
         }
 
@@ -50,76 +40,76 @@ function ensureLemonSqueezyScript() {
         script.src = "https://app.lemonsqueezy.com/js/lemon.js";
         script.defer = true;
         script.onload = () => {
-            // createLemonSqueezy initializes the global LemonSqueezy object
-            if (window.createLemonSqueezy) {
-                window.createLemonSqueezy();
-            }
-            // Give it a moment to fully initialize
+            if (window.createLemonSqueezy) window.createLemonSqueezy();
             setTimeout(resolve, 300);
         };
-        script.onerror = () => reject(new Error("Failed to load Lemon Squeezy script"));
+        script.onerror = () => reject(new Error("Failed to load LS script"));
         document.head.appendChild(script);
     });
 }
 
 /**
- * Open the Lemon Squeezy checkout overlay for a given plan.
+ * Open the Lemon Squeezy checkout for a given plan.
+ * 1. Calls our server-side API to create a checkout URL via LS API
+ * 2. Tries to open as overlay (if LS script loaded)
+ * 3. Falls back to new tab
  *
- * @param {"pro"|"team"} planKey     — which plan to checkout
- * @param {string}       email      — user email for pre-fill
- * @param {string}       userId     — Supabase user id, sent as custom data
- * @param {Function}     onSuccess  — optional callback after successful checkout
+ * @param {"pro"|"team"} planKey
+ * @param {string}       email
+ * @param {string}       userId
+ * @param {Function}     onSuccess
  */
 export async function openCheckout(planKey, email, userId, onSuccess) {
     const plan = PLANS[planKey];
     if (!plan) throw new Error(`Unknown plan: ${planKey}`);
 
-    // Build checkout URL
-    const checkoutUrl = new URL(
-        `https://blueprint-compiler.lemonsqueezy.com/buy/${plan.variantId}`
-    );
+    // Step 1: Create checkout via our API
+    console.log("[LS] Creating checkout for", planKey, "...");
 
-    // Pre-fill email & pass userId as custom data
-    checkoutUrl.searchParams.set("checkout[email]", email);
-    checkoutUrl.searchParams.set("checkout[custom][user_id]", userId);
+    const response = await fetch("/api/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            variantId: plan.variantId,
+            email,
+            userId,
+        }),
+    });
 
-    // Dark theme to match our UI
-    checkoutUrl.searchParams.set("dark", "1");
-
-    // Embed mode — opens as overlay
-    checkoutUrl.searchParams.set("embed", "1");
-
-    try {
-        await ensureLemonSqueezyScript();
-
-        // Use the LemonSqueezy.Url.Open method for overlay
-        if (window.LemonSqueezy && window.LemonSqueezy.Url) {
-            console.log("[LS] Opening overlay checkout:", checkoutUrl.toString());
-            window.LemonSqueezy.Url.Open(checkoutUrl.toString());
-        } else {
-            // Fallback: open in new tab
-            console.warn("[LS] Overlay not available, opening in new tab");
-            window.open(checkoutUrl.toString(), "_blank");
-        }
-    } catch (err) {
-        console.warn("[LS] Script load failed, opening in new tab:", err.message);
-        // Fallback: open in new tab (works without the overlay script)
-        window.open(checkoutUrl.toString(), "_blank");
+    if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        console.error("[LS] Checkout creation failed:", err);
+        throw new Error(err.error || "Checkout creation failed");
     }
 
-    // Listen for checkout success event from the overlay
+    const { url: checkoutUrl } = await response.json();
+    console.log("[LS] Checkout URL:", checkoutUrl);
+
+    // Step 2: Try overlay, fallback to new tab
+    try {
+        await ensureLemonSqueezyScript();
+        if (window.LemonSqueezy && window.LemonSqueezy.Url) {
+            console.log("[LS] Opening overlay...");
+            window.LemonSqueezy.Url.Open(checkoutUrl);
+        } else {
+            console.warn("[LS] Overlay unavailable, opening new tab");
+            window.open(checkoutUrl, "_blank");
+        }
+    } catch (scriptErr) {
+        console.warn("[LS] Script error, opening new tab:", scriptErr.message);
+        window.open(checkoutUrl, "_blank");
+    }
+
+    // Step 3: Listen for success event
     if (onSuccess) {
-        window.addEventListener(
-            "message",
-            function handler(event) {
-                if (
-                    event.origin === "https://app.lemonsqueezy.com" &&
-                    event.data?.event === "Checkout.Success"
-                ) {
-                    window.removeEventListener("message", handler);
-                    onSuccess(event.data);
-                }
+        window.addEventListener("message", function handler(event) {
+            if (
+                event.origin === "https://app.lemonsqueezy.com" &&
+                event.data?.event === "Checkout.Success"
+            ) {
+                window.removeEventListener("message", handler);
+                onSuccess(event.data);
             }
-        );
+        });
     }
 }
