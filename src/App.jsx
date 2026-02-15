@@ -231,6 +231,9 @@ export default function App() {
           <button onClick={() => setShowLibrary(!showLibrary)} style={{ background: "none", border: "1px solid #334155", borderRadius: 6, color: "#94a3b8", cursor: "pointer", padding: "4px 12px", fontSize: 12, fontWeight: 600 }}>
             📁 Library ({library.length})
           </button>
+          {user && (!profile?.tier || profile?.tier === "free") && (
+            <a href="/#pricing" style={{ fontSize: 12, color: "#fb923c", textDecoration: "none", fontWeight: 700, background: "linear-gradient(135deg, #fb923c22, #f9731622)", padding: "4px 12px", borderRadius: 6, border: "1px solid #fb923c44" }}>⚡ Upgrade</a>
+          )}
           <a href="/docs.html" style={{ fontSize: 12, color: "#94a3b8", textDecoration: "none", fontWeight: 500 }}>📖 Docs</a>
           {user ? (
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>

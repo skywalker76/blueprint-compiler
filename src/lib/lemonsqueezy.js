@@ -18,23 +18,31 @@ export const PLANS = {
 
 /**
  * Load the Lemon Squeezy overlay script (idempotent).
- * The script adds `window.createLemonSqueezy()` globally.
+ * Returns a promise that resolves when the script is loaded and initialized.
  */
 function ensureLemonSqueezyScript() {
     return new Promise((resolve, reject) => {
+        // Already initialized
         if (window.LemonSqueezy) {
             resolve();
             return;
         }
 
-        // Check if script is already loading
-        if (document.querySelector('script[src*="lmsqueezy"]')) {
+        // Script already in DOM but not yet initialized
+        if (document.querySelector('script[src*="lemonsqueezy"]')) {
             const wait = setInterval(() => {
-                if (window.LemonSqueezy) {
+                if (window.createLemonSqueezy) {
                     clearInterval(wait);
-                    resolve();
+                    window.createLemonSqueezy();
+                    // Give it a moment to initialize
+                    setTimeout(resolve, 200);
                 }
             }, 100);
+            // Timeout after 5s
+            setTimeout(() => {
+                clearInterval(wait);
+                reject(new Error("Lemon Squeezy script timed out"));
+            }, 5000);
             return;
         }
 
@@ -42,8 +50,12 @@ function ensureLemonSqueezyScript() {
         script.src = "https://app.lemonsqueezy.com/js/lemon.js";
         script.defer = true;
         script.onload = () => {
-            window.createLemonSqueezy?.();
-            resolve();
+            // createLemonSqueezy initializes the global LemonSqueezy object
+            if (window.createLemonSqueezy) {
+                window.createLemonSqueezy();
+            }
+            // Give it a moment to fully initialize
+            setTimeout(resolve, 300);
         };
         script.onerror = () => reject(new Error("Failed to load Lemon Squeezy script"));
         document.head.appendChild(script);
@@ -62,9 +74,7 @@ export async function openCheckout(planKey, email, userId, onSuccess) {
     const plan = PLANS[planKey];
     if (!plan) throw new Error(`Unknown plan: ${planKey}`);
 
-    await ensureLemonSqueezyScript();
-
-    // Build checkout URL with overlay mode
+    // Build checkout URL
     const checkoutUrl = new URL(
         `https://blueprint-compiler.lemonsqueezy.com/buy/${plan.variantId}`
     );
@@ -79,15 +89,25 @@ export async function openCheckout(planKey, email, userId, onSuccess) {
     // Embed mode — opens as overlay
     checkoutUrl.searchParams.set("embed", "1");
 
-    // Use the LemonSqueezy.Url.Open method for overlay
-    if (window.LemonSqueezy) {
-        window.LemonSqueezy.Url.Open(checkoutUrl.toString());
-    } else {
-        // Fallback: open in new tab
+    try {
+        await ensureLemonSqueezyScript();
+
+        // Use the LemonSqueezy.Url.Open method for overlay
+        if (window.LemonSqueezy && window.LemonSqueezy.Url) {
+            console.log("[LS] Opening overlay checkout:", checkoutUrl.toString());
+            window.LemonSqueezy.Url.Open(checkoutUrl.toString());
+        } else {
+            // Fallback: open in new tab
+            console.warn("[LS] Overlay not available, opening in new tab");
+            window.open(checkoutUrl.toString(), "_blank");
+        }
+    } catch (err) {
+        console.warn("[LS] Script load failed, opening in new tab:", err.message);
+        // Fallback: open in new tab (works without the overlay script)
         window.open(checkoutUrl.toString(), "_blank");
     }
 
-    // Optional: listen for checkout success event
+    // Listen for checkout success event from the overlay
     if (onSuccess) {
         window.addEventListener(
             "message",
