@@ -1,9 +1,16 @@
 // ─── LEMON SQUEEZY WEBHOOK HANDLER ───
 // Vercel serverless function: POST /api/ls-webhook
-// Verifies HMAC signature, updates Supabase profile tier.
+// Verifies HMAC signature using RAW body, then updates Supabase profile tier.
 
 import crypto from "crypto";
 import { createClient } from "@supabase/supabase-js";
+
+// Disable Vercel's automatic body parsing so we get the raw body for HMAC
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 const WEBHOOK_SECRET = process.env.LS_WEBHOOK_SECRET;
 const supabase = createClient(
@@ -11,15 +18,17 @@ const supabase = createClient(
     process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-// ─── Map event types to tier ───
-const TIER_MAP = {
-    subscription_created: determineTier,
-    subscription_updated: determineTier,
-    subscription_resumed: determineTier,
-    subscription_cancelled: () => "free",
-    subscription_expired: () => "free",
-};
+// ─── Read raw body from request stream ───
+function getRawBody(req) {
+    return new Promise((resolve, reject) => {
+        const chunks = [];
+        req.on("data", (chunk) => chunks.push(chunk));
+        req.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
+        req.on("error", reject);
+    });
+}
 
+// ─── Map event types to tier ───
 function determineTier(payload) {
     const variantId = String(
         payload.data?.attributes?.variant_id ||
@@ -30,41 +39,50 @@ function determineTier(payload) {
     return "pro"; // fallback for any valid subscription
 }
 
+const TIER_MAP = {
+    subscription_created: determineTier,
+    subscription_updated: determineTier,
+    subscription_resumed: determineTier,
+    subscription_cancelled: () => "free",
+    subscription_expired: () => "free",
+};
+
 // ─── HMAC Verification ───
 function verifySignature(rawBody, signature) {
     if (!WEBHOOK_SECRET || !signature) return false;
     const hmac = crypto.createHmac("sha256", WEBHOOK_SECRET);
     const digest = hmac.update(rawBody).digest("hex");
-    return crypto.timingSafeEqual(
-        Buffer.from(digest),
-        Buffer.from(signature)
-    );
+    try {
+        return crypto.timingSafeEqual(
+            Buffer.from(digest),
+            Buffer.from(signature)
+        );
+    } catch {
+        return false;
+    }
 }
 
 // ─── Handler ───
 export default async function handler(req, res) {
-    // Only accept POST
     if (req.method !== "POST") {
         return res.status(405).json({ error: "Method not allowed" });
     }
 
-    // Read raw body for HMAC verification
-    const rawBody = typeof req.body === "string"
-        ? req.body
-        : JSON.stringify(req.body);
+    // Read the RAW body (before any parsing)
+    const rawBody = await getRawBody(req);
+    console.log("[Webhook] Received body length:", rawBody.length);
 
-    // Verify HMAC signature
+    // Verify HMAC signature using raw body
     const signature = req.headers["x-signature"];
+    console.log("[Webhook] Signature header:", signature ? "present" : "MISSING");
+
     if (!verifySignature(rawBody, signature)) {
         console.error("[Webhook] Invalid HMAC signature");
         return res.status(401).json({ error: "Invalid signature" });
     }
 
-    // Parse payload
-    const payload = typeof req.body === "string"
-        ? JSON.parse(req.body)
-        : req.body;
-
+    // Parse payload from raw body
+    const payload = JSON.parse(rawBody);
     const eventType = payload.meta?.event_name;
     console.log(`[Webhook] Event: ${eventType}`);
 
@@ -89,13 +107,12 @@ export default async function handler(req, res) {
 
     // Extract subscription details
     const customerId = String(payload.data?.attributes?.customer_id || "");
-    const subscriptionId = String(payload.data?.id || "");
     const status = payload.data?.attributes?.status || "";
 
     console.log(`[Webhook] user=${userId} tier=${tier} status=${status}`);
 
     try {
-        // 1) Update profile
+        // Update profile
         const { error: profileError } = await supabase
             .from("profiles")
             .update({
@@ -109,7 +126,7 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: "Profile update failed" });
         }
 
-        // 2) Log event
+        // Log event
         await supabase.from("subscription_events").insert({
             user_id: userId,
             event_type: eventType,
@@ -119,7 +136,6 @@ export default async function handler(req, res) {
                 status,
                 variant_id: payload.data?.attributes?.variant_id,
                 customer_id: customerId,
-                subscription_id: subscriptionId,
             },
         });
 
