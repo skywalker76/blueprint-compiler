@@ -100,8 +100,7 @@ export default async function handler(req, res) {
             .from("profiles")
             .update({
                 tier,
-                ls_customer_id: customerId,
-                ls_subscription_id: subscriptionId,
+                stripe_customer_id: customerId,
             })
             .eq("id", userId);
 

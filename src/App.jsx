@@ -239,7 +239,7 @@ export default function App() {
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <span style={{ fontSize: 11, color: "#64748b" }}>{user.email?.split("@")[0]}</span>
               <span style={{ fontSize: 9, padding: "2px 6px", borderRadius: 4, background: profile?.tier === "pro" ? "#f59e0b" : profile?.tier === "team" ? "#8b5cf6" : "#334155", color: "#fff", fontWeight: 700, textTransform: "uppercase" }}>{profile?.tier || "free"}</span>
-              <button onClick={() => { signOut().catch(err => console.warn('Logout error:', err)); }} style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: 6, color: "#f87171", cursor: "pointer", fontSize: 12, fontWeight: 600, padding: "6px 14px", minHeight: 36, minWidth: 44 }}>Logout</button>
+              <button onClick={() => { signOut().then(() => { window.location.href = '/'; }).catch(err => { console.warn('Logout error:', err); window.location.href = '/'; }); }} style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: 6, color: "#f87171", cursor: "pointer", fontSize: 12, fontWeight: 600, padding: "6px 14px", minHeight: 36, minWidth: 44 }}>Logout</button>
             </div>
           ) : (
             <button onClick={() => setShowAuthModal(true)} style={{ background: "linear-gradient(135deg, #fb923c, #f97316)", border: "none", borderRadius: 6, color: "#0a0f1a", cursor: "pointer", padding: "4px 14px", fontSize: 12, fontWeight: 700 }}>Sign In</button>

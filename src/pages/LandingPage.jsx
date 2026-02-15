@@ -1,4 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { openCheckout } from "../lib/lemonsqueezy";
 import "./LandingPage.css";
@@ -65,6 +66,15 @@ const PRICING = [
 export default function LandingPage() {
   const { user, profile, refreshProfile } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Auto-scroll to hash anchor (e.g. #pricing) on load
+  useEffect(() => {
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 100);
+    }
+  }, [location.hash]);
 
   const handlePricingCta = async (tier) => {
     if (tier === "Free") {
