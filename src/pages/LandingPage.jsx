@@ -1,14 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { openCheckout } from "../lib/lemonsqueezy";
 import "./LandingPage.css";
 
 // ─── DATA ───
 const FEATURES = [
-  { icon: "🤖", title: "Agentic Generation", desc: "Generate → Validate → Score → Refine. An autonomous loop that iterates until quality exceeds your threshold.", color: "orange" },
-  { icon: "🎯", title: "4 IDE Targets", desc: "One wizard, four outputs. Antigravity, Cursor, GitHub Copilot, and Windsurf — each with native file structure.", color: "blue" },
-  { icon: "📊", title: "Quality Scoring", desc: "Every blueprint gets a 0-100 score with breakdown: completeness, specificity, coherence, and actionability.", color: "green" },
-  { icon: "🔍", title: "Stack Auto-Detect", desc: "Drop your package.json and we auto-detect framework, ORM, auth, database, and testing stack.", color: "purple" },
-  { icon: "📚", title: "Blueprint Library", desc: "Save, load, compare, and export blueprints. Your configurations persist across sessions.", color: "cyan" },
-  { icon: "⚡", title: "Context Engineering", desc: "Powered by the Meta-Template methodology. Not just prompts — structured knowledge layers that compound.", color: "orange" },
+  { icon: "⚡", title: "30 Quick Start Presets", desc: "SaaS, CRM, AI Product, WordPress, Marketplace and more. Click a card → skip the wizard → generate instantly.", color: "orange" },
+  { icon: "🤖", title: "Agentic Generation", desc: "Generate → Validate → Score → Refine. An autonomous loop that iterates until quality exceeds your threshold.", color: "blue" },
+  { icon: "🎯", title: "4 IDE Targets", desc: "One wizard, four outputs. Antigravity, Cursor, GitHub Copilot, and Windsurf — each with native file structure.", color: "green" },
+  { icon: "📦", title: "Multi-Format Export", desc: "Copy JSON to clipboard, download YAML config, or grab a ZIP with IDE-ready folder structure.", color: "purple" },
+  { icon: "📊", title: "Tabbed Output", desc: "5 organized tabs: Overview, Architecture, Tools & Skills, Prompts, and Raw Files. No more scrolling walls of text.", color: "cyan" },
+  { icon: "🔒", title: "Cloud Auth & Library", desc: "Sign in with email or GitHub via Supabase. Save, load, and sync your blueprints across devices.", color: "orange" },
 ];
 
 const STEPS_DATA = [
@@ -22,11 +24,12 @@ const STEPS_DATA = [
 const COMPARISON = [
   { feature: "IDE Support", before: "1 IDE", after: "4 IDEs" },
   { feature: "Generation", before: "Single-shot", after: "Agentic loop" },
-  { feature: "Quality Scoring", before: "✕", after: "0-100" },
-  { feature: "Stack Detection", before: "Manual", after: "Auto-detect" },
-  { feature: "Persistence", before: "✕", after: "Library + Export" },
+  { feature: "Quick Start", before: "✕", after: "30 preset templates" },
+  { feature: "Output", before: "Raw text", after: "5 organized tabs" },
+  { feature: "Export", before: "Copy only", after: "JSON + YAML + ZIP" },
+  { feature: "Auth", before: "✕", after: "Supabase (email + GitHub)" },
   { feature: "Domains", before: "3", after: "6" },
-  { feature: "Architecture", before: "Monolith", after: "Modular (15+ files)" },
+  { feature: "Architecture", before: "Monolith", after: "Modular (24 files)" },
 ];
 
 const PRICING = [
@@ -60,6 +63,32 @@ const PRICING = [
 
 // ─── LANDING PAGE ───
 export default function LandingPage() {
+  const { user, profile, refreshProfile } = useAuth();
+  const navigate = useNavigate();
+
+  const handlePricingCta = async (tier) => {
+    if (tier === "Free") {
+      navigate("/app");
+      return;
+    }
+
+    if (!user) {
+      // Not logged in — send to app (which will show auth)
+      navigate("/app");
+      return;
+    }
+
+    const planKey = tier.toLowerCase(); // "pro" or "team"
+    try {
+      await openCheckout(planKey, user.email, user.id, async () => {
+        // After successful checkout, refresh profile to get new tier
+        await refreshProfile();
+      });
+    } catch (err) {
+      console.error("Checkout error:", err);
+    }
+  };
+
   return (
     <div className="landing">
 
@@ -123,8 +152,8 @@ export default function LandingPage() {
       {/* ━━━ Stats Bar ━━━ */}
       <div className="stats-bar">
         <div className="stat-item">
-          <div className="stat-number">5</div>
-          <div className="stat-label">Generated Files</div>
+          <div className="stat-number">30</div>
+          <div className="stat-label">Quick Start Presets</div>
         </div>
         <div className="stat-item">
           <div className="stat-number">4</div>
@@ -135,8 +164,8 @@ export default function LandingPage() {
           <div className="stat-label">Project Domains</div>
         </div>
         <div className="stat-item">
-          <div className="stat-number">100</div>
-          <div className="stat-label">Quality Score</div>
+          <div className="stat-number">3</div>
+          <div className="stat-label">Export Formats</div>
         </div>
       </div>
 
@@ -232,12 +261,12 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
-              <Link
-                to="/app"
+              <button
+                onClick={() => handlePricingCta(p.tier)}
                 className={`price-btn ${p.ctaStyle === "primary" ? "price-btn-primary" : "price-btn-outline"}`}
               >
                 {p.cta}
-              </Link>
+              </button>
             </div>
           ))}
         </div>
@@ -260,7 +289,7 @@ export default function LandingPage() {
       {/* ━━━ Footer ━━━ */}
       <footer className="footer">
         <div className="footer-inner">
-          <p>© 2025 Blueprint Compiler — Built with Context Engineering</p>
+          <p>© 2026 Blueprint Compiler — Built with Context Engineering</p>
           <div className="footer-links">
             <a href="https://github.com/skywalker76/blueprint-compiler" target="_blank" rel="noreferrer">GitHub</a>
             <a href="https://github.com/skywalker76/blueprint-compiler/blob/master/LICENSE" target="_blank" rel="noreferrer">MIT License</a>

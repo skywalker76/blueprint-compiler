@@ -206,41 +206,126 @@ export async function trackAnonymousEvent(event, data = {}) {
     }
 }
 
-// ─── EXPORT FUNCTIONS (unchanged — client-side only) ───
+// ─── EXPORT FUNCTIONS ───
+import JSZip from "jszip";
+
+// — JSON —
 export function exportAsJson(blueprint) {
-    const json = JSON.stringify(blueprint, null, 2);
+    const json = getBlueprintJsonString(blueprint);
     downloadFile(`${blueprint.config?.projectName || "blueprint"}.json`, json, "application/json");
 }
 
-export function exportAsZip(blueprint) {
-    const files = {};
-    const ide = blueprint.ideTarget || "antigravity";
+export function getBlueprintJsonString(blueprint) {
+    return JSON.stringify(blueprint, null, 2);
+}
 
-    for (const [fileType, result] of Object.entries(blueprint.generated || {})) {
-        if (result?.output) {
-            const filename = getOutputFilename(fileType, ide);
-            files[filename] = result.output;
+// — YAML (lightweight serializer — no dependency) —
+function toYaml(obj, indent = 0) {
+    const pad = "  ".repeat(indent);
+    let out = "";
+    if (obj === null || obj === undefined) return pad + "null\n";
+    if (typeof obj === "string") {
+        if (obj.includes("\n") || obj.includes(":") || obj.includes("#") || obj.includes('"')) {
+            return `${pad}|\n${obj.split("\n").map(l => pad + "  " + l).join("\n")}\n`;
         }
+        return `${pad}${JSON.stringify(obj)}\n`;
     }
+    if (typeof obj === "number" || typeof obj === "boolean") return `${pad}${obj}\n`;
+    if (Array.isArray(obj)) {
+        if (obj.length === 0) return pad + "[]\n";
+        for (const item of obj) {
+            if (typeof item === "object" && item !== null) {
+                out += pad + "-\n" + toYaml(item, indent + 2);
+            } else {
+                out += pad + "- " + (typeof item === "string" ? JSON.stringify(item) : String(item)) + "\n";
+            }
+        }
+        return out;
+    }
+    if (typeof obj === "object") {
+        for (const [k, v] of Object.entries(obj)) {
+            if (v === null || v === undefined) {
+                out += `${pad}${k}: null\n`;
+            } else if (typeof v === "object") {
+                out += `${pad}${k}:\n${toYaml(v, indent + 1)}`;
+            } else {
+                out += `${pad}${k}: ${toYaml(v, 0).trim()}\n`;
+            }
+        }
+        return out;
+    }
+    return pad + String(obj) + "\n";
+}
 
+export function getBlueprintYamlString(blueprint) {
     const exportData = {
         meta: {
             generator: "Blueprint Compiler v2.0",
             exportedAt: new Date().toISOString(),
-            ideTarget: ide,
+            ideTarget: blueprint.ideTarget || "antigravity",
             project: blueprint.config?.projectName || "Untitled",
             domain: blueprint.config?.domain || "custom",
         },
-        files,
+        config: blueprint.config || {},
+        files: {},
     };
+    for (const [fileType, result] of Object.entries(blueprint.generated || {})) {
+        if (result?.output) {
+            exportData.files[fileType] = {
+                filename: getOutputFilename(fileType, blueprint.ideTarget || "antigravity"),
+                quality: result.quality || null,
+                content: result.output,
+            };
+        }
+    }
+    return "# Blueprint Compiler Export\n---\n" + toYaml(exportData);
+}
 
+export function exportAsYaml(blueprint) {
+    const yaml = getBlueprintYamlString(blueprint);
     downloadFile(
-        `${blueprint.config?.projectName || "blueprint"}-${ide}.json`,
-        JSON.stringify(exportData, null, 2),
-        "application/json"
+        `${blueprint.config?.projectName || "blueprint"}.yaml`,
+        yaml,
+        "text/yaml"
     );
 }
 
+// — ZIP (real .zip with IDE-correct folder structure) —
+export async function exportAsZip(blueprint) {
+    const zip = new JSZip();
+    const ide = blueprint.ideTarget || "antigravity";
+    const projectName = blueprint.config?.projectName || "blueprint";
+
+    // Add each generated file at its IDE-correct path
+    for (const [fileType, result] of Object.entries(blueprint.generated || {})) {
+        if (result?.output) {
+            const path = getOutputFilename(fileType, ide);
+            zip.file(path, result.output);
+        }
+    }
+
+    // Add metadata
+    zip.file("blueprint.json", JSON.stringify({
+        generator: "Blueprint Compiler v2.0",
+        exportedAt: new Date().toISOString(),
+        ideTarget: ide,
+        project: projectName,
+        domain: blueprint.config?.domain || "custom",
+        config: blueprint.config || {},
+    }, null, 2));
+
+    const blob = await zip.generateAsync({ type: "blob" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${projectName}-${ide}.zip`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// — Import —
 export function importFromJson(jsonString) {
     try {
         const data = JSON.parse(jsonString);

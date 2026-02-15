@@ -5,7 +5,9 @@
 [![Vite 6](https://img.shields.io/badge/Vite-6-646cff.svg)](https://vitejs.dev)
 [![Multi-IDE](https://img.shields.io/badge/IDEs-4_Targets-fb923c.svg)](#supported-ides)
 
-> Transform project requirements into production-ready AI agent Blueprints — for **4 IDEs**, with **agentic generation**, **quality scoring**, and **local persistence**.
+> Transform project requirements into production-ready AI agent Blueprints — for **4 IDEs**, with **agentic generation**, **quality scoring**, and **cloud persistence**.
+
+🌐 **Live:** [blueprint-compiler.vercel.app](https://blueprint-compiler.vercel.app)
 
 ---
 
@@ -15,17 +17,20 @@ A **Blueprint** is a set of configuration files that transforms a generic AI cod
 
 Instead of repeating instructions every chat, your agent starts with deep knowledge of your project.
 
-## ✨ What's New in v2.0
+## ✨ Key Features
 
-| Feature | v1.0 | v2.0 |
-|---------|------|------|
-| Architecture | Monolith (995 lines) | Modular (15+ files) |
-| IDE Support | Antigravity only | **4 IDEs** |
-| Generation | Single-shot | **Agentic loop** (Generate → Validate → Refine) |
-| Quality | None | **0-100 scoring** with breakdown |
-| Persistence | None | **Blueprint Library** (save/load/export) |
-| Stack Detection | Manual | **Auto-detect** from package.json |
-| Domains | 3 | **6** (SaaS, WordPress, E-commerce, Mobile, Data, Custom) |
+| Feature | Description |
+|---------|-------------|
+| **4 IDE Support** | Antigravity, Cursor, GitHub Copilot, Windsurf |
+| **Agentic Generation** | Generate → Validate → Refine loop with quality scoring |
+| **30 Quick Start Presets** | One-click templates across 8 categories (SaaS, AI, Commerce, Content, DevTools, Mobile, Data) |
+| **Tabbed Output** | Overview, Architecture, Tools & Skills, Prompts, Raw Files |
+| **Multi-Format Export** | Copy JSON, Download YAML, Download ZIP (IDE-ready) |
+| **Cloud Auth** | Supabase authentication (email + GitHub) |
+| **Blueprint Library** | Save/load/delete with cloud sync |
+| **Community Gallery** | Browse and clone shared blueprints |
+| **Auto-Detect** | Scan `package.json` to pre-fill your stack |
+| **6 Domains** | SaaS B2B, WordPress, E-commerce, Mobile, Data, Custom |
 
 ## 🖥️ Supported IDEs
 
@@ -36,14 +41,31 @@ Instead of repeating instructions every chat, your agent starts with deep knowle
 | 🐙 **GitHub Copilot** | `.github/copilot/` | ✅ Full support |
 | 🏄 **Windsurf** | `.windsurf/` | ✅ Full support |
 
-## 🚀 Quick Start
+## ⚡ Quick Start Presets
+
+Click a preset card → wizard auto-fills → jump straight to Generate. Zero friction.
+
+| Preset | Domain | Key Stack |
+|--------|--------|-----------|
+| 🏢 SaaS Starter | SaaS B2B | Next.js 15, tRPC, Drizzle, Stripe |
+| 📝 WordPress Pro | WordPress | WP 6.7+, Gutenberg, WooCommerce, WP Rocket |
+| 🛒 Headless Shop | E-commerce | Shopify + Hydrogen, Next.js, Algolia |
+| 📱 Mobile App | Mobile | Expo, Zustand, Supabase, EAS Build |
+| 📊 Data Pipeline | Data | Airflow, BigQuery, dbt, Metabase |
+| 🤝 CRM Platform | SaaS B2B | Supabase Auth, Prisma, real-time |
+| 🤖 AI SaaS Product | SaaS B2B | OpenAI, Prisma, usage billing |
+| ⚡ WordPress Headless | WordPress | REST API, Next.js, ISR |
+| 🏪 Marketplace | E-commerce | Medusa.js, Stripe Connect, Algolia |
+| 📋 Admin Dashboard | SaaS B2B | Prisma, Recharts, RBAC |
+
+## 🚀 Run Locally
 
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) 18+
 - An [Anthropic API key](https://console.anthropic.com/) (~$0.15-0.25 per full Blueprint)
 
-### Run locally
+### Install & run
 
 ```bash
 git clone https://github.com/skywalker76/blueprint-compiler.git
@@ -56,7 +78,7 @@ Open `http://localhost:5173` and paste your API key.
 
 ## 📋 5-Step Wizard
 
-1. **🎯 Domain** — Choose from 6 project types (SaaS B2B, WordPress, E-commerce, Mobile, Data Platform, Custom)
+1. **🎯 Domain** — Choose from 6 project types (or Quick Start preset)
 2. **🖥️ IDE** — Select your target IDE with file path preview
 3. **⚙️ Stack** — Configure technology stack with guided explanations
 4. **📋 Project** — Name, mission, language, architecture priorities
@@ -72,37 +94,74 @@ Open `http://localhost:5173` and paste your API key.
 | `Context` | Layer 5 | Architecture Decision Records + coding style |
 | `PROMPT_START` | Entry | Bootstrap file with project overview |
 
+### Output Tabs
+
+The generated blueprint is displayed across 5 tabs:
+
+- **📋 Overview** — Project summary, stack, priorities
+- **🏛️ Architecture** — ADRs, folder structure, conventions
+- **🛠️ Tools & Skills** — Agent competencies, templates, commands
+- **💬 Prompts** — System prompts, PROMPT_START bootstrap
+- **📄 Raw Files** — Individual files with copy buttons
+
+### Export Options
+
+- **📋 Copy JSON** — Clipboard for programmatic use
+- **📄 Download YAML** — Human-readable config
+- **📦 Download ZIP** — IDE-ready folder structure with all files in correct paths
+
 ## 🏗️ Architecture
 
 ```
 src/
 ├── data/
-│   ├── domains.js        # 6 project domains
-│   ├── stacks.js         # Technology configurations
-│   └── constants.js      # IDE targets, tiers, file types
+│   ├── domains.js          # 6 project domains with guides
+│   ├── stacks.js           # Technology configurations per domain
+│   ├── constants.js         # IDE targets, tiers, file types
+│   ├── gallery.js           # Community blueprint gallery
+│   └── presets.js           # 30 Quick Start preset configs (8 categories)
 ├── engine/
-│   ├── generator.js      # Agentic generation loop
-│   ├── validator.js      # Quality scoring (0-100)
-│   ├── scanner.js        # package.json auto-detect
-│   └── persistence.js    # Blueprint Library (localStorage)
+│   ├── generator.js         # Agentic generation loop
+│   ├── validator.js         # Quality scoring (0-100)
+│   ├── scanner.js           # package.json auto-detect
+│   └── persistence.js       # Save/load/export (JSON, YAML, ZIP)
 ├── components/
-│   ├── QualityScore.jsx  # Score visualization
-│   ├── StepBar.jsx       # Wizard progress bar
-│   ├── InfoBox.jsx       # Contextual help
-│   ├── OptionGuide.jsx   # Technology explanations
-│   ├── CopyButton.jsx    # One-click copy
-│   └── SectionTitle.jsx  # Section headers
-├── styles.js             # Design system
-└── App.jsx               # Main orchestrator
+│   ├── AuthModal.jsx        # Login/signup modal (Supabase)
+│   ├── BlueprintTabs.jsx    # 5-tab output + ExportBar
+│   ├── QuickStartBar.jsx    # Preset cards grid with category filters
+│   ├── QualityScore.jsx     # Score visualization
+│   ├── StepBar.jsx          # Wizard progress bar
+│   ├── InfoBox.jsx          # Contextual help
+│   ├── OptionGuide.jsx      # Technology explanations
+│   ├── CopyButton.jsx       # One-click copy
+│   └── SectionTitle.jsx     # Section headers
+├── context/
+│   └── AuthContext.jsx      # Supabase auth provider
+├── lib/
+│   └── supabaseClient.js    # Supabase client config
+├── pages/
+│   └── LandingPage.jsx      # Marketing landing page
+├── styles.js                # Design system tokens
+├── App.jsx                  # Main orchestrator (wizard + generation)
+└── main.jsx                 # Entry point with AuthProvider
 ```
 
 ## 🔒 Security
 
 - **API keys** stored in `sessionStorage` — disappear when you close the tab
-- **No backend** — no key leakage possible
+- **Authentication** via Supabase (email + GitHub OAuth)
 - **Direct API calls** — your key goes only to Anthropic
 - **No analytics, no tracking, no cookies**
-- **Blueprints** saved in `localStorage` — never leave your browser
+- **Blueprints** synced to Supabase (authenticated) or `localStorage` (anonymous)
+
+## 📦 Tech Stack
+
+- **React 18** — UI framework
+- **Vite 6** — Build tool
+- **Anthropic Claude API** — AI generation
+- **Supabase** — Authentication + cloud storage
+- **JSZip** — ZIP file generation for exports
+- **Deployed on Vercel** — Production at [blueprint-compiler.vercel.app](https://blueprint-compiler.vercel.app)
 
 ## 🛠️ Customization
 
@@ -114,16 +173,13 @@ Edit `src/data/domains.js` and add a matching entry in `src/data/stacks.js`.
 
 Edit `src/data/constants.js` — add to the `IDE_TARGETS` array with the correct file paths.
 
+### Add a new Quick Start preset
+
+Edit `src/data/presets.js` — add a new object with `id`, `icon`, `title`, `subtitle`, `gradient`, `stackPills`, `ideTarget`, and a full `config` object.
+
 ### Change the AI model
 
 Edit `src/engine/generator.js` — search for the model name and replace it.
-
-## 📦 Tech Stack
-
-- **React 18** — UI framework
-- **Vite 6** — Build tool
-- **Anthropic Claude API** — AI generation
-- **Zero extra dependencies** — no UI libraries, no CSS frameworks
 
 ## 📜 License
 

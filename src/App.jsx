@@ -5,11 +5,12 @@ import { DOMAINS } from "./data/domains.js";
 import { STACK_INFO } from "./data/stacks.js";
 import { LANGUAGES, FILE_TYPES, IDE_TARGETS, TIERS, RIGOR_LEVELS } from "./data/constants.js";
 import { GALLERY_BLUEPRINTS } from "./data/gallery.js";
+import { PRESETS } from "./data/presets.js";
 
 // ─── Engine ───
 import { generateFile as engineGenerateFile, generateAll as engineGenerateAll } from "./engine/generator.js";
 import { scanPackageJson } from "./engine/scanner.js";
-import { saveBlueprint, loadLibrary, deleteBlueprint, exportAsZip, exportAsJson, getUsageCount, trackUsage, migrateLocalToCloud, getTelemetryPreference, setTelemetryPreference, trackAnonymousEvent } from "./engine/persistence.js";
+import { saveBlueprint, loadLibrary, deleteBlueprint, exportAsZip, exportAsJson, exportAsYaml, getBlueprintJsonString, getBlueprintYamlString, getUsageCount, trackUsage, migrateLocalToCloud, getTelemetryPreference, setTelemetryPreference, trackAnonymousEvent } from "./engine/persistence.js";
 
 // ─── Auth ───
 import { useAuth } from "./context/AuthContext.jsx";
@@ -18,6 +19,8 @@ import { AuthModal } from "./components/AuthModal.jsx";
 // ─── Components ───
 import { InfoBox } from "./components/InfoBox.jsx";
 import { BlueprintTabs } from "./components/BlueprintTabs.jsx";
+import { QuickStartBar } from "./components/QuickStartBar.jsx";
+import { FeedbackBar } from "./components/FeedbackBar.jsx";
 import { OptionGuide } from "./components/OptionGuide.jsx";
 import { CopyButton } from "./components/CopyButton.jsx";
 import { StepBar } from "./components/StepBar.jsx";
@@ -186,6 +189,14 @@ export default function App() {
     }
   };
 
+  // ─── Quick Start Preset ───
+  const handlePresetSelect = (preset) => {
+    setConfig({ ...preset.config });
+    setIdeTarget(preset.ideTarget);
+    setGenerated({});
+    setStep(4);
+  };
+
   // ─── Priority reorder ───
   const movePriority = (i, d) => {
     const a = [...config.priorities];
@@ -250,6 +261,11 @@ export default function App() {
           A <strong>Blueprint</strong> is a set of configuration files that transforms a generic AI agent into a specialized architect for YOUR project.
           Now supporting <strong>4 IDEs</strong>: Antigravity, Cursor, GitHub Copilot, and Windsurf.
         </InfoBox>
+
+        {/* ═══ QUICK START ═══ */}
+        {step === 0 && Object.keys(generated).length === 0 && (
+          <QuickStartBar presets={PRESETS} onSelect={handlePresetSelect} />
+        )}
 
         {/* ═══ LIBRARY PANEL ═══ */}
         {showLibrary && (
@@ -729,6 +745,15 @@ export default function App() {
                 ))}
               </BlueprintTabs>
             </div>
+
+            {/* ═══ FEEDBACK BAR (post-generation) ═══ */}
+            {Object.values(generated).some(r => r?.output) && (
+              <FeedbackBar
+                blueprintId={config.projectName || "untitled"}
+                config={config}
+                userId={user?.id}
+              />
+            )}
 
             {error && <div style={{ ...S.card, borderColor: "#991b1b", background: "#1c0a0a" }}><span style={{ color: "#fca5a5", fontSize: 13 }}>⚠️ {error}</span></div>}
 

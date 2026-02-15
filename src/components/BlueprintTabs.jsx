@@ -1,5 +1,6 @@
 import { useState, Component } from "react";
 import { CopyButton } from "./CopyButton.jsx";
+import { exportAsJson, exportAsYaml, exportAsZip, getBlueprintJsonString } from "../engine/persistence.js";
 
 // ─── ERROR BOUNDARY ───
 // Catches rendering errors and shows fallback instead of blank page
@@ -269,6 +270,94 @@ function ParsedPanel({ generated, fileIds, keywords, emptyMsg }) {
 }
 
 // ─── MAIN COMPONENT ───
+// ─── EXPORT BAR ───
+function ExportBar({ blueprint }) {
+    const [feedback, setFeedback] = useState(null);
+
+    const showFeedback = (key) => {
+        setFeedback(key);
+        setTimeout(() => setFeedback(null), 2000);
+    };
+
+    const handleCopyJson = async () => {
+        try {
+            const json = getBlueprintJsonString(blueprint);
+            await navigator.clipboard.writeText(json);
+            showFeedback("json");
+        } catch {
+            exportAsJson(blueprint);
+            showFeedback("json");
+        }
+    };
+
+    const handleYaml = () => {
+        exportAsYaml(blueprint);
+        showFeedback("yaml");
+    };
+
+    const handleZip = async () => {
+        await exportAsZip(blueprint);
+        showFeedback("zip");
+    };
+
+    const btnBase = {
+        padding: "7px 14px",
+        borderRadius: 8,
+        border: "1px solid #1e3a5f",
+        cursor: "pointer",
+        fontSize: 12,
+        fontWeight: 600,
+        display: "flex",
+        alignItems: "center",
+        gap: 6,
+        transition: "all 0.25s",
+    };
+
+    return (
+        <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "8px 12px",
+            background: "#060b14",
+            borderLeft: "1px solid #1e293b",
+            borderRight: "1px solid #1e293b",
+        }}>
+            <span style={{ fontSize: 11, color: "#475569", fontWeight: 600, marginRight: 4 }}>EXPORT</span>
+            <button
+                onClick={handleCopyJson}
+                style={{
+                    ...btnBase,
+                    background: feedback === "json" ? "#064e3b" : "#0f172a",
+                    color: feedback === "json" ? "#6ee7b7" : "#7dd3fc",
+                }}
+            >
+                {feedback === "json" ? "✓ Copied!" : "📋 Copy JSON"}
+            </button>
+            <button
+                onClick={handleYaml}
+                style={{
+                    ...btnBase,
+                    background: feedback === "yaml" ? "#064e3b" : "#0f172a",
+                    color: feedback === "yaml" ? "#6ee7b7" : "#a78bfa",
+                }}
+            >
+                {feedback === "yaml" ? "✓ Downloaded!" : "📥 YAML"}
+            </button>
+            <button
+                onClick={handleZip}
+                style={{
+                    ...btnBase,
+                    background: feedback === "zip" ? "#064e3b" : "#0f172a",
+                    color: feedback === "zip" ? "#6ee7b7" : "#fb923c",
+                }}
+            >
+                {feedback === "zip" ? "✓ Downloaded!" : "📦 ZIP"}
+            </button>
+        </div>
+    );
+}
+
 export function BlueprintTabs({ generated, config, ideTarget, avgQuality, domain, currentIde, FILE_TYPES, children }) {
     const [viewTab, setViewTab] = useState("overview");
     const safeGenerated = generated || {};
@@ -276,6 +365,13 @@ export function BlueprintTabs({ generated, config, ideTarget, avgQuality, domain
 
     // Don't show tabs if nothing generated — just pass through children
     if (!hasOutput) return <>{children}</>;
+
+    // Assemble the full blueprint object for export functions
+    const blueprint = {
+        config: config || {},
+        generated: safeGenerated,
+        ideTarget: ideTarget || "antigravity",
+    };
 
     const renderTabs = () => (
         <div>
@@ -319,6 +415,9 @@ export function BlueprintTabs({ generated, config, ideTarget, avgQuality, domain
                     </button>
                 ))}
             </div>
+
+            {/* ─── Export Bar ─── */}
+            <ExportBar blueprint={blueprint} />
 
             {/* ─── Tab Content ─── */}
             <div style={{

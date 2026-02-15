@@ -1,0 +1,451 @@
+// ─── QUICK START PRESETS ───
+// Pre-configured blueprint configs for one-click generation.
+// Organized by category for filtered browsing.
+
+export const PRESET_CATEGORIES = [
+    { id: "all", label: "All", icon: "🌐" },
+    { id: "business", label: "Business", icon: "💼" },
+    { id: "ai", label: "AI / LLM", icon: "🤖" },
+    { id: "commerce", label: "Commerce", icon: "🛒" },
+    { id: "content", label: "Content", icon: "📝" },
+    { id: "devtools", label: "DevTools", icon: "🛠️" },
+    { id: "mobile", label: "Mobile", icon: "📱" },
+    { id: "data", label: "Data", icon: "📊" },
+];
+
+export const PRESETS = [
+    // ═══════════════════════════════
+    //  💼 BUSINESS
+    // ═══════════════════════════════
+    {
+        id: "saas-starter", category: "business",
+        icon: "🏢", title: "SaaS Starter",
+        subtitle: "Multi-tenant B2B app with auth & billing",
+        gradient: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+        stackPills: ["Next.js 15", "tRPC", "Drizzle", "Stripe"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-saas-app",
+            mission: "A modern multi-tenant SaaS platform with team management, subscription billing, and role-based access control",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Drizzle + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["security", "scalability", "maintainability", "performance"], rigor: "balanced",
+        },
+    },
+    {
+        id: "crm-platform", category: "business",
+        icon: "🤝", title: "CRM Platform",
+        subtitle: "Customer management with real-time pipeline",
+        gradient: "linear-gradient(135deg, #ec4899, #be185d)",
+        stackPills: ["Next.js 15", "Supabase", "Prisma", "Stripe"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-crm",
+            mission: "A customer relationship management platform with contact management, deal pipeline, activity tracking, email integration, team collaboration, and real-time notifications using Supabase Realtime",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "Supabase Auth", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["scalability", "performance", "security", "maintainability"], rigor: "balanced",
+        },
+    },
+    {
+        id: "admin-dashboard", category: "business",
+        icon: "📋", title: "Admin Dashboard",
+        subtitle: "Internal tools with charts + RBAC",
+        gradient: "linear-gradient(135deg, #64748b, #475569)",
+        stackPills: ["Next.js 15", "Prisma", "Recharts", "NextAuth"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-admin-panel",
+            mission: "An internal admin dashboard with role-based access control, data tables with filtering/sorting/pagination, charts (Recharts), audit logs, user management, and CSV/PDF export",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "None", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["maintainability", "security", "performance", "scalability"], rigor: "balanced",
+        },
+    },
+    {
+        id: "project-mgmt", category: "business",
+        icon: "📌", title: "Project Manager",
+        subtitle: "Kanban boards, sprints, team workspaces",
+        gradient: "linear-gradient(135deg, #3b82f6, #1d4ed8)",
+        stackPills: ["Next.js 15", "Prisma", "Supabase", "DnD Kit"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-project-mgmt",
+            mission: "A project management tool with Kanban boards, sprint planning, task assignments, time tracking, file attachments, team workspaces, and activity feeds. Features drag-and-drop reordering and real-time collaboration",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "Supabase Auth", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["maintainability", "performance", "scalability", "security"], rigor: "balanced",
+        },
+    },
+    {
+        id: "hr-platform", category: "business",
+        icon: "👥", title: "HR Platform",
+        subtitle: "Employee management, leave & payroll",
+        gradient: "linear-gradient(135deg, #f59e0b, #d97706)",
+        stackPills: ["Next.js 15", "Prisma", "NextAuth", "Resend"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-hr-platform",
+            mission: "An HR management platform with employee profiles, leave management, attendance tracking, payroll integration, org charts, document management, and onboarding workflows",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["security", "maintainability", "scalability", "performance"], rigor: "balanced",
+        },
+    },
+    {
+        id: "invoice-app", category: "business",
+        icon: "🧾", title: "Invoice & Billing",
+        subtitle: "Invoicing, estimates, payment tracking",
+        gradient: "linear-gradient(135deg, #22c55e, #16a34a)",
+        stackPills: ["Next.js 15", "Prisma", "Stripe", "PDF"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-invoicing-app",
+            mission: "An invoicing and billing application with invoice generation, estimates/quotes, payment tracking, recurring invoices, client portal, PDF export with branding, multi-currency support, and Stripe integration for online payments",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["security", "maintainability", "performance", "scalability"], rigor: "balanced",
+        },
+    },
+
+    // ═══════════════════════════════
+    //  🤖 AI / LLM
+    // ═══════════════════════════════
+    {
+        id: "ai-saas", category: "ai",
+        icon: "🤖", title: "AI SaaS Product",
+        subtitle: "LLM-powered app with usage billing",
+        gradient: "linear-gradient(135deg, #a855f7, #7c3aed)",
+        stackPills: ["Next.js 15", "OpenAI", "Prisma", "Stripe"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-ai-app",
+            mission: "An AI-powered SaaS product with LLM integration (OpenAI/Anthropic), prompt management, streaming responses, usage-based billing, rate limiting, and content moderation. Includes a prompt playground, API access, and team workspaces",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "REST (Express)", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["performance", "scalability", "security", "maintainability"], rigor: "balanced",
+        },
+    },
+    {
+        id: "chatbot-builder", category: "ai",
+        icon: "💬", title: "Chatbot Builder",
+        subtitle: "Custom AI chatbots with RAG + knowledge base",
+        gradient: "linear-gradient(135deg, #06b6d4, #0891b2)",
+        stackPills: ["Next.js 15", "LangChain", "Pinecone", "OpenAI"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-chatbot-builder",
+            mission: "A platform for building custom AI chatbots with RAG (Retrieval Augmented Generation), knowledge base upload (PDF, URL, docs), conversation memory, multi-model support, embeddable widget, analytics on conversations, and white-label deployment",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "REST (Express)", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["performance", "scalability", "maintainability", "security"], rigor: "balanced",
+        },
+    },
+    {
+        id: "ai-content-gen", category: "ai",
+        icon: "✍️", title: "AI Content Studio",
+        subtitle: "Blog, social, email generation with templates",
+        gradient: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+        stackPills: ["Next.js 15", "OpenAI", "Tiptap", "Supabase"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-content-studio",
+            mission: "An AI content generation studio for blogs, social media, emails, and marketing copy. Features WYSIWYG editor (Tiptap), content templates, tone/style controls, SEO optimization suggestions, content calendar, and team collaboration with approval workflows",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "Supabase Auth", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["performance", "maintainability", "scalability", "security"], rigor: "balanced",
+        },
+    },
+    {
+        id: "ai-image-gen", category: "ai",
+        icon: "🎨", title: "AI Image Platform",
+        subtitle: "Image generation, editing, gallery",
+        gradient: "linear-gradient(135deg, #f472b6, #db2777)",
+        stackPills: ["Next.js 15", "Replicate", "Cloudinary", "Stripe"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-ai-images",
+            mission: "An AI image generation platform with text-to-image (SDXL/DALL-E), image editing tools, style presets, gallery showcase, prompt history, credit-based billing, and API access for developers. Supports batch generation and resolution upscaling",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "REST (Express)", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["performance", "scalability", "security", "maintainability"], rigor: "balanced",
+        },
+    },
+
+    // ═══════════════════════════════
+    //  🛒 COMMERCE
+    // ═══════════════════════════════
+    {
+        id: "headless-shop", category: "commerce",
+        icon: "🛒", title: "Headless Shop",
+        subtitle: "Shopify + Next.js storefront with search",
+        gradient: "linear-gradient(135deg, #f97316, #ef4444)",
+        stackPills: ["Shopify", "Next.js 15", "Algolia", "Stripe"],
+        ideTarget: "cursor",
+        config: {
+            domain: "ecommerce", projectName: "my-store",
+            mission: "A high-performance headless e-commerce storefront with Shopify backend, instant search, and optimized checkout flow",
+            langConvo: "en", langCode: "en",
+            stack: { platform: "Shopify + Hydrogen", storefront: "Next.js 15", search: "Algolia", payments: "Stripe", cdn: "Cloudinary", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["performance", "scalability", "security", "maintainability"], rigor: "balanced",
+        },
+    },
+    {
+        id: "marketplace", category: "commerce",
+        icon: "🏪", title: "Marketplace",
+        subtitle: "Two-sided platform with vendor management",
+        gradient: "linear-gradient(135deg, #f43f5e, #e11d48)",
+        stackPills: ["Medusa.js", "Next.js 15", "Stripe", "Algolia"],
+        ideTarget: "cursor",
+        config: {
+            domain: "ecommerce", projectName: "my-marketplace",
+            mission: "A two-sided marketplace connecting vendors and buyers, with vendor onboarding, product listings, commission management, split payments via Stripe Connect, reviews and ratings, and search/discovery",
+            langConvo: "en", langCode: "en",
+            stack: { platform: "Medusa.js", storefront: "Next.js 15", search: "Algolia", payments: "Stripe", cdn: "Cloudinary", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["scalability", "security", "performance", "maintainability"], rigor: "balanced",
+        },
+    },
+    {
+        id: "subscription-box", category: "commerce",
+        icon: "📦", title: "Subscription Box",
+        subtitle: "Recurring commerce with curation",
+        gradient: "linear-gradient(135deg, #fb923c, #ea580c)",
+        stackPills: ["Next.js 15", "Stripe", "Prisma", "Resend"],
+        ideTarget: "cursor",
+        config: {
+            domain: "ecommerce", projectName: "my-subscription-box",
+            mission: "A subscription box e-commerce platform with recurring billing, product curation, customer preferences, shipment tracking, subscriber management, churn analytics, and referral program. Features gift subscriptions and flexible plan management",
+            langConvo: "en", langCode: "en",
+            stack: { platform: "Custom (Next.js)", storefront: "Next.js 15", search: "None", payments: "Stripe", cdn: "Cloudinary", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["scalability", "performance", "security", "maintainability"], rigor: "balanced",
+        },
+    },
+    {
+        id: "booking-platform", category: "commerce",
+        icon: "📅", title: "Booking Platform",
+        subtitle: "Appointments, calendar, payments",
+        gradient: "linear-gradient(135deg, #0ea5e9, #0284c7)",
+        stackPills: ["Next.js 15", "Prisma", "Stripe", "Cal.com"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-booking-app",
+            mission: "A booking and scheduling platform with calendar management, appointment types, availability settings, automated reminders via email/SMS, online payments, client portal, multi-provider support, and timezone handling",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["performance", "maintainability", "security", "scalability"], rigor: "balanced",
+        },
+    },
+
+    // ═══════════════════════════════
+    //  📝 CONTENT
+    // ═══════════════════════════════
+    {
+        id: "wordpress-pro", category: "content",
+        icon: "📝", title: "WordPress Pro",
+        subtitle: "Block theme + WooCommerce + performance",
+        gradient: "linear-gradient(135deg, #0ea5e9, #06b6d4)",
+        stackPills: ["WP 6.7+", "Gutenberg", "WooCommerce", "WP Rocket"],
+        ideTarget: "antigravity",
+        config: {
+            domain: "wordpress", projectName: "my-wp-site",
+            mission: "A professional WordPress site with block-based theme, WooCommerce store, and optimized performance following VIP coding standards",
+            langConvo: "en", langCode: "en",
+            stack: { wpversion: "WordPress 6.7+", builder: "Gutenberg (Block Editor)", ecommerce: "WooCommerce", seo: "Yoast SEO", caching: "WP Rocket + Redis", hosting: "Kinsta" },
+            customDomain: "", customStack: "", priorities: ["performance", "security", "maintainability", "scalability"], rigor: "balanced",
+        },
+    },
+    {
+        id: "wp-headless", category: "content",
+        icon: "⚡", title: "WordPress Headless",
+        subtitle: "WP backend + Next.js frontend via REST API",
+        gradient: "linear-gradient(135deg, #14b8a6, #0d9488)",
+        stackPills: ["WP 6.7+", "REST API", "Next.js", "Vercel"],
+        ideTarget: "cursor",
+        config: {
+            domain: "wordpress", projectName: "my-headless-wp",
+            mission: "A headless WordPress architecture using WP as CMS backend with REST API, and Next.js 15 frontend for blazing-fast page loads, ISR, and modern React UX",
+            langConvo: "en", langCode: "en",
+            stack: { wpversion: "WordPress 6.7+", builder: "Gutenberg (Block Editor)", ecommerce: "None", seo: "Yoast SEO", caching: "WP Rocket + Redis", hosting: "Cloudways" },
+            customDomain: "", customStack: "", priorities: ["performance", "scalability", "maintainability", "security"], rigor: "balanced",
+        },
+    },
+    {
+        id: "blog-platform", category: "content",
+        icon: "📰", title: "Blog Platform",
+        subtitle: "MDX blog with newsletter & analytics",
+        gradient: "linear-gradient(135deg, #84cc16, #65a30d)",
+        stackPills: ["Next.js 15", "MDX", "Resend", "Plausible"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-blog-platform",
+            mission: "A modern blog platform with MDX content, newsletter subscriptions via Resend, reading analytics, categories/tags, RSS feed, social sharing, SEO optimization, and author profiles. Features syntax highlighting and embedded interactive components",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "REST (Express)", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "None", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["performance", "maintainability", "scalability", "security"], rigor: "balanced",
+        },
+    },
+    {
+        id: "lms-platform", category: "content",
+        icon: "🎓", title: "LMS / Course Platform",
+        subtitle: "Online courses with video, quizzes, certs",
+        gradient: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+        stackPills: ["Next.js 15", "Prisma", "Mux", "Stripe"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-lms",
+            mission: "A learning management system with course creation, video hosting (Mux), chapter organization, quizzes/assessments, progress tracking, completion certificates, student dashboard, and instructor analytics. Features drip content and cohort-based learning",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["maintainability", "performance", "scalability", "security"], rigor: "balanced",
+        },
+    },
+
+    // ═══════════════════════════════
+    //  🛠️ DEVTOOLS
+    // ═══════════════════════════════
+    {
+        id: "api-platform", category: "devtools",
+        icon: "🔌", title: "API Platform",
+        subtitle: "REST/GraphQL API with docs & rate limiting",
+        gradient: "linear-gradient(135deg, #0ea5e9, #0369a1)",
+        stackPills: ["Fastify", "Prisma", "Redis", "Swagger"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-api-platform",
+            mission: "A developer API platform with REST and GraphQL endpoints, auto-generated Swagger/OpenAPI docs, API key management, rate limiting with Redis, usage metering, webhook delivery, SDK generation, and sandbox environment for testing",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "REST (Express)", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["performance", "security", "scalability", "maintainability"], rigor: "strict",
+        },
+    },
+    {
+        id: "devops-dashboard", category: "devtools",
+        icon: "🖥️", title: "DevOps Dashboard",
+        subtitle: "Monitoring, logs, alerts, deployments",
+        gradient: "linear-gradient(135deg, #10b981, #047857)",
+        stackPills: ["Next.js 15", "Grafana", "Prometheus", "Docker"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-devops-dashboard",
+            mission: "A DevOps monitoring dashboard with real-time metrics (Prometheus/Grafana), log aggregation, alerting rules, deployment pipeline management, uptime monitoring, incident tracking, and runbook automation",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "None", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["performance", "security", "scalability", "maintainability"], rigor: "strict",
+        },
+    },
+    {
+        id: "cli-tool", category: "devtools",
+        icon: "⌨️", title: "CLI Tool",
+        subtitle: "Node.js CLI with interactive prompts",
+        gradient: "linear-gradient(135deg, #a3a3a3, #737373)",
+        stackPills: ["Node.js", "Commander", "Inquirer", "Chalk"],
+        ideTarget: "cursor",
+        config: {
+            domain: "custom", projectName: "my-cli-tool",
+            mission: "A professional Node.js CLI tool with interactive prompts (Inquirer), colorful output (Chalk), sub-commands (Commander), config file management, progress bars, automatic updates checking, and comprehensive --help documentation",
+            langConvo: "en", langCode: "en",
+            stack: {},
+            customDomain: "Developer CLI Tool — A Node.js command-line application with sub-commands, interactive prompts, config management, and rich terminal output",
+            customStack: "Node.js 20+, Commander.js (CLI framework), Inquirer.js (interactive prompts), Chalk (colors), Ora (spinners), Conf (config), pkg (binary distribution)",
+            priorities: ["maintainability", "performance", "security", "scalability"], rigor: "balanced",
+        },
+    },
+
+    // ═══════════════════════════════
+    //  📱 MOBILE
+    // ═══════════════════════════════
+    {
+        id: "mobile-app", category: "mobile",
+        icon: "📱", title: "Mobile App",
+        subtitle: "React Native + Expo with offline support",
+        gradient: "linear-gradient(135deg, #10b981, #059669)",
+        stackPills: ["Expo", "Zustand", "Supabase", "EAS Build"],
+        ideTarget: "cursor",
+        config: {
+            domain: "mobile", projectName: "my-mobile-app",
+            mission: "A cross-platform mobile app with offline-first architecture, real-time sync, and smooth native-feel navigation",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "React Native (Expo)", state: "Zustand", backend: "Supabase", navigation: "React Navigation", offline: "WatermelonDB", distribution: "EAS Build" },
+            customDomain: "", customStack: "", priorities: ["performance", "maintainability", "security", "scalability"], rigor: "balanced",
+        },
+    },
+    {
+        id: "fitness-app", category: "mobile",
+        icon: "💪", title: "Fitness App",
+        subtitle: "Workouts, tracking, social challenges",
+        gradient: "linear-gradient(135deg, #ef4444, #dc2626)",
+        stackPills: ["Expo", "Supabase", "HealthKit", "Zustand"],
+        ideTarget: "cursor",
+        config: {
+            domain: "mobile", projectName: "my-fitness-app",
+            mission: "A fitness mobile app with workout plans, exercise library with animations, progress tracking with charts, Apple Health/Google Fit integration, social challenges, streaks and achievements, nutrition logging, and custom workout builder",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "React Native (Expo)", state: "Zustand", backend: "Supabase", navigation: "React Navigation", offline: "WatermelonDB", distribution: "EAS Build" },
+            customDomain: "", customStack: "", priorities: ["performance", "maintainability", "security", "scalability"], rigor: "balanced",
+        },
+    },
+    {
+        id: "fintech-app", category: "mobile",
+        icon: "💰", title: "FinTech App",
+        subtitle: "Banking, budgets, transaction tracking",
+        gradient: "linear-gradient(135deg, #22c55e, #15803d)",
+        stackPills: ["Expo", "Plaid", "Supabase", "Charts"],
+        ideTarget: "cursor",
+        config: {
+            domain: "mobile", projectName: "my-fintech-app",
+            mission: "A personal finance mobile app with bank account linking (Plaid), transaction categorization, budget management, spending analytics with charts, bill reminders, savings goals, and net worth tracking. Features biometric authentication and encrypted data storage",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "React Native (Expo)", state: "Zustand", backend: "Supabase", navigation: "React Navigation", offline: "WatermelonDB", distribution: "EAS Build" },
+            customDomain: "", customStack: "", priorities: ["security", "performance", "maintainability", "scalability"], rigor: "strict",
+        },
+    },
+
+    // ═══════════════════════════════
+    //  📊 DATA
+    // ═══════════════════════════════
+    {
+        id: "data-pipeline", category: "data",
+        icon: "📊", title: "Data Pipeline",
+        subtitle: "Airflow + BigQuery + dbt analytics stack",
+        gradient: "linear-gradient(135deg, #eab308, #f59e0b)",
+        stackPills: ["Airflow", "BigQuery", "dbt", "Metabase"],
+        ideTarget: "cursor",
+        config: {
+            domain: "data", projectName: "my-data-platform",
+            mission: "A production-grade data platform with pipeline orchestration, warehouse analytics, data quality checks, and self-serve dashboards",
+            langConvo: "en", langCode: "en",
+            stack: { orchestrator: "Apache Airflow", warehouse: "BigQuery", transform: "dbt", viz: "Metabase", streaming: "Kafka", storage: "S3 / MinIO" },
+            customDomain: "", customStack: "", priorities: ["maintainability", "scalability", "performance", "security"], rigor: "balanced",
+        },
+    },
+    {
+        id: "analytics-dashboard", category: "data",
+        icon: "📈", title: "Analytics Dashboard",
+        subtitle: "Product analytics with funnels & cohorts",
+        gradient: "linear-gradient(135deg, #06b6d4, #0e7490)",
+        stackPills: ["Next.js 15", "ClickHouse", "Recharts", "Redis"],
+        ideTarget: "cursor",
+        config: {
+            domain: "data", projectName: "my-analytics",
+            mission: "A product analytics dashboard with event tracking, funnel analysis, cohort retention, user segmentation, A/B test results, real-time counters, and custom report builder. Features high-performance queries on billions of events using ClickHouse",
+            langConvo: "en", langCode: "en",
+            stack: { orchestrator: "Custom (Node.js)", warehouse: "ClickHouse", transform: "dbt", viz: "Recharts", streaming: "Redis Streams", storage: "S3 / MinIO" },
+            customDomain: "", customStack: "", priorities: ["performance", "scalability", "maintainability", "security"], rigor: "balanced",
+        },
+    },
+    {
+        id: "etl-platform", category: "data",
+        icon: "🔄", title: "ETL Platform",
+        subtitle: "Data sync with 50+ connectors",
+        gradient: "linear-gradient(135deg, #f59e0b, #b45309)",
+        stackPills: ["Node.js", "PostgreSQL", "Redis", "Docker"],
+        ideTarget: "cursor",
+        config: {
+            domain: "data", projectName: "my-etl-platform",
+            mission: "An ETL/ELT data integration platform with connector framework for 50+ sources (APIs, databases, files), incremental sync, transformation pipeline, scheduling, error handling with retry logic, data quality validation, and sync monitoring dashboard",
+            langConvo: "en", langCode: "en",
+            stack: { orchestrator: "Custom (Node.js)", warehouse: "PostgreSQL", transform: "dbt", viz: "Metabase", streaming: "Redis Streams", storage: "S3 / MinIO" },
+            customDomain: "", customStack: "", priorities: ["scalability", "maintainability", "performance", "security"], rigor: "strict",
+        },
+    },
+];

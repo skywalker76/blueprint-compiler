@@ -12,6 +12,7 @@ const AuthContext = createContext({
     signIn: async () => { },
     signInWithGoogle: async () => { },
     signOut: async () => { },
+    refreshProfile: async () => { },
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -108,10 +109,15 @@ export function AuthProvider({ children }) {
         setProfile(null);
     }
 
+    // ─── Refresh profile (call after checkout) ───
+    async function refreshProfile() {
+        if (user?.id) await fetchProfile(user.id);
+    }
+
     return (
         <AuthContext.Provider value={{
             user, session, profile, loading,
-            signUp, signIn, signInWithGoogle, signOut,
+            signUp, signIn, signInWithGoogle, signOut, refreshProfile,
         }}>
             {children}
         </AuthContext.Provider>
