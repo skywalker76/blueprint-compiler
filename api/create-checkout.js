@@ -44,6 +44,7 @@ export default async function handler(req, res) {
                             embed: true,
                             dark: true,
                         },
+                        redirect_url: "https://blueprint-compiler.vercel.app/app?upgraded=true",
                         product_options: {
                             enabled_variants: [parseInt(variantId)],
                         },
