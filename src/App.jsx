@@ -15,6 +15,7 @@ import { saveBlueprint, loadLibrary, deleteBlueprint, exportAsZip, exportAsJson,
 // ─── Auth ───
 import { useAuth } from "./context/AuthContext.jsx";
 import { AuthModal } from "./components/AuthModal.jsx";
+import { UpgradeModal } from "./components/UpgradeModal.jsx";
 
 // ─── Components ───
 import { InfoBox } from "./components/InfoBox.jsx";
@@ -38,6 +39,7 @@ export default function App() {
   // ─── Auth ───
   const { user, profile, loading: authLoading, signOut } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(null); // null | { reason, data }
 
   // ─── State ───
   const [apiKey, setApiKey] = useState(() => sessionStorage.getItem("bc_api_key") || "");
@@ -122,8 +124,27 @@ export default function App() {
     }
   };
 
+  // ─── Tier helpers ───
+  const userTier = profile?.tier || "free";
+  const tierLimits = TIERS[userTier] || TIERS.free;
+
   // ─── Generation (Agentic) ───
   const handleGenerateFile = async (fileType) => {
+    // Gate 1: Login obbligatorio
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
+
+    // Gate 2: Limite mensile (solo per tier con limiti)
+    if (tierLimits.maxGenerations !== Infinity) {
+      const count = await getUsageCount(user.id);
+      if (count >= tierLimits.maxGenerations) {
+        setShowUpgradeModal({ reason: "generation_limit", data: { count, max: tierLimits.maxGenerations } });
+        return;
+      }
+    }
+
     if (!apiKey) { setError("Please enter your Anthropic API key first"); return; }
     setGenerating(fileType);
     setError(null);
@@ -141,12 +162,30 @@ export default function App() {
   };
 
   const handleGenerateAll = async () => {
+    // Gate 1: Login obbligatorio
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
+
+    // Gate 2: Limite mensile
+    if (tierLimits.maxGenerations !== Infinity) {
+      const count = await getUsageCount(user.id);
+      if (count >= tierLimits.maxGenerations) {
+        setShowUpgradeModal({ reason: "generation_limit", data: { count, max: tierLimits.maxGenerations } });
+        return;
+      }
+    }
+
     if (!apiKey) { setError("Please enter your Anthropic API key first"); return; }
     setError(null);
+
+    // Track usage BEFORE calling Claude API (costs money)
+    await trackUsage(user.id, "generate", { fileType: "all" });
+
     for (const ft of FILE_TYPES) {
       await handleGenerateFile(ft.id);
     }
-    await trackUsage(user?.id, "generate", { fileType: "all" });
     resultRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -247,6 +286,7 @@ export default function App() {
         </div>
       </nav>
       {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
+      {showUpgradeModal && <UpgradeModal reason={showUpgradeModal.reason} data={showUpgradeModal.data} onClose={() => setShowUpgradeModal(null)} />}
 
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "28px 16px" }}>
         {/* ═══ HEADER ═══ */}
@@ -351,9 +391,16 @@ export default function App() {
 
         {/* ═══ PROJECT SCANNER ═══ */}
         <div style={{ textAlign: "center", marginBottom: 16 }}>
-          <button onClick={() => setShowScanner(!showScanner)}
-            style={{ background: "none", border: "1px dashed #334155", borderRadius: 8, color: "#64748b", cursor: "pointer", padding: "8px 20px", fontSize: 12, fontWeight: 600, transition: "all .2s" }}>
+          <button onClick={() => {
+            if (!tierLimits.hasScanner) {
+              setShowUpgradeModal({ reason: "scanner_locked", data: {} });
+              return;
+            }
+            setShowScanner(!showScanner);
+          }}
+            style={{ background: "none", border: "1px dashed #334155", borderRadius: 8, color: "#64748b", cursor: "pointer", padding: "8px 20px", fontSize: 12, fontWeight: 600, transition: "all .2s", position: "relative" }}>
             {showScanner ? "✕ Close Scanner" : "🔍 Auto-detect stack from package.json"}
+            {!tierLimits.hasScanner && <span style={{ fontSize: 9, background: "linear-gradient(135deg, #f59e0b, #fb923c)", color: "#0a0f1a", padding: "1px 5px", borderRadius: 4, fontWeight: 800, marginLeft: 6 }}>PRO</span>}
           </button>
         </div>
         {showScanner && (
@@ -464,26 +511,37 @@ export default function App() {
               Each IDE has its own configuration format and directory structure. Your Blueprint will be tailored for optimal integration with the selected IDE.
             </InfoBox>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 16 }}>
-              {IDE_TARGETS.map(ide => (
-                <div key={ide.id} onClick={() => setIdeTarget(ide.id)} style={{
-                  padding: 18, borderRadius: 10, cursor: "pointer", transition: "all 0.2s",
-                  border: ideTarget === ide.id ? "2px solid #fb923c" : "2px solid #1e293b",
-                  background: ideTarget === ide.id ? "#1c1208" : "#0f172a",
-                }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-                    <span style={{ fontSize: 28 }}>{ide.icon}</span>
-                    <div>
-                      <div style={{ fontSize: 15, fontWeight: 700, color: ideTarget === ide.id ? "#fb923c" : "#e2e8f0" }}>{ide.name}</div>
-                      <div style={{ fontSize: 11, color: "#64748b" }}>{ide.shortDesc}</div>
+              {IDE_TARGETS.map(ide => {
+                const isLocked = !tierLimits.ideTargets.includes(ide.id);
+                return (
+                  <div key={ide.id} onClick={() => {
+                    if (isLocked) {
+                      setShowUpgradeModal({ reason: "ide_locked", data: {} });
+                      return;
+                    }
+                    setIdeTarget(ide.id);
+                  }} style={{
+                    padding: 18, borderRadius: 10, cursor: isLocked ? "not-allowed" : "pointer", transition: "all 0.2s",
+                    border: ideTarget === ide.id ? "2px solid #fb923c" : "2px solid #1e293b",
+                    background: ideTarget === ide.id ? "#1c1208" : "#0f172a",
+                    opacity: isLocked ? 0.5 : 1, position: "relative",
+                  }}>
+                    {isLocked && <span style={{ position: "absolute", top: 8, right: 8, fontSize: 9, background: "linear-gradient(135deg, #f59e0b, #fb923c)", color: "#0a0f1a", padding: "2px 6px", borderRadius: 4, fontWeight: 800 }}>PRO</span>}
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                      <span style={{ fontSize: 28 }}>{isLocked ? "🔒" : ide.icon}</span>
+                      <div>
+                        <div style={{ fontSize: 15, fontWeight: 700, color: ideTarget === ide.id ? "#fb923c" : "#e2e8f0" }}>{ide.name}</div>
+                        <div style={{ fontSize: 11, color: "#64748b" }}>{ide.shortDesc}</div>
+                      </div>
                     </div>
+                    {ideTarget === ide.id && !isLocked && (
+                      <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.6, marginTop: 8, paddingTop: 8, borderTop: "1px solid #1e293b" }}>
+                        {ide.guide}
+                      </div>
+                    )}
                   </div>
-                  {ideTarget === ide.id && (
-                    <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.6, marginTop: 8, paddingTop: 8, borderTop: "1px solid #1e293b" }}>
-                      {ide.guide}
-                    </div>
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </div>
             {ideTarget && (
               <div style={{ marginTop: 16, padding: 14, background: "#0c192988", borderRadius: 8, border: "1px solid #1e3a5f" }}>
@@ -791,7 +849,15 @@ Before every complex action, use a <thought> block to:
                 <div style={{ fontSize: 13, fontWeight: 600, color: "#e2e8f0" }}>📦 Export Blueprint</div>
                 <div style={{ display: "flex", gap: 8 }}>
                   <button onClick={handleSave} style={S.btn(false)}>💾 Save to Library</button>
-                  <button onClick={() => exportAsZip({ config, ideTarget, generated })} style={S.btn(false)}>📥 Export JSON</button>
+                  <button onClick={() => {
+                    if (!tierLimits.hasExportZip) {
+                      setShowUpgradeModal({ reason: "zip_locked", data: {} });
+                      return;
+                    }
+                    exportAsZip({ config, ideTarget, generated });
+                  }} style={S.btn(false)}>
+                    📥 Export ZIP {!tierLimits.hasExportZip && <span style={{ fontSize: 9, background: "linear-gradient(135deg, #f59e0b, #fb923c)", color: "#0a0f1a", padding: "1px 5px", borderRadius: 4, fontWeight: 800, marginLeft: 4 }}>PRO</span>}
+                  </button>
                   <button onClick={() => {
                     const allText = FILE_TYPES.map(ft => generated[ft.id]?.output ? `\n${"=".repeat(60)}\n# ${ft.label} (${ft.layer})\n${"=".repeat(60)}\n\n${generated[ft.id].output}` : "").join("\n");
                     navigator.clipboard.writeText(allText);

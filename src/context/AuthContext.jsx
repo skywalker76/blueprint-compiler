@@ -11,6 +11,7 @@ const AuthContext = createContext({
     signUp: async () => { },
     signIn: async () => { },
     signInWithGoogle: async () => { },
+    signInWithGitHub: async () => { },
     signOut: async () => { },
     refreshProfile: async () => { },
 });
@@ -97,6 +98,15 @@ export function AuthProvider({ children }) {
         return data;
     }
 
+    async function signInWithGitHub() {
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: "github",
+            options: { redirectTo: window.location.origin + "/app" },
+        });
+        if (error) throw error;
+        return data;
+    }
+
     async function signOut() {
         try {
             await supabase.auth.signOut();
@@ -117,7 +127,7 @@ export function AuthProvider({ children }) {
     return (
         <AuthContext.Provider value={{
             user, session, profile, loading,
-            signUp, signIn, signInWithGoogle, signOut, refreshProfile,
+            signUp, signIn, signInWithGoogle, signInWithGitHub, signOut, refreshProfile,
         }}>
             {children}
         </AuthContext.Provider>
