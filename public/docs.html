@@ -463,6 +463,199 @@
             margin: 0 8px
         }
 
+        /* Preset cards */
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 14px;
+            margin: 16px 0
+        }
+
+        .preset-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            transition: all .2s;
+            cursor: default;
+            position: relative;
+            overflow: hidden
+        }
+
+        .preset-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--border)
+        }
+
+        .preset-card:hover {
+            border-color: var(--orange);
+            transform: translateY(-2px)
+        }
+
+        .preset-card:hover::before {
+            background: var(--orange)
+        }
+
+        .preset-card .preset-icon {
+            font-size: 22px;
+            margin-bottom: 6px
+        }
+
+        .preset-card .preset-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 2px
+        }
+
+        .preset-card .preset-subtitle {
+            font-size: 11px;
+            color: var(--text3);
+            margin-bottom: 10px;
+            line-height: 1.4
+        }
+
+        .preset-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px
+        }
+
+        .preset-pill {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            color: var(--text2);
+            font-weight: 500
+        }
+
+        .preset-ide {
+            font-size: 10px;
+            color: var(--text4);
+            margin-top: 8px;
+            font-weight: 600
+        }
+
+        .preset-category-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 24px 0 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border)
+        }
+
+        /* IDE guide cards */
+        .ide-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 14px 0
+        }
+
+        .ide-card:hover {
+            border-color: var(--border2)
+        }
+
+        .ide-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px
+        }
+
+        .ide-header .ide-icon {
+            font-size: 32px
+        }
+
+        .ide-header h4 {
+            margin: 0;
+            color: var(--text);
+            font-size: 17px
+        }
+
+        .ide-header small {
+            font-size: 12px;
+            color: var(--text3);
+            font-weight: 400;
+            display: block;
+            margin-top: 2px
+        }
+
+        .path-table {
+            width: 100%;
+            font-size: 12px;
+            font-family: var(--mono);
+            margin: 10px 0
+        }
+
+        .path-table td {
+            padding: 6px 12px;
+            border: none;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .path-table td:first-child {
+            color: var(--text3);
+            width: 100px;
+            font-weight: 600
+        }
+
+        .path-table td:last-child {
+            color: var(--orange)
+        }
+
+        /* Engine flow diagram */
+        .flow-steps {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            flex-wrap: wrap;
+            margin: 20px 0
+        }
+
+        .flow-step {
+            padding: 12px 20px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            text-align: center;
+            min-width: 120px
+        }
+
+        .flow-step .flow-num {
+            font-size: 20px;
+            margin-bottom: 4px
+        }
+
+        .flow-step .flow-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text)
+        }
+
+        .flow-step .flow-desc {
+            font-size: 10px;
+            color: var(--text3);
+            margin-top: 2px
+        }
+
+        .flow-arrow {
+            font-size: 20px;
+            color: var(--orange);
+            margin: 0 6px
+        }
+
         /* Responsive */
         @media(max-width:900px) {
             .sidebar {
@@ -472,6 +665,21 @@
             .main {
                 margin-left: 0;
                 padding: 72px 20px 60px
+            }
+
+            .preset-grid {
+                grid-template-columns: 1fr
+            }
+
+            .flow-steps {
+                flex-direction: column;
+                align-items: stretch
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+                text-align: center;
+                margin: 4px 0
             }
         }
     </style>
@@ -486,6 +694,8 @@
             <a href="#overview">Overview</a>
             <a href="#layers">Layers</a>
             <a href="#domains">Domains</a>
+            <a href="#presets">Presets</a>
+            <a href="#ide-guides">IDE Guides</a>
             <a href="#glossary">Glossary</a>
         </nav>
     </div>
@@ -516,6 +726,14 @@
             <a class="nav-item" href="#domain-mobile">Mobile App</a>
             <a class="nav-item" href="#domain-data">Data Platform</a>
             <a class="nav-item" href="#domain-custom">Custom Domain</a>
+        </div>
+        <div class="nav-group">
+            <div class="nav-label">Features & Tools</div>
+            <a class="nav-item" href="#presets">Quick Start Presets</a>
+            <a class="nav-item" href="#agentic-engine">Agentic Generation</a>
+            <a class="nav-item" href="#ide-guides">IDE Setup Guides</a>
+            <a class="nav-item" href="#cloud-export">Cloud & Export</a>
+            <a class="nav-item" href="#scanner">Project Scanner</a>
         </div>
         <div class="nav-group">
             <div class="nav-label">Reference</div>
@@ -1126,6 +1344,554 @@ export function exampleFunction(): Result {
             needs.</p>
         <div class="info-box">Examples: IoT dashboard, game backend, AI/ML platform, DevOps tooling, embedded systems,
             blockchain DApp, AR/VR applications.</div>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- ═══ NEW SECTION 1: QUICK START PRESETS ═══ -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <h2 id="presets"><span class="emoji">🚀</span> Quick Start Presets</h2>
+        <p>The Blueprint Compiler includes <strong>25 one-click preset templates</strong> across 8 categories. Each preset pre-fills the entire wizard (domain, IDE, stack, project name, mission) so you can generate a full Blueprint instantly.</p>
+        <div class="info-box">Click any preset in the <a href="/app">Compiler app</a> to skip the wizard and go straight to generation. Each preset represents a real-world project type with a battle-tested technology stack.</div>
+
+        <!-- Business -->
+        <div class="preset-category-label">💼 Business</div>
+        <div class="preset-grid">
+            <div class="preset-card">
+                <div class="preset-icon">🏢</div>
+                <div class="preset-title">SaaS Starter</div>
+                <div class="preset-subtitle">Multi-tenant B2B app with auth & billing</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Next.js 15</span>
+                    <span class="preset-pill">tRPC</span>
+                    <span class="preset-pill">Drizzle</span>
+                    <span class="preset-pill">Stripe</span>
+                </div>
+                <div class="preset-ide">⚡ Cursor</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">📊</div>
+                <div class="preset-title">CRM Platform</div>
+                <div class="preset-subtitle">Sales pipeline, contacts, deals & analytics</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Next.js 15</span>
+                    <span class="preset-pill">tRPC</span>
+                    <span class="preset-pill">Prisma</span>
+                    <span class="preset-pill">Stripe</span>
+                </div>
+                <div class="preset-ide">🚀 Antigravity</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">📋</div>
+                <div class="preset-title">Project Manager</div>
+                <div class="preset-subtitle">Kanban boards, sprints, team collaboration</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Next.js 15</span>
+                    <span class="preset-pill">tRPC</span>
+                    <span class="preset-pill">Drizzle</span>
+                    <span class="preset-pill">Clerk</span>
+                </div>
+                <div class="preset-ide">🤖 Copilot</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">💰</div>
+                <div class="preset-title">Invoicing Platform</div>
+                <div class="preset-subtitle">Multi-currency invoices, VAT & PDF generation</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">SvelteKit</span>
+                    <span class="preset-pill">Hono</span>
+                    <span class="preset-pill">Drizzle</span>
+                    <span class="preset-pill">Stripe</span>
+                </div>
+                <div class="preset-ide">🌊 Windsurf</div>
+            </div>
+        </div>
+
+        <!-- AI/LLM -->
+        <div class="preset-category-label">🤖 AI / LLM</div>
+        <div class="preset-grid">
+            <div class="preset-card">
+                <div class="preset-icon">💬</div>
+                <div class="preset-title">AI Chatbot Platform</div>
+                <div class="preset-subtitle">Custom chatbots with RAG, knowledge base upload & analytics</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Next.js 15</span>
+                    <span class="preset-pill">LangChain</span>
+                    <span class="preset-pill">Pinecone</span>
+                    <span class="preset-pill">Supabase</span>
+                </div>
+                <div class="preset-ide">🚀 Antigravity</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">✍️</div>
+                <div class="preset-title">AI Content Studio</div>
+                <div class="preset-subtitle">AI writing assistant with templates & team collaboration</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Next.js 15</span>
+                    <span class="preset-pill">Vercel AI SDK</span>
+                    <span class="preset-pill">Prisma</span>
+                    <span class="preset-pill">Stripe</span>
+                </div>
+                <div class="preset-ide">⚡ Cursor</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">🧠</div>
+                <div class="preset-title">AI Agent Framework</div>
+                <div class="preset-subtitle">Multi-agent orchestration with tool use & memory</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Next.js 15</span>
+                    <span class="preset-pill">LangGraph</span>
+                    <span class="preset-pill">Redis</span>
+                    <span class="preset-pill">Supabase</span>
+                </div>
+                <div class="preset-ide">🚀 Antigravity</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">🔍</div>
+                <div class="preset-title">Semantic Search Engine</div>
+                <div class="preset-subtitle">Vector search with document embedding & hybrid retrieval</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Next.js 15</span>
+                    <span class="preset-pill">OpenAI</span>
+                    <span class="preset-pill">Weaviate</span>
+                    <span class="preset-pill">Hono</span>
+                </div>
+                <div class="preset-ide">⚡ Cursor</div>
+            </div>
+        </div>
+
+        <!-- Commerce -->
+        <div class="preset-category-label">🛒 Commerce</div>
+        <div class="preset-grid">
+            <div class="preset-card">
+                <div class="preset-icon">🛍️</div>
+                <div class="preset-title">Headless Storefront</div>
+                <div class="preset-subtitle">Shopify Hydrogen storefront with custom checkout</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Hydrogen</span>
+                    <span class="preset-pill">Shopify</span>
+                    <span class="preset-pill">Algolia</span>
+                    <span class="preset-pill">Cloudinary</span>
+                </div>
+                <div class="preset-ide">⚡ Cursor</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">🏪</div>
+                <div class="preset-title">Digital Marketplace</div>
+                <div class="preset-subtitle">Multi-vendor marketplace with vendor management</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Next.js 15</span>
+                    <span class="preset-pill">Medusa.js</span>
+                    <span class="preset-pill">Stripe Connect</span>
+                    <span class="preset-pill">Meilisearch</span>
+                </div>
+                <div class="preset-ide">🚀 Antigravity</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">📦</div>
+                <div class="preset-title">Subscription Box</div>
+                <div class="preset-subtitle">Recurring subscription e-commerce with box customization</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Next.js 15</span>
+                    <span class="preset-pill">Stripe</span>
+                    <span class="preset-pill">Prisma</span>
+                    <span class="preset-pill">Cloudinary</span>
+                </div>
+                <div class="preset-ide">⚡ Cursor</div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="preset-category-label">📝 Content</div>
+        <div class="preset-grid">
+            <div class="preset-card">
+                <div class="preset-icon">📝</div>
+                <div class="preset-title">WordPress Theme</div>
+                <div class="preset-subtitle">Block theme with Gutenberg, WooCommerce & SEO</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">WordPress 6.7</span>
+                    <span class="preset-pill">Gutenberg</span>
+                    <span class="preset-pill">WooCommerce</span>
+                    <span class="preset-pill">Yoast SEO</span>
+                </div>
+                <div class="preset-ide">🚀 Antigravity</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">🔌</div>
+                <div class="preset-title">WordPress Plugin</div>
+                <div class="preset-subtitle">Custom plugin with REST API, settings & admin panel</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">WordPress 6.7</span>
+                    <span class="preset-pill">Bricks</span>
+                    <span class="preset-pill">WooCommerce</span>
+                    <span class="preset-pill">Rank Math</span>
+                </div>
+                <div class="preset-ide">⚡ Cursor</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">🎓</div>
+                <div class="preset-title">Online Course Platform</div>
+                <div class="preset-subtitle">Video courses, progress tracking & certificates</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Next.js 15</span>
+                    <span class="preset-pill">Mux</span>
+                    <span class="preset-pill">Prisma</span>
+                    <span class="preset-pill">Stripe</span>
+                </div>
+                <div class="preset-ide">🚀 Antigravity</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">📰</div>
+                <div class="preset-title">Newsletter Platform</div>
+                <div class="preset-subtitle">Email campaigns, subscriber management & analytics</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">SvelteKit</span>
+                    <span class="preset-pill">Amazon SES</span>
+                    <span class="preset-pill">Drizzle</span>
+                    <span class="preset-pill">LemonSqueezy</span>
+                </div>
+                <div class="preset-ide">🌊 Windsurf</div>
+            </div>
+        </div>
+
+        <!-- DevTools -->
+        <div class="preset-category-label">🛠️ DevTools</div>
+        <div class="preset-grid">
+            <div class="preset-card">
+                <div class="preset-icon">🔧</div>
+                <div class="preset-title">Developer API</div>
+                <div class="preset-subtitle">REST/GraphQL API with docs & rate limiting</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Hono</span>
+                    <span class="preset-pill">GraphQL</span>
+                    <span class="preset-pill">Redis</span>
+                    <span class="preset-pill">Swagger</span>
+                </div>
+                <div class="preset-ide">🚀 Antigravity</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">📡</div>
+                <div class="preset-title">Monitoring Dashboard</div>
+                <div class="preset-subtitle">Real-time system monitoring, alerting & incident management</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Next.js 15</span>
+                    <span class="preset-pill">ClickHouse</span>
+                    <span class="preset-pill">Grafana</span>
+                    <span class="preset-pill">Redis</span>
+                </div>
+                <div class="preset-ide">⚡ Cursor</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">⚙️</div>
+                <div class="preset-title">Internal Tool Builder</div>
+                <div class="preset-subtitle">Low-code admin panels, data views & approval workflows</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Next.js 15</span>
+                    <span class="preset-pill">tRPC</span>
+                    <span class="preset-pill">Prisma</span>
+                    <span class="preset-pill">NextAuth.js</span>
+                </div>
+                <div class="preset-ide">🤖 Copilot</div>
+            </div>
+        </div>
+
+        <!-- Mobile -->
+        <div class="preset-category-label">📱 Mobile</div>
+        <div class="preset-grid">
+            <div class="preset-card">
+                <div class="preset-icon">📱</div>
+                <div class="preset-title">Social App</div>
+                <div class="preset-subtitle">Social network with feeds, profiles & messaging</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">React Native</span>
+                    <span class="preset-pill">Expo</span>
+                    <span class="preset-pill">Supabase</span>
+                    <span class="preset-pill">Zustand</span>
+                </div>
+                <div class="preset-ide">⚡ Cursor</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">🏃</div>
+                <div class="preset-title">Fitness Tracker</div>
+                <div class="preset-subtitle">Health tracking, workouts & wearable device sync</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Flutter</span>
+                    <span class="preset-pill">Firebase</span>
+                    <span class="preset-pill">Riverpod</span>
+                    <span class="preset-pill">HealthKit</span>
+                </div>
+                <div class="preset-ide">🚀 Antigravity</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">🍔</div>
+                <div class="preset-title">Food Delivery</div>
+                <div class="preset-subtitle">Restaurant ordering, live tracking & driver management</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">React Native</span>
+                    <span class="preset-pill">Expo</span>
+                    <span class="preset-pill">Supabase</span>
+                    <span class="preset-pill">Stripe</span>
+                </div>
+                <div class="preset-ide">🤖 Copilot</div>
+            </div>
+        </div>
+
+        <!-- Data -->
+        <div class="preset-category-label">📊 Data</div>
+        <div class="preset-grid">
+            <div class="preset-card">
+                <div class="preset-icon">📊</div>
+                <div class="preset-title">Analytics Dashboard</div>
+                <div class="preset-subtitle">BI dashboard with ETL pipelines & real-time charts</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Airflow</span>
+                    <span class="preset-pill">BigQuery</span>
+                    <span class="preset-pill">dbt</span>
+                    <span class="preset-pill">Metabase</span>
+                </div>
+                <div class="preset-ide">🚀 Antigravity</div>
+            </div>
+            <div class="preset-card">
+                <div class="preset-icon">🔄</div>
+                <div class="preset-title">Data Pipeline</div>
+                <div class="preset-subtitle">ETL/ELT pipeline with quality checks & scheduling</div>
+                <div class="preset-pills">
+                    <span class="preset-pill">Dagster</span>
+                    <span class="preset-pill">Snowflake</span>
+                    <span class="preset-pill">dbt</span>
+                    <span class="preset-pill">Kafka</span>
+                </div>
+                <div class="preset-ide">⚡ Cursor</div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- ═══ NEW SECTION 2: AGENTIC GENERATION ENGINE ═══ -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <h2 id="agentic-engine"><span class="emoji">🤖</span> Agentic Generation Engine</h2>
+        <p>The Blueprint Compiler doesn't just generate files — it uses an <strong>autonomous multi-step loop</strong> that generates, validates, scores, and refines output until it meets quality thresholds.</p>
+
+        <h3>How the Loop Works</h3>
+        <div class="flow-steps">
+            <div class="flow-step">
+                <div class="flow-num">📡</div>
+                <div class="flow-label">Generate</div>
+                <div class="flow-desc">Call Claude with system prompt + config</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+                <div class="flow-num">🔍</div>
+                <div class="flow-label">Validate</div>
+                <div class="flow-desc">Check structure, length, placeholders</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+                <div class="flow-num">📊</div>
+                <div class="flow-label">Score</div>
+                <div class="flow-desc">Quality 0-100 with grade A-D</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+                <div class="flow-num">♻️</div>
+                <div class="flow-label">Refine</div>
+                <div class="flow-desc">Auto-fix issues if score < threshold</div>
+            </div>
+        </div>
+
+        <h3>Quality Scoring</h3>
+        <p>Every generated file is scored on a <strong>0-100 scale</strong> across multiple dimensions:</p>
+        <table>
+            <tr><th>Dimension</th><th>Weight</th><th>Measures</th></tr>
+            <tr><td><strong>Completeness</strong></td><td>30%</td><td>All expected sections present, minimum line count met</td></tr>
+            <tr><td><strong>Specificity</strong></td><td>25%</td><td>References exact stack technologies (not generic), no placeholder text</td></tr>
+            <tr><td><strong>Structure</strong></td><td>20%</td><td>Proper markdown formatting, hierarchy, consistent style</td></tr>
+            <tr><td><strong>Actionability</strong></td><td>15%</td><td>Compilable code snippets, concrete patterns (not abstract advice)</td></tr>
+            <tr><td><strong>Coherence</strong></td><td>10%</td><td>Internal consistency, correct cross-references between files</td></tr>
+        </table>
+        <div class="info-box green">A score of <strong>75+</strong> (Grade B) is the default threshold for automatic refinement. Below this, the engine automatically regenerates with targeted fix instructions.</div>
+
+        <h3>Blueprint Rigor Levels</h3>
+        <p>Control how strict the generated Blueprint is:</p>
+        <div class="card">
+            <h4>🏛️ Strict — Enterprise / Production</h4>
+            <p>Full planning required before every task. 90%+ test coverage. Complete OWASP security checklist. Architecture Decision Records for every choice. For production systems and regulated industries.</p>
+        </div>
+        <div class="card">
+            <h4>⚖️ Balanced — Recommended</h4>
+            <p>Complexity-gated planning (simple tasks skip planning). 80%+ test coverage. Essential security controls. Best for most production projects.</p>
+        </div>
+        <div class="card">
+            <h4>🚀 Rapid — Prototype / MVP</h4>
+            <p>Minimal planning. Critical-path testing only. Ship fast. For hackathons, demos, and quick prototypes where speed matters more than rigor.</p>
+        </div>
+
+        <h3>IDE-Specific Prompt Adaptation</h3>
+        <p>The engine adapts its output format based on the target IDE:</p>
+        <table>
+            <tr><th>IDE</th><th>Config Format</th><th>Adaptation</th></tr>
+            <tr><td><strong>Antigravity</strong></td><td>Markdown (.md)</td><td>Full layered system with Skills, Workflows, and Enforcement Map</td></tr>
+            <tr><td><strong>Cursor</strong></td><td>MDC (.mdc)</td><td>Cursor-specific frontmatter with glob patterns and descriptions (~2000 token limit per rule)</td></tr>
+            <tr><td><strong>GitHub Copilot</strong></td><td>Markdown (.md)</td><td>Concise format optimized for Copilot's smaller context window</td></tr>
+            <tr><td><strong>Windsurf</strong></td><td>Markdown (.md)</td><td>Single .windsurfrules file at project root for Cascade mode</td></tr>
+        </table>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- ═══ NEW SECTION 3: IDE SETUP GUIDES ═══ -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <h2 id="ide-guides"><span class="emoji">🖥️</span> IDE Setup Guides</h2>
+        <p>After generating a Blueprint, place the output files in the correct locations for your IDE. Here's a guide for each supported IDE.</p>
+
+        <!-- Antigravity -->
+        <div class="ide-card">
+            <div class="ide-header">
+                <span class="ide-icon">🚀</span>
+                <div>
+                    <h4>Google Antigravity</h4>
+                    <small>Google's agentic IDE with Skills & Workflows system</small>
+                </div>
+            </div>
+            <p>Antigravity uses a layered context system: <code>GEMINI.md</code> (global) + <code>rules.md</code> (project) + Skills (on-demand) + Workflows (procedures). This is <strong>THE native target</strong> for the Blueprint Compiler.</p>
+            <table class="path-table">
+                <tr><td>Rules</td><td>.antigravity/rules.md</td></tr>
+                <tr><td>Skills</td><td>.agent/skills/</td></tr>
+                <tr><td>Workflows</td><td>.agent/workflows/</td></tr>
+                <tr><td>Context</td><td>.context/</td></tr>
+                <tr><td>Entry</td><td>PROMPT_START.md</td></tr>
+            </table>
+            <div class="info-box">Use the <strong>Export ZIP</strong> feature to download a pre-structured ZIP file with all files in the correct paths. Unzip into your project root.</div>
+        </div>
+
+        <!-- Cursor -->
+        <div class="ide-card">
+            <div class="ide-header">
+                <span class="ide-icon">⚡</span>
+                <div>
+                    <h4>Cursor</h4>
+                    <small>AI-native code editor with .cursorrules</small>
+                </div>
+            </div>
+            <p>Cursor uses <code>.mdc</code> files in <code>.cursor/rules/</code> for project-specific instructions. Rules are loaded automatically based on file globs and descriptions. Keep each rule under ~2000 tokens.</p>
+            <table class="path-table">
+                <tr><td>Rules</td><td>.cursor/rules/blueprint.mdc</td></tr>
+                <tr><td>Skills</td><td>.cursor/rules/skills/</td></tr>
+                <tr><td>Workflows</td><td>.cursor/rules/workflows/</td></tr>
+                <tr><td>Context</td><td>.context/</td></tr>
+                <tr><td>Entry</td><td>.cursor/rules/overview.mdc</td></tr>
+            </table>
+            <div class="info-box">Cursor's MDC format includes YAML frontmatter (<code>description</code>, <code>globs</code>) that controls when rules are auto-loaded. The Blueprint Compiler generates this automatically.</div>
+        </div>
+
+        <!-- GitHub Copilot -->
+        <div class="ide-card">
+            <div class="ide-header">
+                <span class="ide-icon">🤖</span>
+                <div>
+                    <h4>GitHub Copilot</h4>
+                    <small>GitHub's AI pair programmer with custom instructions</small>
+                </div>
+            </div>
+            <p>Copilot reads <code>.github/copilot-instructions.md</code> for repository-level custom instructions. The file is loaded automatically for all conversations. Keep content concise — Copilot has a smaller context window.</p>
+            <table class="path-table">
+                <tr><td>Rules</td><td>.github/copilot-instructions.md</td></tr>
+                <tr><td>Skills</td><td>.github/copilot/skills/</td></tr>
+                <tr><td>Workflows</td><td>.github/copilot/workflows/</td></tr>
+                <tr><td>Context</td><td>.context/</td></tr>
+                <tr><td>Entry</td><td>.github/copilot/overview.md</td></tr>
+            </table>
+            <div class="info-box yellow">⚠️ Copilot's context window is smaller than other IDEs. The Blueprint Compiler automatically generates a more concise version when targeting Copilot.</div>
+        </div>
+
+        <!-- Windsurf -->
+        <div class="ide-card">
+            <div class="ide-header">
+                <span class="ide-icon">🌊</span>
+                <div>
+                    <h4>Windsurf</h4>
+                    <small>Codeium's agentic IDE with Cascade flows</small>
+                </div>
+            </div>
+            <p>Windsurf uses a single <code>.windsurfrules</code> file at the project root for workspace-level instructions. Cascade (agentic mode) reads it automatically. Supports standard markdown format.</p>
+            <table class="path-table">
+                <tr><td>Rules</td><td>.windsurfrules</td></tr>
+                <tr><td>Skills</td><td>.windsurf/skills/</td></tr>
+                <tr><td>Workflows</td><td>.windsurf/workflows/</td></tr>
+                <tr><td>Context</td><td>.context/</td></tr>
+                <tr><td>Entry</td><td>.windsurf/overview.md</td></tr>
+            </table>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- ═══ NEW SECTION 4: CLOUD & EXPORT ═══ -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <h2 id="cloud-export"><span class="emoji">💾</span> Cloud & Export</h2>
+        <p>The Blueprint Compiler supports multiple persistence and export options for your generated Blueprints.</p>
+
+        <h3>Authentication</h3>
+        <p>Sign in with <strong>email/password</strong> or <strong>GitHub OAuth</strong> via Supabase. Authentication unlocks cloud save, cross-device sync, and the Blueprint Library.</p>
+
+        <h3>Blueprint Library</h3>
+        <div class="card">
+            <h4>📁 My Blueprints</h4>
+            <p>Save generated Blueprints to your personal library. Each saved Blueprint includes the full configuration (domain, stack, IDE target, priorities) and all generated file outputs. Load any Blueprint to restore the entire state and continue editing or regenerating.</p>
+        </div>
+        <div class="card">
+            <h4>🌐 Community Gallery</h4>
+            <p>Browse official and community-contributed Blueprints. Each gallery entry shows the project name, domain, IDE target, author, and quality score. Clone any gallery Blueprint into your own workspace with one click.</p>
+        </div>
+
+        <h3>Export Formats</h3>
+        <table>
+            <tr><th>Format</th><th>Description</th><th>Best For</th></tr>
+            <tr><td><strong>📋 Copy All</strong></td><td>Copy all 5 files to clipboard as a single text block</td><td>Quick paste into existing projects</td></tr>
+            <tr><td><strong>📥 JSON</strong></td><td>Full Blueprint as a structured JSON file with metadata</td><td>Backup, sharing, API integration</td></tr>
+            <tr><td><strong>📦 ZIP</strong></td><td>IDE-ready folder structure with files in correct paths</td><td>New projects — unzip and start coding</td></tr>
+        </table>
+
+        <h3>Auto-Migration</h3>
+        <div class="info-box">When you sign in for the first time, any Blueprints saved in your browser's <code>localStorage</code> are automatically migrated to your cloud account. Zero data loss.</div>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- ═══ NEW SECTION 5: PROJECT SCANNER ═══ -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <h2 id="scanner"><span class="emoji">🔍</span> Project Scanner</h2>
+        <p>Already have an existing project? The <strong>Project Scanner</strong> analyzes your <code>package.json</code> and auto-fills the wizard with detected technologies.</p>
+
+        <h3>How It Works</h3>
+        <div class="flow-steps">
+            <div class="flow-step">
+                <div class="flow-num">📋</div>
+                <div class="flow-label">Paste</div>
+                <div class="flow-desc">Paste your package.json</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+                <div class="flow-num">🔍</div>
+                <div class="flow-label">Analyze</div>
+                <div class="flow-desc">Scan dependencies</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+                <div class="flow-num">⚡</div>
+                <div class="flow-label">Detect</div>
+                <div class="flow-desc">Match to known stacks</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+                <div class="flow-num">✅</div>
+                <div class="flow-label">Auto-fill</div>
+                <div class="flow-desc">Pre-fill wizard fields</div>
+            </div>
+        </div>
+
+        <h3>What Gets Detected</h3>
+        <table>
+            <tr><th>Category</th><th>Example Detections</th></tr>
+            <tr><td><strong>Domain</strong></td><td>SaaS (from next + stripe), WordPress (from wordpress), E-commerce (from shopify)</td></tr>
+            <tr><td><strong>Framework</strong></td><td>Next.js, Nuxt, SvelteKit, Remix, React Native</td></tr>
+            <tr><td><strong>API Layer</strong></td><td>tRPC, Apollo GraphQL, Express, Hono</td></tr>
+            <tr><td><strong>ORM / Database</strong></td><td>Drizzle, Prisma, TypeORM, Mongoose</td></tr>
+            <tr><td><strong>Auth</strong></td><td>NextAuth.js, Clerk, Auth0, Supabase Auth</td></tr>
+            <tr><td><strong>Project Name</strong></td><td>Extracted from package.json <code>name</code> field</td></tr>
+        </table>
+        <div class="info-box">Each detection includes a <strong>confidence score</strong> (percentage) based on how strongly the dependency matches a known technology. You can always override detections manually in the wizard.</div>
 
         <!-- ═══ OUTPUT FILES ═══ -->
         <h2 id="output-files"><span class="emoji">📄</span> Output Files</h2>

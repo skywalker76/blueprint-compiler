@@ -115,6 +115,7 @@ export default function LandingPage() {
             <a href="#how-it-works" className="nav-link">How It Works</a>
             <a href="#pricing" className="nav-link">Pricing</a>
             <a href="https://github.com/skywalker76/blueprint-compiler" target="_blank" rel="noreferrer" className="nav-link">GitHub</a>
+            <a href="/docs.html" className="nav-link">📖 Docs</a>
             <Link to="/app" className="nav-link nav-cta">Launch App →</Link>
           </div>
         </div>
