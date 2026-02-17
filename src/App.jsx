@@ -10,6 +10,7 @@ import { PRESETS } from "./data/presets.js";
 // ─── Engine ───
 import { generateFile as engineGenerateFile, generateAll as engineGenerateAll } from "./engine/generator.js";
 import { scanPackageJson } from "./engine/scanner.js";
+import { PROVIDER_LIST, DEFAULT_PROVIDER, getProvider } from "./engine/providers/index.js";
 import { saveBlueprint, loadLibrary, deleteBlueprint, exportAsZip, exportAsJson, exportAsYaml, getBlueprintJsonString, getBlueprintYamlString, getUsageCount, trackUsage, migrateLocalToCloud, getTelemetryPreference, setTelemetryPreference, trackAnonymousEvent } from "./engine/persistence.js";
 
 // ─── Auth ───
@@ -43,6 +44,7 @@ export default function App() {
 
   // ─── State ───
   const [apiKey, setApiKey] = useState(() => sessionStorage.getItem("bc_api_key") || "");
+  const [provider, setProvider] = useState(() => sessionStorage.getItem("bc_provider") || DEFAULT_PROVIDER);
   const [showKeyInfo, setShowKeyInfo] = useState(false);
   const [step, setStep] = useState(0);
   const [config, setConfig] = useState({
@@ -90,10 +92,11 @@ export default function App() {
   const stackInfo = STACK_INFO[config.domain] || { intro: "", categories: [] };
   const currentIde = IDE_TARGETS.find(t => t.id === ideTarget) || IDE_TARGETS[0];
 
-  // Save API key to session
+  // Save API key + provider to session
   useEffect(() => {
     if (apiKey) sessionStorage.setItem("bc_api_key", apiKey);
-  }, [apiKey]);
+    sessionStorage.setItem("bc_provider", provider);
+  }, [apiKey, provider]);
 
   // Initialize stack when domain changes
   useEffect(() => {
@@ -145,14 +148,14 @@ export default function App() {
       }
     }
 
-    if (!apiKey) { setError("Please enter your Anthropic API key first"); return; }
+    if (!apiKey) { setError("Please enter your API key first"); return; }
     setGenerating(fileType);
     setError(null);
     setActiveTab(fileType);
     try {
       const result = await engineGenerateFile(fileType, apiKey, config, ideTarget, (progress) => {
         setGenerating(`${fileType} (${progress.phase})`);
-      });
+      }, provider);
       setGenerated(p => ({ ...p, [fileType]: result }));
     } catch (err) {
       setError(`${fileType}: ${err.message}`);
@@ -177,7 +180,7 @@ export default function App() {
       }
     }
 
-    if (!apiKey) { setError("Please enter your Anthropic API key first"); return; }
+    if (!apiKey) { setError("Please enter your API key first"); return; }
     setError(null);
 
     // Track usage BEFORE calling Claude API (costs money)
@@ -365,9 +368,16 @@ export default function App() {
 
         {/* ═══ API KEY BAR ═══ */}
         <div style={{ ...S.card, padding: 16, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+          {/* Provider Selector */}
+          <select value={provider} onChange={e => { setProvider(e.target.value); setApiKey(""); }}
+            style={{ ...S.input, width: "auto", minWidth: 170, fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
+            {PROVIDER_LIST.map(p => (
+              <option key={p.id} value={p.id}>{p.icon} {p.name}</option>
+            ))}
+          </select>
           <span style={{ fontSize: 13, color: "#64748b", whiteSpace: "nowrap" }}>🔑 API Key:</span>
           <input type="password" value={apiKey} onChange={e => setApiKey(e.target.value)}
-            placeholder="sk-ant-api03-..." style={{ ...S.input, flex: 1, minWidth: 200, fontSize: 13 }} />
+            placeholder={getProvider(provider).keyPlaceholder} style={{ ...S.input, flex: 1, minWidth: 200, fontSize: 13 }} />
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             {apiKey && <span style={{ color: "#6ee7b7", fontSize: 12 }}>✓ Saved</span>}
             <button onClick={() => setShowKeyInfo(!showKeyInfo)}
@@ -378,12 +388,12 @@ export default function App() {
           {showKeyInfo && (
             <div style={{ width: "100%", marginTop: 8 }}>
               <InfoBox type="tip">
-                <strong>How to get your Anthropic API key:</strong><br />
-                1. Go to <strong>console.anthropic.com</strong><br />
+                <strong>How to get your {getProvider(provider).name} API key:</strong><br />
+                1. Go to <a href={getProvider(provider).keyHelpUrl} target="_blank" rel="noreferrer" style={{ color: "#fb923c" }}><strong>{getProvider(provider).keyHelpUrl.replace("https://", "")}</strong></a><br />
                 2. Sign up or log in<br />
-                3. Click "API Keys" in the left sidebar<br />
-                4. Click "Create Key" and copy it<br />
-                5. Paste it above — it stays in your browser only (session storage), never sent to any server except Anthropic's API directly.<br /><br />
+                3. Navigate to API Keys section<br />
+                4. Create a new key and copy it<br />
+                5. Paste it above — it stays in your browser only (session storage), never sent to any server except the provider's API directly.<br /><br />
                 <strong>Cost:</strong> Each Blueprint generation costs approximately $0.02-0.05 (a few cents). A full Blueprint (all 5 files) costs about $0.15-0.25.
               </InfoBox>
             </div>
@@ -710,7 +720,7 @@ export default function App() {
                   </div>
                 ))}
               </div>
-              {!apiKey && <InfoBox type="warn">You need to enter your Anthropic API key above before generating.</InfoBox>}
+              {!apiKey && <InfoBox type="warn">You need to enter your API key above before generating.</InfoBox>}
               <div style={S.nav}>
                 <button style={S.btn(false)} onClick={() => setStep(3)}>← Edit</button>
                 <div style={{ display: "flex", gap: 8 }}>

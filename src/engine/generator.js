@@ -2,6 +2,7 @@
 // Multi-step: Generate → Validate → Refine
 import { IDE_TARGETS, FILE_TYPES } from "../data/constants.js";
 import { validateOutput } from "./validator.js";
+import { getProvider } from "./providers/index.js";
 
 // ─── META-TEMPLATE SYSTEM PROMPT ───
 const META_TEMPLATE_SYSTEM = `You are a Context Engineering Blueprint Compiler. You generate production-ready Blueprint files for AI coding agents.
@@ -171,7 +172,8 @@ Separate [CORE] rules (security, types, clean code) from [STACK] rules (ORM, API
 }
 
 // ─── GENERATE SINGLE FILE (AGENTIC: with validation + refinement) ───
-export async function generateFile(fileType, apiKey, config, ideTarget, onProgress) {
+export async function generateFile(fileType, apiKey, config, ideTarget, onProgress, providerId) {
+    const provider = getProvider(providerId);
     const ide = IDE_TARGETS.find(t => t.id === ideTarget) || IDE_TARGETS[0];
     const rigor = config.rigor || "balanced";
     const baseSystem = IDE_ADAPTERS[ide.id]?.(META_TEMPLATE_SYSTEM) || META_TEMPLATE_SYSTEM;
@@ -180,7 +182,7 @@ export async function generateFile(fileType, apiKey, config, ideTarget, onProgre
 
     // Step 1: Generate
     onProgress?.({ phase: "generating", fileType, step: 1, total: 2 });
-    const rawOutput = await callClaude(apiKey, systemPrompt, userPrompt);
+    const rawOutput = await provider.call(apiKey, systemPrompt, userPrompt);
 
     // Step 2: Validate
     onProgress?.({ phase: "validating", fileType, step: 1.5, total: 2 });
@@ -195,7 +197,7 @@ export async function generateFile(fileType, apiKey, config, ideTarget, onProgre
             .replace("{ISSUES}", issuesList)
             .replace("{MIN_LINES}", String(parseInt(fileMeta?.lines || "200")));
 
-        const refinedOutput = await callClaude(apiKey, systemPrompt, userPrompt + "\n\n" + refinePrompt);
+        const refinedOutput = await provider.call(apiKey, systemPrompt, userPrompt + "\n\n" + refinePrompt);
         const refinedReport = validateOutput(refinedOutput, fileType, config);
 
         return { output: refinedOutput, quality: refinedReport, refined: true };
@@ -205,7 +207,7 @@ export async function generateFile(fileType, apiKey, config, ideTarget, onProgre
 }
 
 // ─── GENERATE ALL FILES ───
-export async function generateAll(apiKey, config, ideTarget, onFileProgress) {
+export async function generateAll(apiKey, config, ideTarget, onFileProgress, providerId) {
     const results = {};
     const fileTypes = FILE_TYPES.map(f => f.id);
 
@@ -214,7 +216,7 @@ export async function generateAll(apiKey, config, ideTarget, onFileProgress) {
             onFileProgress?.(fileType, "start");
             const result = await generateFile(fileType, apiKey, config, ideTarget, (p) => {
                 onFileProgress?.(fileType, p.phase);
-            });
+            }, providerId);
             results[fileType] = result;
             onFileProgress?.(fileType, "done");
         } catch (err) {
@@ -224,27 +226,4 @@ export async function generateAll(apiKey, config, ideTarget, onFileProgress) {
     }
 
     return results;
-}
-
-// ─── CLAUDE API CALL ───
-async function callClaude(apiKey, systemPrompt, userPrompt) {
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "x-api-key": apiKey,
-            "anthropic-version": "2023-06-01",
-            "anthropic-dangerous-direct-browser-access": "true",
-        },
-        body: JSON.stringify({
-            model: "claude-sonnet-4-20250514",
-            max_tokens: 8000,
-            system: systemPrompt,
-            messages: [{ role: "user", content: userPrompt }],
-        }),
-    });
-
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-    return data.content?.map(b => b.text || "").join("\n") || "";
 }
