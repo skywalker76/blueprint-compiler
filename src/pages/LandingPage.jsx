@@ -11,7 +11,7 @@ const FEATURES = [
   { icon: "⌨️", title: "CLI Tool", desc: "npx blueprint-compiler init — interactive terminal wizard. Auto-detects your stack from package.json. Zero config.", color: "green" },
   { icon: "🔄", title: "Update Mode", desc: "Changed your stack? Describe what changed and the AI intelligently updates your Blueprint — preserving what's still valid.", color: "purple" },
   { icon: "🎯", title: "4 IDE Targets", desc: "One wizard, four outputs. Antigravity, Cursor, GitHub Copilot, and Windsurf — each with native file structure.", color: "cyan" },
-  { icon: "⚡", title: "30 Quick Start Presets", desc: "SaaS, CRM, AI Product, WordPress, Marketplace and more. Click a card → skip the wizard → generate instantly.", color: "orange" },
+  { icon: "⚡", title: "27 Quick Start Presets", desc: "SaaS, CRM, AI Product, WordPress, Marketplace and more. Click a card → skip the wizard → generate instantly.", color: "orange" },
 ];
 
 const STEPS_DATA = [
@@ -28,7 +28,7 @@ const COMPARISON = [
   { feature: "Updates", before: "Regenerate all", after: "Smart Update Mode" },
   { feature: "IDE Support", before: "1 IDE", after: "4 IDEs" },
   { feature: "Generation", before: "Single-shot", after: "Agentic loop" },
-  { feature: "Quick Start", before: "✕", after: "30 preset templates" },
+  { feature: "Quick Start", before: "✕", after: "27 preset templates" },
   { feature: "Export", before: "Copy only", after: "JSON + YAML + ZIP" },
   { feature: "Architecture", before: "Monolith", after: "Modular (24 files)" },
 ];

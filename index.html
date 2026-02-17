@@ -1,37 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- ═══ Primary Meta Tags ═══ -->
-    <title>Blueprint Compiler — AI Agent Blueprint Generator | CLI + Multi-Provider</title>
-    <meta name="description" content="Generate production-ready AI agent blueprints with 7 LLM models (Claude Opus 4.6, GPT-5.2), CLI tool, Update Mode, and 4 IDE targets. Free tier available." />
-    <meta name="keywords" content="AI blueprint, agent config, cursor rules, gemini rules, copilot instructions, windsurf rules, code generation, developer tools, SaaS template, AI coding assistant" />
-    <meta name="author" content="Blueprint Compiler" />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://blueprint-compiler.vercel.app" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- ═══ Open Graph (Facebook, LinkedIn, Discord) ═══ -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://blueprint-compiler.vercel.app" />
-    <meta property="og:title" content="Blueprint Compiler v2.1 — Multi-Provider AI Blueprint Generator" />
-    <meta property="og:description" content="7 LLM models, CLI tool (npx blueprint-compiler), smart Update Mode, 4 IDEs, 30 presets. The complete platform for AI agent configuration." />
-    <meta property="og:site_name" content="Blueprint Compiler" />
-    <meta property="og:locale" content="en_US" />
+  <!-- ═══ Primary Meta Tags ═══ -->
+  <title>Blueprint Compiler — AI Agent Blueprint Generator | CLI + Multi-Provider</title>
+  <meta name="description"
+    content="Generate production-ready AI agent blueprints with 7 LLM models (Claude Opus 4.6, GPT-5.2), CLI tool, Update Mode, and 4 IDE targets. Free tier available." />
+  <meta name="keywords"
+    content="AI blueprint, agent config, cursor rules, gemini rules, copilot instructions, windsurf rules, code generation, developer tools, SaaS template, AI coding assistant" />
+  <meta name="author" content="Blueprint Compiler" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://blueprint-compiler.vercel.app" />
 
-    <!-- ═══ Twitter Card ═══ -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Blueprint Compiler v2.1 — AI Agent Blueprint Generator" />
-    <meta name="twitter:description" content="7 LLM models (Anthropic + OpenAI), CLI tool, Update Mode, 4 IDEs. Generate production-ready AI Blueprints in seconds." />
+  <!-- ═══ Open Graph (Facebook, LinkedIn, Discord) ═══ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://blueprint-compiler.vercel.app" />
+  <meta property="og:title" content="Blueprint Compiler v2.1 — Multi-Provider AI Blueprint Generator" />
+  <meta property="og:description"
+    content="7 LLM models, CLI tool (npx blueprint-compiler), smart Update Mode, 4 IDEs, 27 presets. The complete platform for AI agent configuration." />
+  <meta property="og:site_name" content="Blueprint Compiler" />
+  <meta property="og:locale" content="en_US" />
 
-    <!-- ═══ Theme & Icons ═══ -->
-    <meta name="theme-color" content="#0a0f1a" />
-    <meta name="color-scheme" content="dark" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>" />
+  <!-- ═══ Twitter Card ═══ -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Blueprint Compiler v2.1 — AI Agent Blueprint Generator" />
+  <meta name="twitter:description"
+    content="7 LLM models (Anthropic + OpenAI), CLI tool, Update Mode, 4 IDEs. Generate production-ready AI Blueprints in seconds." />
 
-    <!-- ═══ JSON-LD Structured Data ═══ -->
-    <script type="application/ld+json">
+  <!-- ═══ Theme & Icons ═══ -->
+  <meta name="theme-color" content="#0a0f1a" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>" />
+
+  <!-- ═══ JSON-LD Structured Data ═══ -->
+  <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
@@ -51,7 +57,7 @@
         "CLI tool: npx blueprint-compiler init/update/scan",
         "Smart Update Mode: describe changes, AI updates your Blueprint",
         "4 IDE targets: Cursor, Antigravity, GitHub Copilot, Windsurf",
-        "30 Quick Start Presets across 8 categories",
+        "27 Quick Start Presets across 7 categories",
         "Agentic generation with quality scoring",
         "Multi-format export: JSON, YAML, ZIP"
       ],
@@ -63,30 +69,64 @@
     }
     </script>
 
-    <!-- ═══ Fonts ═══ -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- ═══ Fonts ═══ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
-    <style>
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-      body {
-        font-family: 'JetBrains Mono', monospace;
-        background: #0a0f1a;
-        color: #e2e8f0;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-      ::-webkit-scrollbar { width: 8px; height: 8px; }
-      ::-webkit-scrollbar-track { background: #0a0f1a; }
-      ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-      ::-webkit-scrollbar-thumb:hover { background: #475569; }
-      ::selection { background: #c2410c; color: #fff; }
-      input, select, textarea, button { font-family: 'JetBrains Mono', monospace; }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #0a0f1a;
+      color: #e2e8f0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0a0f1a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+
+    ::selection {
+      background: #c2410c;
+      color: #fff;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
