@@ -413,7 +413,7 @@ function ExportBar({ blueprint }) {
     );
 }
 
-export function BlueprintTabs({ generated, config, ideTarget, avgQuality, domain, currentIde, FILE_TYPES, children }) {
+export function BlueprintTabs({ generated, config, ideTarget, avgQuality, domain, currentIde, FILE_TYPES, children, readOnly = false }) {
     const [viewTab, setViewTab] = useState("overview");
     const safeGenerated = generated || {};
     const hasOutput = Object.values(safeGenerated).some(r => r?.output);
@@ -472,7 +472,7 @@ export function BlueprintTabs({ generated, config, ideTarget, avgQuality, domain
             </div>
 
             {/* ─── Export Bar ─── */}
-            <ExportBar blueprint={blueprint} />
+            {!readOnly && <ExportBar blueprint={blueprint} />}
 
             {/* ─── Tab Content ─── */}
             <div style={{

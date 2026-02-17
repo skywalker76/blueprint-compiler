@@ -28,6 +28,7 @@ import { CopyButton } from "./components/CopyButton.jsx";
 import { StepBar } from "./components/StepBar.jsx";
 import { SectionTitle } from "./components/SectionTitle.jsx";
 import { QualityScore } from "./components/QualityScore.jsx";
+import { SuccessToast } from "./components/SuccessToast.jsx";
 
 // ─── Styles ───
 import { S } from "./styles.js";
@@ -68,6 +69,8 @@ export default function App() {
   const [library, setLibrary] = useState([]);
   const [libraryTab, setLibraryTab] = useState("my"); // "my" | "gallery"
   const [telemetry, setTelemetry] = useState(getTelemetryPreference());
+  const [generationProgress, setGenerationProgress] = useState(null); // { current, total, label }
+  const [showSuccess, setShowSuccess] = useState(null); // null | { fileCount, totalLines, qualityScore }
   const resultRef = useRef(null);
 
   // ─── Load library (async, depends on auth) ───
@@ -209,13 +212,31 @@ export default function App() {
 
     if (!apiKey) { setError("Please enter your API key first"); return; }
     setError(null);
+    setGenerationProgress({ current: 0, total: FILE_TYPES.length, label: "Starting..." });
 
     // Track usage BEFORE calling Claude API (costs money)
     await trackUsage(user.id, "generate", { fileType: "all" });
 
-    for (const ft of FILE_TYPES) {
+    for (let i = 0; i < FILE_TYPES.length; i++) {
+      const ft = FILE_TYPES[i];
+      setGenerationProgress({ current: i + 1, total: FILE_TYPES.length, label: ft.label });
       await handleGenerateFile(ft.id);
     }
+    setGenerationProgress(null);
+
+    // Calculate stats for success toast
+    const finalGenerated = { ...generated };
+    // Need a small timeout to let state settle
+    setTimeout(() => {
+      const fileCount = Object.values(finalGenerated).filter(r => r?.output).length;
+      const totalLines = Object.values(finalGenerated)
+        .filter(r => r?.output && typeof r.output === "string")
+        .reduce((sum, r) => sum + r.output.split("\n").length, 0);
+      const scores = Object.values(finalGenerated).filter(r => r?.quality?.score).map(r => r.quality.score);
+      const avgQ = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : null;
+      setShowSuccess({ fileCount: fileCount || FILE_TYPES.length, totalLines: totalLines || 0, qualityScore: avgQ });
+    }, 100);
+
     resultRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -318,6 +339,14 @@ export default function App() {
       </nav>
       {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
       {showUpgradeModal && <UpgradeModal reason={showUpgradeModal.reason} data={showUpgradeModal.data} onClose={() => setShowUpgradeModal(null)} />}
+      {showSuccess && (
+        <SuccessToast
+          fileCount={showSuccess.fileCount}
+          totalLines={showSuccess.totalLines}
+          qualityScore={showSuccess.qualityScore}
+          onDismiss={() => setShowSuccess(null)}
+        />
+      )}
 
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "28px 16px" }}>
         {/* ═══ HEADER ═══ */}
@@ -766,6 +795,30 @@ export default function App() {
                   </button>
                 </div>
               </div>
+
+              {/* Progress Bar for Generate All */}
+              {generationProgress && (
+                <div style={{ marginTop: 12, padding: "12px 16px", background: "#0c1929", borderRadius: 10, border: "1px solid #1e3a5f" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                    <span style={{ fontSize: 12, fontWeight: 600, color: "#7dd3fc" }}>
+                      ⚡ Generating {generationProgress.label}...
+                    </span>
+                    <span style={{ fontSize: 11, color: "#64748b" }}>
+                      {generationProgress.current}/{generationProgress.total} files
+                    </span>
+                  </div>
+                  <div style={{ height: 6, background: "#1e293b", borderRadius: 3, overflow: "hidden" }}>
+                    <div style={{
+                      height: "100%",
+                      width: `${(generationProgress.current / generationProgress.total) * 100}%`,
+                      background: "linear-gradient(90deg, #fb923c, #f97316, #ef4444)",
+                      borderRadius: 3,
+                      transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                      boxShadow: "0 0 10px #fb923c66",
+                    }} />
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Overall Quality Score */}

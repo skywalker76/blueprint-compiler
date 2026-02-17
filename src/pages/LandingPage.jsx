@@ -1,7 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { openCheckout } from "../lib/lemonsqueezy";
+import { BlueprintTabs } from "../components/BlueprintTabs.jsx";
+import { DEMO_CONFIG, DEMO_GENERATED } from "../data/demoBlueprint.js";
+import { DOMAINS } from "../data/domains.js";
+import { IDE_TARGETS } from "../data/constants.js";
 import "./LandingPage.css";
 
 // ─── DATA ───
@@ -113,6 +117,7 @@ export default function LandingPage() {
           <div className="nav-links">
             <a href="#features" className="nav-link">Features</a>
             <a href="#how-it-works" className="nav-link">How It Works</a>
+            <a href="#demo" className="nav-link">Demo</a>
             <a href="#pricing" className="nav-link">Pricing</a>
             <a href="https://github.com/skywalker76/blueprint-compiler" target="_blank" rel="noreferrer" className="nav-link">GitHub</a>
             <a href="/docs.html" className="nav-link">📖 Docs</a>
@@ -164,7 +169,7 @@ export default function LandingPage() {
       {/* ━━━ Stats Bar ━━━ */}
       <div className="stats-bar">
         <div className="stat-item">
-          <div className="stat-number">30</div>
+          <div className="stat-number">36</div>
           <div className="stat-label">Quick Start Presets</div>
         </div>
         <div className="stat-item">
@@ -217,6 +222,36 @@ export default function LandingPage() {
               <p>{s.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ━━━ Live Demo ━━━ */}
+      <section className="section" id="demo">
+        <div className="section-label">Live Preview</div>
+        <h2>See It In Action</h2>
+        <p className="section-desc">
+          This is a real Blueprint generated for a SaaS Task Manager.
+          No API key required — explore all 5 layers below.
+        </p>
+
+        <div className="demo-wrapper">
+          <BlueprintTabs
+            generated={DEMO_GENERATED}
+            config={DEMO_CONFIG}
+            ideTarget="cursor"
+            avgQuality={89}
+            domain={DOMAINS.find(d => d.id === "saas")}
+            currentIde={IDE_TARGETS.find(t => t.id === "cursor")}
+            FILE_TYPES={[]}
+            readOnly={true}
+          />
+
+          <div className="demo-cta-bar">
+            <Link to="/app" className="btn-primary demo-cta-btn">
+              ⚡ Generate Your Own — Free
+            </Link>
+            <span className="demo-cta-hint">No credit card · No API key required to explore presets</span>
+          </div>
         </div>
       </section>
 
