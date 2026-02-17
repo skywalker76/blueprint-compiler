@@ -45,6 +45,7 @@ export default function App() {
   // ─── State ───
   const [apiKey, setApiKey] = useState(() => sessionStorage.getItem("bc_api_key") || "");
   const [provider, setProvider] = useState(() => sessionStorage.getItem("bc_provider") || DEFAULT_PROVIDER);
+  const [modelId, setModelId] = useState(() => sessionStorage.getItem("bc_model") || "");
   const [showKeyInfo, setShowKeyInfo] = useState(false);
   const [step, setStep] = useState(0);
   const [config, setConfig] = useState({
@@ -92,11 +93,12 @@ export default function App() {
   const stackInfo = STACK_INFO[config.domain] || { intro: "", categories: [] };
   const currentIde = IDE_TARGETS.find(t => t.id === ideTarget) || IDE_TARGETS[0];
 
-  // Save API key + provider to session
+  // Save API key + provider + model to session
   useEffect(() => {
     if (apiKey) sessionStorage.setItem("bc_api_key", apiKey);
     sessionStorage.setItem("bc_provider", provider);
-  }, [apiKey, provider]);
+    if (modelId) sessionStorage.setItem("bc_model", modelId);
+  }, [apiKey, provider, modelId]);
 
   // Initialize stack when domain changes
   useEffect(() => {
@@ -155,7 +157,7 @@ export default function App() {
     try {
       const result = await engineGenerateFile(fileType, apiKey, config, ideTarget, (progress) => {
         setGenerating(`${fileType} (${progress.phase})`);
-      }, provider);
+      }, provider, modelId || getProvider(provider).defaultModel);
       setGenerated(p => ({ ...p, [fileType]: result }));
     } catch (err) {
       setError(`${fileType}: ${err.message}`);
@@ -367,17 +369,24 @@ export default function App() {
         )}
 
         {/* ═══ API KEY BAR ═══ */}
-        <div style={{ ...S.card, padding: 16, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+        <div style={{ ...S.card, padding: 16, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
           {/* Provider Selector */}
-          <select value={provider} onChange={e => { setProvider(e.target.value); setApiKey(""); }}
-            style={{ ...S.input, width: "auto", minWidth: 170, fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
+          <select value={provider} onChange={e => { setProvider(e.target.value); setApiKey(""); setModelId(""); }}
+            style={{ ...S.input, width: "auto", minWidth: 150, fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
             {PROVIDER_LIST.map(p => (
               <option key={p.id} value={p.id}>{p.icon} {p.name}</option>
             ))}
           </select>
-          <span style={{ fontSize: 13, color: "#64748b", whiteSpace: "nowrap" }}>🔑 API Key:</span>
+          {/* Model Selector */}
+          <select value={modelId || getProvider(provider).defaultModel} onChange={e => setModelId(e.target.value)}
+            style={{ ...S.input, width: "auto", minWidth: 160, fontSize: 12, cursor: "pointer" }}>
+            {getProvider(provider).models.map(m => (
+              <option key={m.id} value={m.id}>{m.name} — {m.description}</option>
+            ))}
+          </select>
+          <span style={{ fontSize: 13, color: "#64748b", whiteSpace: "nowrap" }}>🔑</span>
           <input type="password" value={apiKey} onChange={e => setApiKey(e.target.value)}
-            placeholder={getProvider(provider).keyPlaceholder} style={{ ...S.input, flex: 1, minWidth: 200, fontSize: 13 }} />
+            placeholder={getProvider(provider).keyPlaceholder} style={{ ...S.input, flex: 1, minWidth: 180, fontSize: 13 }} />
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             {apiKey && <span style={{ color: "#6ee7b7", fontSize: 12 }}>✓ Saved</span>}
             <button onClick={() => setShowKeyInfo(!showKeyInfo)}

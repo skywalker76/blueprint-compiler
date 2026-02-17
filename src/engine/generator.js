@@ -172,7 +172,7 @@ Separate [CORE] rules (security, types, clean code) from [STACK] rules (ORM, API
 }
 
 // ─── GENERATE SINGLE FILE (AGENTIC: with validation + refinement) ───
-export async function generateFile(fileType, apiKey, config, ideTarget, onProgress, providerId) {
+export async function generateFile(fileType, apiKey, config, ideTarget, onProgress, providerId, modelId) {
     const provider = getProvider(providerId);
     const ide = IDE_TARGETS.find(t => t.id === ideTarget) || IDE_TARGETS[0];
     const rigor = config.rigor || "balanced";
@@ -182,7 +182,7 @@ export async function generateFile(fileType, apiKey, config, ideTarget, onProgre
 
     // Step 1: Generate
     onProgress?.({ phase: "generating", fileType, step: 1, total: 2 });
-    const rawOutput = await provider.call(apiKey, systemPrompt, userPrompt);
+    const rawOutput = await provider.call(apiKey, systemPrompt, userPrompt, modelId);
 
     // Step 2: Validate
     onProgress?.({ phase: "validating", fileType, step: 1.5, total: 2 });
@@ -197,7 +197,7 @@ export async function generateFile(fileType, apiKey, config, ideTarget, onProgre
             .replace("{ISSUES}", issuesList)
             .replace("{MIN_LINES}", String(parseInt(fileMeta?.lines || "200")));
 
-        const refinedOutput = await provider.call(apiKey, systemPrompt, userPrompt + "\n\n" + refinePrompt);
+        const refinedOutput = await provider.call(apiKey, systemPrompt, userPrompt + "\n\n" + refinePrompt, modelId);
         const refinedReport = validateOutput(refinedOutput, fileType, config);
 
         return { output: refinedOutput, quality: refinedReport, refined: true };
@@ -207,7 +207,7 @@ export async function generateFile(fileType, apiKey, config, ideTarget, onProgre
 }
 
 // ─── GENERATE ALL FILES ───
-export async function generateAll(apiKey, config, ideTarget, onFileProgress, providerId) {
+export async function generateAll(apiKey, config, ideTarget, onFileProgress, providerId, modelId) {
     const results = {};
     const fileTypes = FILE_TYPES.map(f => f.id);
 
@@ -216,7 +216,7 @@ export async function generateAll(apiKey, config, ideTarget, onFileProgress, pro
             onFileProgress?.(fileType, "start");
             const result = await generateFile(fileType, apiKey, config, ideTarget, (p) => {
                 onFileProgress?.(fileType, p.phase);
-            }, providerId);
+            }, providerId, modelId);
             results[fileType] = result;
             onFileProgress?.(fileType, "done");
         } catch (err) {

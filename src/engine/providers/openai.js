@@ -1,21 +1,27 @@
-// ─── OPENAI PROVIDER (GPT-4o) ───
+// ─── OPENAI PROVIDER (GPT) ───
 import { BaseProvider } from "./base.js";
 
 export class OpenAIProvider extends BaseProvider {
     constructor() {
         super({
             id: "openai",
-            name: "OpenAI (GPT-4o)",
+            name: "OpenAI",
             icon: "🟢",
-            model: "gpt-4o",
-            maxTokens: 8000,
+            models: [
+                { id: "gpt-4o", name: "GPT-4o", description: "Fast multimodal, best value", maxTokens: 8000 },
+                { id: "gpt-4.1", name: "GPT-4.1", description: "Latest, highest quality", maxTokens: 8000 },
+                { id: "gpt-4o-mini", name: "GPT-4o Mini", description: "Cheapest, good for testing", maxTokens: 8000 },
+                { id: "o3-mini", name: "o3-mini", description: "Reasoning model, slower", maxTokens: 8000 },
+            ],
+            defaultModel: "gpt-4o",
             keyPlaceholder: "sk-proj-...",
             keyHelpUrl: "https://platform.openai.com/api-keys",
             keyPrefix: "sk-",
         });
     }
 
-    async call(apiKey, systemPrompt, userPrompt) {
+    async call(apiKey, systemPrompt, userPrompt, modelId) {
+        const model = this.getModel(modelId);
         const res = await fetch("https://api.openai.com/v1/chat/completions", {
             method: "POST",
             headers: {
@@ -23,8 +29,8 @@ export class OpenAIProvider extends BaseProvider {
                 "Authorization": `Bearer ${apiKey}`,
             },
             body: JSON.stringify({
-                model: this.model,
-                max_tokens: this.maxTokens,
+                model: model.id,
+                max_tokens: model.maxTokens,
                 messages: [
                     { role: "system", content: systemPrompt },
                     { role: "user", content: userPrompt },
@@ -39,7 +45,6 @@ export class OpenAIProvider extends BaseProvider {
 
     validateKey(apiKey) {
         if (!apiKey || typeof apiKey !== "string") return false;
-        // OpenAI keys start with "sk-" (project keys: "sk-proj-", legacy: "sk-...")
         return apiKey.startsWith("sk-") && apiKey.length > 20;
     }
 }

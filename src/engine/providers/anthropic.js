@@ -5,17 +5,22 @@ export class AnthropicProvider extends BaseProvider {
     constructor() {
         super({
             id: "anthropic",
-            name: "Anthropic (Claude)",
+            name: "Anthropic",
             icon: "🟠",
-            model: "claude-sonnet-4-20250514",
-            maxTokens: 8000,
+            models: [
+                { id: "claude-sonnet-4-20250514", name: "Claude Sonnet 4", description: "Best balance speed/quality", maxTokens: 8000 },
+                { id: "claude-opus-4-20250514", name: "Claude Opus 4", description: "Most powerful, slower", maxTokens: 8000 },
+                { id: "claude-3-5-haiku-20241022", name: "Claude 3.5 Haiku", description: "Fastest, cheapest", maxTokens: 8000 },
+            ],
+            defaultModel: "claude-sonnet-4-20250514",
             keyPlaceholder: "sk-ant-api03-...",
             keyHelpUrl: "https://console.anthropic.com/",
             keyPrefix: "sk-ant-",
         });
     }
 
-    async call(apiKey, systemPrompt, userPrompt) {
+    async call(apiKey, systemPrompt, userPrompt, modelId) {
+        const model = this.getModel(modelId);
         const res = await fetch("https://api.anthropic.com/v1/messages", {
             method: "POST",
             headers: {
@@ -25,8 +30,8 @@ export class AnthropicProvider extends BaseProvider {
                 "anthropic-dangerous-direct-browser-access": "true",
             },
             body: JSON.stringify({
-                model: this.model,
-                max_tokens: this.maxTokens,
+                model: model.id,
+                max_tokens: model.maxTokens,
                 system: systemPrompt,
                 messages: [{ role: "user", content: userPrompt }],
             }),
