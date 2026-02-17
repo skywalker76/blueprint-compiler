@@ -1,7 +1,6 @@
 {
   "name": "blueprint-compiler",
-  "private": true,
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Transform project requirements into production-ready AI agent Blueprints — Multi-IDE, Agentic Generation, Quality Scoring",
   "author": "skywalker76",
   "license": "MIT",
@@ -13,6 +12,7 @@
     "copilot",
     "windsurf",
     "antigravity",
+    "cli",
     "vite",
     "react"
   ],
@@ -21,11 +21,15 @@
     "type": "git",
     "url": "https://github.com/skywalker76/blueprint-compiler.git"
   },
+  "bin": {
+    "blueprint-compiler": "./cli/index.js"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "cli": "node cli/index.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.95.3",
