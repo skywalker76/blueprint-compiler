@@ -124,9 +124,11 @@ function checkCoherence(output, config, issues) {
     let mentioned = 0;
     for (const tech of stackValues) {
         if (typeof tech === "string" && tech.length > 2) {
-            // Check for the technology name (case-insensitive)
-            const techName = tech.split(" ")[0]; // "Next.js 15" → "Next.js"
-            if (output.toLowerCase().includes(techName.toLowerCase())) {
+            // Strip version numbers and match all keywords ("React Native" → ["react", "native"])
+            const cleanTech = tech.replace(/\sv?\d+(\.\d+)*[a-z]*$/i, "").trim().toLowerCase();
+            const keywords = cleanTech.split(/[\s-]+/).filter(kw => kw.length > 1);
+            const isMentioned = keywords.every(kw => output.toLowerCase().includes(kw));
+            if (isMentioned) {
                 mentioned++;
             }
         }
@@ -156,37 +158,21 @@ function checkCoherence(output, config, issues) {
 }
 
 // ─── LENGTH CHECK ───
+// Only penalizes truly truncated files. Dense, short files are rewarded.
 function checkLength(output, fileMeta, issues) {
     const lines = output.split("\n").length;
 
-    if (!fileMeta || !fileMeta.lines) {
-        return lines > 50 ? 100 : lines > 20 ? 60 : 20;
-    }
-
-    const [minStr, maxStr] = fileMeta.lines.split("-");
-    const min = parseInt(minStr) || 100;
-    const max = parseInt(maxStr) || 500;
-
-    if (lines < min * 0.3) {
-        issues.push({ category: "length", message: `Output is only ${lines} lines. Expected ${fileMeta.lines} lines. Critically short.`, severity: "critical" });
+    if (lines < 40) {
+        issues.push({ category: "length", message: `Output is only ${lines} lines. Appears truncated or critically incomplete.`, severity: "critical" });
         return 10;
     }
 
-    if (lines < min * 0.6) {
-        issues.push({ category: "length", message: `Output is ${lines} lines, expected at least ${min}. Several sections may be incomplete.`, severity: "high" });
-        return 40;
+    if (lines < 80) {
+        issues.push({ category: "length", message: `Output is ${lines} lines. May be missing important sections.`, severity: "high" });
+        return 50;
     }
 
-    if (lines < min) {
-        issues.push({ category: "length", message: `Output is ${lines} lines, slightly below minimum of ${min}.`, severity: "medium" });
-        return 70;
-    }
-
-    if (lines > max * 1.5) {
-        issues.push({ category: "length", message: `Output is ${lines} lines, significantly over the expected ${max} maximum. May include unnecessary content.`, severity: "low" });
-        return 85;
-    }
-
+    // Dense, high-quality short files are fine — no penalty for conciseness
     return 100;
 }
 
