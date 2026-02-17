@@ -265,8 +265,9 @@ export default function App() {
     <div style={{ minHeight: "100vh", background: "#0a0f1a", color: "#e2e8f0" }}>
       {/* ═══ TOP NAV ═══ */}
       <nav style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(10,15,26,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid #1e293b", padding: "6px 12px", minHeight: 48, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 4 }}>
-        <span style={{ fontSize: 14, fontWeight: 800, color: "#fb923c", letterSpacing: 0.5 }}>⚡ Blueprint Compiler <span style={{ fontSize: 10, color: "#475569", fontWeight: 400 }}>v2.0</span></span>
+        <a href="/" style={{ fontSize: 14, fontWeight: 800, color: "#fb923c", letterSpacing: 0.5, textDecoration: "none" }}>⚡ Blueprint Compiler <span style={{ fontSize: 10, color: "#475569", fontWeight: 400 }}>v2.0</span></a>
         <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+          <a href="/" style={{ fontSize: 12, color: "#94a3b8", textDecoration: "none", fontWeight: 500 }}>🏠 Home</a>
           <button onClick={() => setShowLibrary(!showLibrary)} style={{ background: "none", border: "1px solid #334155", borderRadius: 6, color: "#94a3b8", cursor: "pointer", padding: "4px 12px", fontSize: 12, fontWeight: 600 }}>
             📁 Library ({library.length})
           </button>
@@ -873,6 +874,13 @@ Before every complex action, use a <thought> block to:
           <p>
             Blueprint Compiler v2.0 — Multi-IDE · Agentic Generation · Quality Scoring
           </p>
+          <div style={{ marginTop: 10, display: "flex", justifyContent: "center", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+            <a href="/" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>🏠 Home</a>
+            <a href="/#features" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>✨ Features</a>
+            <a href="/#pricing" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>💰 Pricing</a>
+            <a href="/docs.html" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>📖 Docs</a>
+            <a href="https://github.com/skywalker76/blueprint-compiler" target="_blank" rel="noreferrer" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>🐙 GitHub</a>
+          </div>
           <div style={{ marginTop: 8, display: "flex", justifyContent: "center", alignItems: "center", gap: 12 }}>
             <span>Powered by Context Engineering</span>
             <span>·</span>
