@@ -19,7 +19,7 @@ const C = {
 };
 
 // ─── MAP FILE TYPE → IDE PATH ───
-function getFilePath(fileTypeId, ideTarget) {
+export function getFilePath(fileTypeId, ideTarget) {
     const ide = IDE_TARGETS.find(t => t.id === ideTarget);
     if (!ide) return null;
 

@@ -8,7 +8,7 @@ import { GALLERY_BLUEPRINTS } from "./data/gallery.js";
 import { PRESETS } from "./data/presets.js";
 
 // ─── Engine ───
-import { generateFile as engineGenerateFile, generateAll as engineGenerateAll } from "./engine/generator.js";
+import { generateFile as engineGenerateFile, generateAll as engineGenerateAll, updateFile as engineUpdateFile } from "./engine/generator.js";
 import { scanPackageJson } from "./engine/scanner.js";
 import { PROVIDER_LIST, DEFAULT_PROVIDER, getProvider } from "./engine/providers/index.js";
 import { saveBlueprint, loadLibrary, deleteBlueprint, exportAsZip, exportAsJson, exportAsYaml, getBlueprintJsonString, getBlueprintYamlString, getUsageCount, trackUsage, migrateLocalToCloud, getTelemetryPreference, setTelemetryPreference, trackAnonymousEvent } from "./engine/persistence.js";
@@ -47,6 +47,7 @@ export default function App() {
   const [provider, setProvider] = useState(() => sessionStorage.getItem("bc_provider") || DEFAULT_PROVIDER);
   const [modelId, setModelId] = useState(() => sessionStorage.getItem("bc_model") || "");
   const [showKeyInfo, setShowKeyInfo] = useState(false);
+  const [updateInput, setUpdateInput] = useState({}); // { [fileType]: "change description" }
   const [step, setStep] = useState(0);
   const [config, setConfig] = useState({
     domain: "", projectName: "", mission: "",
@@ -164,6 +165,30 @@ export default function App() {
     }
     setGenerating(null);
     trackAnonymousEvent("generate_file", { fileType });
+  };
+
+  // ─── Update Mode ───
+  const handleUpdateFile = async (fileType) => {
+    const changeDesc = updateInput[fileType];
+    if (!changeDesc?.trim()) { setError("Please describe what changed"); return; }
+    const existing = generated[fileType]?.output;
+    if (!existing) { setError("No existing file to update — generate first"); return; }
+    if (!user) { setShowAuthModal(true); return; }
+    if (!apiKey) { setError("Please enter your API key first"); return; }
+    setGenerating(fileType);
+    setError(null);
+    setActiveTab(fileType);
+    try {
+      const result = await engineUpdateFile(fileType, apiKey, config, ideTarget, existing, changeDesc, (progress) => {
+        setGenerating(`${fileType} (${progress.phase})`);
+      }, provider, modelId || getProvider(provider).defaultModel);
+      setGenerated(p => ({ ...p, [fileType]: result }));
+      setUpdateInput(p => ({ ...p, [fileType]: "" }));
+    } catch (err) {
+      setError(`Update ${fileType}: ${err.message}`);
+    }
+    setGenerating(null);
+    trackAnonymousEvent("update_file", { fileType });
   };
 
   const handleGenerateAll = async () => {
@@ -799,6 +824,24 @@ export default function App() {
                         {generating?.startsWith(ft.id) ? "⏳ ..." : generated[ft.id]?.output ? "↻ Regen" : "▶ Generate"}
                       </button>
                     </div>
+                    {/* Update Mode: only visible when file already generated */}
+                    {generated[ft.id]?.output && (
+                      <div style={{ display: "flex", gap: 8, padding: "6px 12px", background: "#0f172a", borderBottom: "1px solid #1e293b", alignItems: "center" }}>
+                        <input
+                          type="text"
+                          placeholder="Describe what changed (e.g., 'added Redis caching', 'switched to GraphQL')..."
+                          value={updateInput[ft.id] || ""}
+                          onChange={e => setUpdateInput(p => ({ ...p, [ft.id]: e.target.value }))}
+                          onKeyDown={e => e.key === "Enter" && handleUpdateFile(ft.id)}
+                          disabled={!!generating}
+                          style={{ ...S.input, flex: 1, fontSize: 12, padding: "6px 10px" }}
+                        />
+                        <button onClick={() => handleUpdateFile(ft.id)} disabled={!!generating || !apiKey || !updateInput[ft.id]?.trim()}
+                          style={{ ...S.btn(false, !!generating || !apiKey || !updateInput[ft.id]?.trim()), fontSize: 12, padding: "6px 12px", whiteSpace: "nowrap" }}>
+                          🔄 Update
+                        </button>
+                      </div>
+                    )}
 
                     {/* Quality Score for this file */}
                     {generated[ft.id]?.quality && (

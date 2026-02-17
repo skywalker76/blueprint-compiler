@@ -227,3 +227,69 @@ export async function generateAll(apiKey, config, ideTarget, onFileProgress, pro
 
     return results;
 }
+
+// ─── UPDATE MODE: SYSTEM PROMPT ───
+const UPDATE_SYSTEM_PROMPT = `You are a Context Engineering Blueprint Updater. You receive an EXISTING Blueprint file and a CHANGE DESCRIPTION. Your job is to INTELLIGENTLY UPDATE the existing file.
+
+## UPDATE RULES
+1. PRESERVE all sections that are NOT affected by the change
+2. UPDATE only the sections that need modification
+3. ADD new sections if the change introduces new concerns
+4. REMOVE sections only if they are explicitly obsoleted by the change
+5. Maintain the same format, writing style, and structure as the original
+6. Keep [CORE] sections (security, types, clean code) intact unless explicitly changed
+7. Update [STACK] sections when technologies change
+8. Ensure internal coherence — no contradictions between old and new content
+9. Output the COMPLETE updated file, not just the diff`;
+
+// ─── UPDATE SINGLE FILE ───
+export async function updateFile(fileType, apiKey, config, ideTarget, existingContent, changeDescription, onProgress, providerId, modelId) {
+    const provider = getProvider(providerId);
+    const ide = IDE_TARGETS.find(t => t.id === ideTarget) || IDE_TARGETS[0];
+    const rigor = config.rigor || "balanced";
+    const baseSystem = IDE_ADAPTERS[ide.id]?.(UPDATE_SYSTEM_PROMPT) || UPDATE_SYSTEM_PROMPT;
+    const systemPrompt = baseSystem + (RIGOR_MODIFIERS[rigor] || RIGOR_MODIFIERS.balanced);
+
+    const fileMeta = FILE_TYPES.find(f => f.id === fileType);
+    const userPrompt = `## Update Request
+
+**File type:** ${fileMeta?.label || fileType} (${fileMeta?.layer || ""})
+**Project:** ${config.projectName || "Untitled"}
+**Domain:** ${config.domain || "custom"}
+**Target IDE:** ${ide.name}
+
+### What Changed
+${changeDescription}
+
+### Existing Blueprint File (update this)
+\`\`\`
+${existingContent}
+\`\`\`
+
+Generate the COMPLETE updated ${fileMeta?.label || fileType} file. Preserve everything that's still valid. Update only what's affected by the changes described above.
+Expected length: ${fileMeta?.lines || "200-400"} lines minimum.`;
+
+    // Step 1: Update
+    onProgress?.({ phase: "updating", fileType, step: 1, total: 2 });
+    const updatedOutput = await provider.call(apiKey, systemPrompt, userPrompt, modelId);
+
+    // Step 2: Validate
+    onProgress?.({ phase: "validating", fileType, step: 1.5, total: 2 });
+    const report = validateOutput(updatedOutput, fileType, config);
+
+    // Step 3: Refine if quality < 75
+    if (report.score < 75) {
+        onProgress?.({ phase: "refining", fileType, step: 2, total: 2 });
+        const issuesList = report.issues.map(i => `- [${i.category}] ${i.message}`).join("\n");
+        const refinePrompt = REFINEMENT_PROMPT
+            .replace("{ISSUES}", issuesList)
+            .replace("{MIN_LINES}", String(parseInt(fileMeta?.lines || "200")));
+
+        const refinedOutput = await provider.call(apiKey, systemPrompt, userPrompt + "\n\n" + refinePrompt, modelId);
+        const refinedReport = validateOutput(refinedOutput, fileType, config);
+
+        return { output: refinedOutput, quality: refinedReport, refined: true, updated: true };
+    }
+
+    return { output: updatedOutput, quality: report, refined: false, updated: true };
+}
