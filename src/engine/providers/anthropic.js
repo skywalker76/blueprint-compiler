@@ -8,8 +8,9 @@ export class AnthropicProvider extends BaseProvider {
             name: "Anthropic",
             icon: "🟠",
             models: [
+                { id: "claude-opus-4.6-20250217", name: "Claude Opus 4.6", description: "🆕 Latest flagship, most capable", maxTokens: 8000 },
                 { id: "claude-sonnet-4-20250514", name: "Claude Sonnet 4", description: "Best balance speed/quality", maxTokens: 8000 },
-                { id: "claude-opus-4-20250514", name: "Claude Opus 4", description: "Most powerful, slower", maxTokens: 8000 },
+                { id: "claude-opus-4-20250514", name: "Claude Opus 4", description: "Powerful, slower", maxTokens: 8000 },
                 { id: "claude-3-5-haiku-20241022", name: "Claude 3.5 Haiku", description: "Fastest, cheapest", maxTokens: 8000 },
             ],
             defaultModel: "claude-sonnet-4-20250514",

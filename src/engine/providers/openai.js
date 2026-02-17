@@ -8,8 +8,9 @@ export class OpenAIProvider extends BaseProvider {
             name: "OpenAI",
             icon: "🟢",
             models: [
+                { id: "gpt-5.2", name: "GPT-5.2", description: "🆕 Latest flagship, most capable", maxTokens: 8000 },
                 { id: "gpt-4o", name: "GPT-4o", description: "Fast multimodal, best value", maxTokens: 8000 },
-                { id: "gpt-4.1", name: "GPT-4.1", description: "Latest, highest quality", maxTokens: 8000 },
+                { id: "gpt-4.1", name: "GPT-4.1", description: "High quality, reliable", maxTokens: 8000 },
                 { id: "gpt-4o-mini", name: "GPT-4o Mini", description: "Cheapest, good for testing", maxTokens: 8000 },
                 { id: "o3-mini", name: "o3-mini", description: "Reasoning model, slower", maxTokens: 8000 },
             ],
