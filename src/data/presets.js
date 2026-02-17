@@ -6,6 +6,7 @@ export const PRESET_CATEGORIES = [
     { id: "all", label: "All", icon: "🌐" },
     { id: "business", label: "Business", icon: "💼" },
     { id: "ai", label: "AI / LLM", icon: "🤖" },
+    { id: "social", label: "Social", icon: "💬" },
     { id: "commerce", label: "Commerce", icon: "🛒" },
     { id: "content", label: "Content", icon: "📝" },
     { id: "devtools", label: "DevTools", icon: "🛠️" },
@@ -184,7 +185,7 @@ export const PRESETS = [
         ideTarget: "cursor",
         config: {
             domain: "ecommerce", projectName: "my-store",
-            mission: "A high-performance headless e-commerce storefront with Shopify backend, instant search, and optimized checkout flow",
+            mission: "A high-performance headless e-commerce storefront with Shopify backend, Algolia instant search, optimized checkout flow, product recommendations, wishlists, customer reviews, inventory tracking, multi-currency support, and SEO-optimized product pages with ISR",
             langConvo: "en", langCode: "en",
             stack: { platform: "Shopify + Hydrogen", storefront: "Next.js 15", search: "Algolia", payments: "Stripe", cdn: "Cloudinary", hosting: "Vercel" },
             customDomain: "", customStack: "", priorities: ["performance", "scalability", "security", "maintainability"], rigor: "balanced",
@@ -248,7 +249,7 @@ export const PRESETS = [
         ideTarget: "antigravity",
         config: {
             domain: "wordpress", projectName: "my-wp-site",
-            mission: "A professional WordPress site with block-based theme, WooCommerce store, and optimized performance following VIP coding standards",
+            mission: "A professional WordPress site with block-based theme (theme.json), WooCommerce store with custom product types, Gutenberg custom blocks, REST API extensions, WP Rocket + Redis object caching, Yoast SEO configuration, role-based content access, and VIP-level coding standards with PHPStan analysis",
             langConvo: "en", langCode: "en",
             stack: { wpversion: "WordPress 6.7+", builder: "Gutenberg (Block Editor)", ecommerce: "WooCommerce", seo: "Yoast SEO", caching: "WP Rocket + Redis", hosting: "Kinsta" },
             customDomain: "", customStack: "", priorities: ["performance", "security", "maintainability", "scalability"], rigor: "balanced",
@@ -314,7 +315,7 @@ export const PRESETS = [
             domain: "saas", projectName: "my-api-platform",
             mission: "A developer API platform with REST and GraphQL endpoints, auto-generated Swagger/OpenAPI docs, API key management, rate limiting with Redis, usage metering, webhook delivery, SDK generation, and sandbox environment for testing",
             langConvo: "en", langCode: "en",
-            stack: { framework: "Next.js 15", api: "REST (Express)", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            stack: { framework: "Fastify", api: "REST + GraphQL", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
             customDomain: "", customStack: "", priorities: ["performance", "security", "scalability", "maintainability"], rigor: "strict",
         },
     },
@@ -339,7 +340,7 @@ export const PRESETS = [
         subtitle: "Node.js CLI with interactive prompts",
         gradient: "linear-gradient(135deg, #a3a3a3, #737373)",
         stackPills: ["Node.js", "Commander", "Inquirer", "Chalk"],
-        ideTarget: "cursor",
+        ideTarget: "windsurf",
         config: {
             domain: "custom", projectName: "my-cli-tool",
             mission: "A professional Node.js CLI tool with interactive prompts (Inquirer), colorful output (Chalk), sub-commands (Commander), config file management, progress bars, automatic updates checking, and comprehensive --help documentation",
@@ -360,10 +361,10 @@ export const PRESETS = [
         subtitle: "React Native + Expo with offline support",
         gradient: "linear-gradient(135deg, #10b981, #059669)",
         stackPills: ["Expo", "Zustand", "Supabase", "EAS Build"],
-        ideTarget: "cursor",
+        ideTarget: "copilot",
         config: {
             domain: "mobile", projectName: "my-mobile-app",
-            mission: "A cross-platform mobile app with offline-first architecture, real-time sync, and smooth native-feel navigation",
+            mission: "A cross-platform mobile app with offline-first architecture (WatermelonDB), real-time sync via Supabase Realtime, native-feel navigation with React Navigation, push notifications, biometric authentication, camera/media access, deep linking, and EAS Build for App Store/Play Store distribution",
             langConvo: "en", langCode: "en",
             stack: { framework: "React Native (Expo)", state: "Zustand", backend: "Supabase", navigation: "React Navigation", offline: "WatermelonDB", distribution: "EAS Build" },
             customDomain: "", customStack: "", priorities: ["performance", "maintainability", "security", "scalability"], rigor: "balanced",
@@ -375,7 +376,7 @@ export const PRESETS = [
         subtitle: "Workouts, tracking, social challenges",
         gradient: "linear-gradient(135deg, #ef4444, #dc2626)",
         stackPills: ["Expo", "Supabase", "HealthKit", "Zustand"],
-        ideTarget: "cursor",
+        ideTarget: "copilot",
         config: {
             domain: "mobile", projectName: "my-fitness-app",
             mission: "A fitness mobile app with workout plans, exercise library with animations, progress tracking with charts, Apple Health/Google Fit integration, social challenges, streaks and achievements, nutrition logging, and custom workout builder",
@@ -390,7 +391,7 @@ export const PRESETS = [
         subtitle: "Banking, budgets, transaction tracking",
         gradient: "linear-gradient(135deg, #22c55e, #15803d)",
         stackPills: ["Expo", "Plaid", "Supabase", "Charts"],
-        ideTarget: "cursor",
+        ideTarget: "copilot",
         config: {
             domain: "mobile", projectName: "my-fintech-app",
             mission: "A personal finance mobile app with bank account linking (Plaid), transaction categorization, budget management, spending analytics with charts, bill reminders, savings goals, and net worth tracking. Features biometric authentication and encrypted data storage",
@@ -446,6 +447,159 @@ export const PRESETS = [
             langConvo: "en", langCode: "en",
             stack: { orchestrator: "Custom (Node.js)", warehouse: "PostgreSQL", transform: "dbt", viz: "Metabase", streaming: "Redis Streams", storage: "S3 / MinIO" },
             customDomain: "", customStack: "", priorities: ["scalability", "maintainability", "performance", "security"], rigor: "strict",
+        },
+    },
+
+    // ═══════════════════════════════
+    //  💬 SOCIAL / REAL-TIME
+    // ═══════════════════════════════
+    {
+        id: "realtime-chat", category: "social",
+        icon: "💬", title: "Real-time Chat",
+        subtitle: "Rooms, DMs, typing indicators, files",
+        gradient: "linear-gradient(135deg, #6366f1, #4f46e5)",
+        stackPills: ["Next.js 15", "Socket.io", "Supabase", "Redis"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-chat-app",
+            mission: "A real-time chat application with public/private rooms, direct messages, typing indicators, read receipts, file sharing with preview, message reactions, thread replies, user presence status, push notifications, and message search. Features end-to-end encryption for DMs and admin moderation tools",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "REST (Express) + WebSocket", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["performance", "scalability", "security", "maintainability"], rigor: "balanced",
+        },
+    },
+    {
+        id: "social-platform", category: "social",
+        icon: "🐦", title: "Social Platform",
+        subtitle: "Feed, follows, posts, notifications",
+        gradient: "linear-gradient(135deg, #0ea5e9, #0284c7)",
+        stackPills: ["Next.js 15", "Prisma", "Redis", "Uploadthing"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-social-app",
+            mission: "A social media platform with user profiles, follow/unfollow system, algorithmic feed, posts with text/images/video, likes/comments/reposts, hashtags and trending topics, real-time notifications, content moderation with AI, direct messages, and user verification badges. Features infinite scroll and optimistic UI updates",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["performance", "scalability", "maintainability", "security"], rigor: "balanced",
+        },
+    },
+    {
+        id: "video-platform", category: "social",
+        icon: "🎥", title: "Video / Creator",
+        subtitle: "Upload, stream, monetize content",
+        gradient: "linear-gradient(135deg, #f43f5e, #e11d48)",
+        stackPills: ["Next.js 15", "Mux", "Prisma", "Stripe"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-video-platform",
+            mission: "A video content platform with upload and transcoding (Mux), channel management, subscription tiers, comments and community posts, playlists, recommendation engine, creator analytics dashboard, monetization with Stripe Connect, live streaming, and content moderation. Features adaptive bitrate streaming and watch history",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["performance", "scalability", "security", "maintainability"], rigor: "balanced",
+        },
+    },
+
+    // ═══════════════════════════════
+    //  🤖 AI / LLM (additional)
+    // ═══════════════════════════════
+    {
+        id: "ai-agent-framework", category: "ai",
+        icon: "🔗", title: "AI Agent Framework",
+        subtitle: "Multi-agent orchestration with tools",
+        gradient: "linear-gradient(135deg, #f59e0b, #d97706)",
+        stackPills: ["Next.js 15", "LangGraph", "Prisma", "OpenAI"],
+        ideTarget: "antigravity",
+        config: {
+            domain: "saas", projectName: "my-agent-framework",
+            mission: "An AI agent orchestration platform with visual agent builder, tool/function calling, multi-step workflow graphs (LangGraph), persistent conversation memory, agent marketplace, evaluation and testing suite, REST API endpoints for agent deployment, usage analytics, and multi-model support (OpenAI + Anthropic). Features human-in-the-loop approval steps and agent chaining",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "REST (Express)", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["scalability", "performance", "security", "maintainability"], rigor: "balanced",
+        },
+    },
+    {
+        id: "voice-ai", category: "ai",
+        icon: "🎤", title: "Voice AI App",
+        subtitle: "Speech-to-text, TTS, voice cloning",
+        gradient: "linear-gradient(135deg, #ec4899, #be185d)",
+        stackPills: ["Next.js 15", "Whisper", "ElevenLabs", "Supabase"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-voice-ai",
+            mission: "A voice AI application with speech-to-text transcription (OpenAI Whisper), text-to-speech synthesis (ElevenLabs), voice cloning, real-time transcription with streaming, voice commands and control, multilingual support with auto-detection, voice notes with searchable transcripts, audio processing pipeline, and API access for developers. Features speaker diarization and custom voice model training",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "REST (Express)", orm: "Prisma + PostgreSQL", auth: "Supabase Auth", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["performance", "scalability", "maintainability", "security"], rigor: "balanced",
+        },
+    },
+
+    // ═══════════════════════════════
+    //  💼 BUSINESS (additional)
+    // ═══════════════════════════════
+    {
+        id: "healthcare-portal", category: "business",
+        icon: "🏥", title: "Healthcare Portal",
+        subtitle: "Telemedicine, records, appointments",
+        gradient: "linear-gradient(135deg, #14b8a6, #0d9488)",
+        stackPills: ["Next.js 15", "Prisma", "NextAuth", "Twilio"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-health-portal",
+            mission: "A healthcare patient portal with appointment scheduling, telemedicine video consultations (Twilio), electronic health records, prescription management, lab results viewer, secure messaging between patients and providers, insurance verification, billing and copay management, and HIPAA-compliant data handling with audit logs. Features automated appointment reminders and symptom checker",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["security", "maintainability", "performance", "scalability"], rigor: "strict",
+        },
+    },
+    {
+        id: "real-estate", category: "business",
+        icon: "🏘️", title: "Real Estate Platform",
+        subtitle: "Listings, maps, virtual tours",
+        gradient: "linear-gradient(135deg, #84cc16, #65a30d)",
+        stackPills: ["Next.js 15", "Prisma", "Mapbox", "Cloudinary"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-real-estate",
+            mission: "A real estate platform with property listings, interactive map search (Mapbox), virtual tours, advanced multi-filter search, agent/agency profiles, mortgage calculator, saved searches with email alerts, appointment scheduling for viewings, neighborhood data and analytics, and comparison tool. Features image galleries with Cloudinary optimization and lead management CRM",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["performance", "scalability", "maintainability", "security"], rigor: "balanced",
+        },
+    },
+
+    // ═══════════════════════════════
+    //  🛠️ DEVTOOLS (additional)
+    // ═══════════════════════════════
+    {
+        id: "automation-platform", category: "devtools",
+        icon: "⚡", title: "Automation Platform",
+        subtitle: "Visual workflows, webhooks, integrations",
+        gradient: "linear-gradient(135deg, #f97316, #ea580c)",
+        stackPills: ["Node.js", "n8n", "PostgreSQL", "Redis"],
+        ideTarget: "windsurf",
+        config: {
+            domain: "custom", projectName: "my-automation",
+            mission: "A workflow automation platform with visual drag-and-drop builder, webhook triggers, 50+ integration connectors (APIs, databases, SaaS tools), scheduled task execution, error handling with automatic retry, detailed execution logs, team workspaces with shared workflows, REST API endpoints for external triggers, and template marketplace. Features conditional branching, loops, and parallel execution",
+            langConvo: "en", langCode: "en",
+            stack: {},
+            customDomain: "Workflow Automation Platform — A visual workflow builder with webhook triggers, scheduled tasks, 50+ connectors, and team collaboration",
+            customStack: "Node.js 20+, n8n (automation engine), PostgreSQL (workflow storage), Redis (job queue), Docker (deployment), Express (API layer)",
+            priorities: ["scalability", "maintainability", "performance", "security"], rigor: "balanced",
+        },
+    },
+    {
+        id: "status-monitoring", category: "devtools",
+        icon: "📡", title: "Status & Monitoring",
+        subtitle: "Uptime, alerts, incident management",
+        gradient: "linear-gradient(135deg, #22c55e, #16a34a)",
+        stackPills: ["Next.js 15", "ClickHouse", "Redis", "Resend"],
+        ideTarget: "windsurf",
+        config: {
+            domain: "saas", projectName: "my-status-page",
+            mission: "An uptime monitoring and status page platform with HTTP/TCP/DNS endpoint monitoring, latency tracking with percentile metrics, public status pages with custom branding, incident management with timeline, alert rules via email/Slack/SMS (Resend + webhooks), response time charts, scheduled maintenance windows, SLA reporting, and team notification escalation. Features global monitoring from multiple regions",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["performance", "scalability", "security", "maintainability"], rigor: "strict",
         },
     },
 ];

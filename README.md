@@ -27,7 +27,7 @@ Instead of repeating instructions every chat, your agent starts with deep knowle
 | **🔄 Update Mode** | Describe what changed → AI intelligently updates your Blueprint, preserving valid sections |
 | **🤖 Agentic Generation** | Generate → Validate → Score → Refine autonomous loop |
 | **🎯 4 IDE Support** | Antigravity, Cursor, GitHub Copilot, Windsurf |
-| **⚡ 27 Quick Start Presets** | One-click templates across 7 categories |
+| **⚡ 36 Quick Start Presets** | One-click templates across 8 categories |
 | **📦 Multi-Format Export** | JSON, YAML, ZIP (IDE-ready folder structure) |
 | **🔒 Cloud Auth & Library** | Supabase authentication, cloud sync, blueprint library |
 | **📊 Auto-Detect** | Scan `package.json` to pre-fill your stack |
@@ -201,7 +201,7 @@ src/
 │   ├── stacks.js           # Technology configurations per domain
 │   ├── constants.js         # IDE targets, tiers, file types
 │   ├── gallery.js           # Community blueprint gallery
-│   └── presets.js           # 27 Quick Start preset configs
+│   └── presets.js           # 36 Quick Start preset configs
 ├── engine/
 │   ├── generator.js         # Agentic generation + Update Mode
 │   ├── validator.js         # Quality scoring (0-100)
