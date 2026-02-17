@@ -1,11 +1,12 @@
-# ⚡ Blueprint Compiler v2.0
+# ⚡ Blueprint Compiler v2.1
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![React 18](https://img.shields.io/badge/React-18-61dafb.svg)](https://react.dev)
 [![Vite 6](https://img.shields.io/badge/Vite-6-646cff.svg)](https://vitejs.dev)
 [![Multi-IDE](https://img.shields.io/badge/IDEs-4_Targets-fb923c.svg)](#supported-ides)
+[![CLI](https://img.shields.io/badge/CLI-npx_ready-22c55e.svg)](#-cli-tool)
 
-> Transform project requirements into production-ready AI agent Blueprints — for **4 IDEs**, with **agentic generation**, **quality scoring**, and **cloud persistence**.
+> Transform project requirements into production-ready AI agent Blueprints — with **7 LLM models**, **CLI tool**, **smart Update Mode**, and **4 IDE targets**.
 
 🌐 **Live:** [blueprint-compiler.vercel.app](https://blueprint-compiler.vercel.app)
 
@@ -21,16 +22,63 @@ Instead of repeating instructions every chat, your agent starts with deep knowle
 
 | Feature | Description |
 |---------|-------------|
-| **4 IDE Support** | Antigravity, Cursor, GitHub Copilot, Windsurf |
-| **Agentic Generation** | Generate → Validate → Refine loop with quality scoring |
-| **27 Quick Start Presets** | One-click templates across 8 categories (SaaS, AI, Commerce, Content, DevTools, Mobile, Data) |
-| **Tabbed Output** | Overview, Architecture, Tools & Skills, Prompts, Raw Files |
-| **Multi-Format Export** | Copy JSON, Download YAML, Download ZIP (IDE-ready) |
-| **Cloud Auth** | Supabase authentication (email + GitHub) |
-| **Blueprint Library** | Save/load/delete with cloud sync |
-| **Community Gallery** | Browse and clone shared blueprints |
-| **Auto-Detect** | Scan `package.json` to pre-fill your stack |
+| **🧠 Multi-Provider LLM** | Anthropic (Claude Opus 4.6, Sonnet 4, Opus 4, Haiku 3.5) + OpenAI (GPT-5.2, GPT-4o, GPT-4.1, GPT-4o Mini, o3-mini) |
+| **⌨️ CLI Tool** | `npx blueprint-compiler init` — interactive terminal wizard with auto-detection |
+| **🔄 Update Mode** | Describe what changed → AI intelligently updates your Blueprint, preserving valid sections |
+| **🤖 Agentic Generation** | Generate → Validate → Score → Refine autonomous loop |
+| **🎯 4 IDE Support** | Antigravity, Cursor, GitHub Copilot, Windsurf |
+| **⚡ 30 Quick Start Presets** | One-click templates across 8 categories |
+| **📦 Multi-Format Export** | JSON, YAML, ZIP (IDE-ready folder structure) |
+| **🔒 Cloud Auth & Library** | Supabase authentication, cloud sync, blueprint library |
+| **📊 Auto-Detect** | Scan `package.json` to pre-fill your stack |
 | **6 Domains** | SaaS B2B, WordPress, E-commerce, Mobile, Data, Custom |
+
+## 🧠 Supported LLM Models
+
+| Provider | Models | Default |
+|----------|--------|---------|
+| 🟠 **Anthropic** | Claude Opus 4.6, Claude Sonnet 4, Claude Opus 4, Claude 3.5 Haiku | Sonnet 4 |
+| 🟢 **OpenAI** | GPT-5.2, GPT-4o, GPT-4.1, GPT-4o Mini, o3-mini | GPT-4o |
+
+Select your provider and model in the web UI dropdown or during the CLI wizard.
+
+## ⌨️ CLI Tool
+
+Install nothing — use `npx` directly:
+
+```bash
+# Generate a Blueprint (interactive wizard)
+npx blueprint-compiler init
+
+# Update existing Blueprint after changes
+npx blueprint-compiler update
+
+# Scan project stack from package.json
+npx blueprint-compiler scan
+```
+
+### CLI Features
+
+- **7-step wizard**: Provider → Model → API Key → Domain → Project → IDE → Rigor
+- **Auto-detection**: Scans `package.json` and pre-fills stack
+- **IDE-aware writer**: Creates files in the correct IDE paths
+- **Backup support**: Existing files backed up before overwrite
+- **Zero dependencies**: Uses only Node.js built-in modules
+
+## 🔄 Update Mode
+
+Don't regenerate from scratch — **update intelligently**.
+
+```
+# Web UI: type in the update field after generating
+"Added Redis for session caching and rate limiting"
+
+# CLI: run the update command
+npx blueprint-compiler update
+→ Describe your changes: "Switched from REST API to GraphQL with Apollo"
+```
+
+The AI reads your existing Blueprint, applies your changes to only the affected sections, and preserves everything else. Same validate → refine pipeline ensures quality.
 
 ## 🖥️ Supported IDEs
 
@@ -40,6 +88,25 @@ Instead of repeating instructions every chat, your agent starts with deep knowle
 | ⚡ **Cursor** | `.cursor/` | ✅ Full support |
 | 🐙 **GitHub Copilot** | `.github/copilot/` | ✅ Full support |
 | 🏄 **Windsurf** | `.windsurf/` | ✅ Full support |
+
+## 🚀 Quick Start
+
+### Web App
+
+```bash
+git clone https://github.com/skywalker76/blueprint-compiler.git
+cd blueprint-compiler
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173` — select your provider, paste your API key, generate.
+
+### CLI (no clone needed)
+
+```bash
+npx blueprint-compiler init
+```
 
 ## ⚡ Quick Start Presets
 
@@ -107,31 +174,13 @@ Click a preset card → wizard auto-fills → jump straight to Generate. Zero fr
 | 📈 Analytics Dashboard | Next.js 15, ClickHouse, Recharts, Redis |
 | 🔄 ETL Platform | Node.js, PostgreSQL, Redis, Docker |
 
-## 🚀 Run Locally
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) 18+
-- An [Anthropic API key](https://console.anthropic.com/) (~$0.15-0.25 per full Blueprint)
-
-### Install & run
-
-```bash
-git clone https://github.com/skywalker76/blueprint-compiler.git
-cd blueprint-compiler
-npm install
-npm run dev
-```
-
-Open `http://localhost:5173` and paste your API key.
-
 ## 📋 5-Step Wizard
 
 1. **🎯 Domain** — Choose from 6 project types (or Quick Start preset)
 2. **🖥️ IDE** — Select your target IDE with file path preview
 3. **⚙️ Stack** — Configure technology stack with guided explanations
 4. **📋 Project** — Name, mission, language, architecture priorities
-5. **⚡ Generate** — Agentic generation with quality scoring
+5. **⚡ Generate** — Agentic generation with quality scoring + Update Mode
 
 ### Generated Files (5 layers)
 
@@ -143,22 +192,6 @@ Open `http://localhost:5173` and paste your API key.
 | `Context` | Layer 5 | Architecture Decision Records + coding style |
 | `PROMPT_START` | Entry | Bootstrap file with project overview |
 
-### Output Tabs
-
-The generated blueprint is displayed across 5 tabs:
-
-- **📋 Overview** — Project summary, stack, priorities
-- **🏛️ Architecture** — ADRs, folder structure, conventions
-- **🛠️ Tools & Skills** — Agent competencies, templates, commands
-- **💬 Prompts** — System prompts, PROMPT_START bootstrap
-- **📄 Raw Files** — Individual files with copy buttons
-
-### Export Options
-
-- **📋 Copy JSON** — Clipboard for programmatic use
-- **📄 Download YAML** — Human-readable config
-- **📦 Download ZIP** — IDE-ready folder structure with all files in correct paths
-
 ## 🏗️ Architecture
 
 ```
@@ -168,67 +201,63 @@ src/
 │   ├── stacks.js           # Technology configurations per domain
 │   ├── constants.js         # IDE targets, tiers, file types
 │   ├── gallery.js           # Community blueprint gallery
-│   └── presets.js           # 30 Quick Start preset configs (8 categories)
+│   └── presets.js           # 30 Quick Start preset configs
 ├── engine/
-│   ├── generator.js         # Agentic generation loop
+│   ├── generator.js         # Agentic generation + Update Mode
 │   ├── validator.js         # Quality scoring (0-100)
 │   ├── scanner.js           # package.json auto-detect
-│   └── persistence.js       # Save/load/export (JSON, YAML, ZIP)
-├── components/
-│   ├── AuthModal.jsx        # Login/signup modal (Supabase)
-│   ├── BlueprintTabs.jsx    # 5-tab output + ExportBar
-│   ├── QuickStartBar.jsx    # Preset cards grid with category filters
-│   ├── QualityScore.jsx     # Score visualization
-│   ├── StepBar.jsx          # Wizard progress bar
-│   ├── InfoBox.jsx          # Contextual help
-│   ├── OptionGuide.jsx      # Technology explanations
-│   ├── CopyButton.jsx       # One-click copy
-│   └── SectionTitle.jsx     # Section headers
-├── context/
-│   └── AuthContext.jsx      # Supabase auth provider
-├── lib/
-│   └── supabaseClient.js    # Supabase client config
+│   ├── persistence.js       # Save/load/export (JSON, YAML, ZIP)
+│   └── providers/
+│       ├── base.js          # Abstract provider interface
+│       ├── anthropic.js     # Claude Opus 4.6, Sonnet 4, Opus 4, Haiku 3.5
+│       ├── openai.js        # GPT-5.2, GPT-4o, GPT-4.1, GPT-4o Mini, o3-mini
+│       └── index.js         # Provider registry + factory
+├── components/              # React UI components
+├── context/                 # Auth context (Supabase)
 ├── pages/
 │   └── LandingPage.jsx      # Marketing landing page
-├── styles.js                # Design system tokens
-├── App.jsx                  # Main orchestrator (wizard + generation)
-└── main.jsx                 # Entry point with AuthProvider
+├── App.jsx                  # Main orchestrator
+└── main.jsx                 # Entry point
+cli/
+├── index.js                 # CLI entry point (init, update, scan)
+├── wizard.js                # 7-step interactive wizard
+└── writer.js                # IDE-aware file writer with backups
 ```
-
-## 🔒 Security
-
-- **API keys** stored in `sessionStorage` — disappear when you close the tab
-- **Authentication** via Supabase (email + GitHub OAuth)
-- **Direct API calls** — your key goes only to Anthropic
-- **No analytics, no tracking, no cookies**
-- **Blueprints** synced to Supabase (authenticated) or `localStorage` (anonymous)
 
 ## 📦 Tech Stack
 
 - **React 18** — UI framework
 - **Vite 6** — Build tool
-- **Anthropic Claude API** — AI generation
+- **Anthropic Claude + OpenAI GPT** — Multi-provider AI generation
 - **Supabase** — Authentication + cloud storage
 - **JSZip** — ZIP file generation for exports
-- **Deployed on Vercel** — Production at [blueprint-compiler.vercel.app](https://blueprint-compiler.vercel.app)
+- **Node.js readline** — CLI (zero external dependencies)
+- **Deployed on Vercel** — [blueprint-compiler.vercel.app](https://blueprint-compiler.vercel.app)
+
+## 🔒 Security
+
+- **API keys** stored in `sessionStorage` — disappear when you close the tab
+- **Direct API calls** — your key goes only to your chosen provider
+- **Authentication** via Supabase (email + GitHub OAuth)
+- **No analytics, no tracking, no cookies**
 
 ## 🛠️ Customization
 
-### Add a new domain
+### Add a new LLM provider
 
-Edit `src/data/domains.js` and add a matching entry in `src/data/stacks.js`.
+Create a new file in `src/engine/providers/` extending `BaseProvider`, add it to `index.js`.
+
+### Add a new model
+
+Edit `src/engine/providers/anthropic.js` or `openai.js` — add an entry to the `models` array.
 
 ### Add a new IDE target
 
-Edit `src/data/constants.js` — add to the `IDE_TARGETS` array with the correct file paths.
+Edit `src/data/constants.js` — add to the `IDE_TARGETS` array with correct file paths.
 
 ### Add a new Quick Start preset
 
-Edit `src/data/presets.js` — add a new object with `id`, `icon`, `title`, `subtitle`, `gradient`, `stackPills`, `ideTarget`, and a full `config` object.
-
-### Change the AI model
-
-Edit `src/engine/generator.js` — search for the model name and replace it.
+Edit `src/data/presets.js` — add a new object with config.
 
 ## 📜 License
 

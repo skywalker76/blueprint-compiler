@@ -6,12 +6,12 @@ import "./LandingPage.css";
 
 // ─── DATA ───
 const FEATURES = [
-  { icon: "⚡", title: "30 Quick Start Presets", desc: "SaaS, CRM, AI Product, WordPress, Marketplace and more. Click a card → skip the wizard → generate instantly.", color: "orange" },
+  { icon: "🧠", title: "Multi-Provider LLM", desc: "Choose Anthropic (Opus 4.6, Sonnet 4) or OpenAI (GPT-5.2, GPT-4o). Select the perfect model for your budget and quality needs.", color: "orange" },
   { icon: "🤖", title: "Agentic Generation", desc: "Generate → Validate → Score → Refine. An autonomous loop that iterates until quality exceeds your threshold.", color: "blue" },
-  { icon: "🎯", title: "4 IDE Targets", desc: "One wizard, four outputs. Antigravity, Cursor, GitHub Copilot, and Windsurf — each with native file structure.", color: "green" },
-  { icon: "📦", title: "Multi-Format Export", desc: "Copy JSON to clipboard, download YAML config, or grab a ZIP with IDE-ready folder structure.", color: "purple" },
-  { icon: "📊", title: "Tabbed Output", desc: "5 organized tabs: Overview, Architecture, Tools & Skills, Prompts, and Raw Files. No more scrolling walls of text.", color: "cyan" },
-  { icon: "🔒", title: "Cloud Auth & Library", desc: "Sign in with email or GitHub via Supabase. Save, load, and sync your blueprints across devices.", color: "orange" },
+  { icon: "⌨️", title: "CLI Tool", desc: "npx blueprint-compiler init — interactive terminal wizard. Auto-detects your stack from package.json. Zero config.", color: "green" },
+  { icon: "🔄", title: "Update Mode", desc: "Changed your stack? Describe what changed and the AI intelligently updates your Blueprint — preserving what's still valid.", color: "purple" },
+  { icon: "🎯", title: "4 IDE Targets", desc: "One wizard, four outputs. Antigravity, Cursor, GitHub Copilot, and Windsurf — each with native file structure.", color: "cyan" },
+  { icon: "⚡", title: "30 Quick Start Presets", desc: "SaaS, CRM, AI Product, WordPress, Marketplace and more. Click a card → skip the wizard → generate instantly.", color: "orange" },
 ];
 
 const STEPS_DATA = [
@@ -23,13 +23,13 @@ const STEPS_DATA = [
 ];
 
 const COMPARISON = [
+  { feature: "LLM Support", before: "Claude only", after: "7 models (Anthropic + OpenAI)" },
+  { feature: "Interface", before: "Web only", after: "Web App + CLI" },
+  { feature: "Updates", before: "Regenerate all", after: "Smart Update Mode" },
   { feature: "IDE Support", before: "1 IDE", after: "4 IDEs" },
   { feature: "Generation", before: "Single-shot", after: "Agentic loop" },
   { feature: "Quick Start", before: "✕", after: "30 preset templates" },
-  { feature: "Output", before: "Raw text", after: "5 organized tabs" },
   { feature: "Export", before: "Copy only", after: "JSON + YAML + ZIP" },
-  { feature: "Auth", before: "✕", after: "Supabase (email + GitHub)" },
-  { feature: "Domains", before: "3", after: "6" },
   { feature: "Architecture", before: "Monolith", after: "Modular (24 files)" },
 ];
 
@@ -108,7 +108,7 @@ export default function LandingPage() {
           <Link to="/" className="nav-brand">
             <span className="logo-icon">⚡</span>
             <span className="logo-text">Blueprint Compiler</span>
-            <span className="version">v2.0</span>
+            <span className="version">v2.1</span>
           </Link>
           <div className="nav-links">
             <a href="#features" className="nav-link">Features</a>
@@ -129,7 +129,7 @@ export default function LandingPage() {
 
         <div className="hero-badge">
           <span className="dot" />
-          Now Supporting 4 IDEs
+          Now with CLI + Multi-Provider LLM
         </div>
 
         <h1>
@@ -138,9 +138,9 @@ export default function LandingPage() {
         </h1>
 
         <p className="subtitle">
-          Generate production-ready configuration files that turn generic AI
-          coding agents into specialized architects — powered by Context Engineering
-          and agentic generation.
+          Generate production-ready AI agent Blueprints with <strong>7 LLM models</strong>,
+          a <strong>CLI tool</strong>, and <strong>smart Update Mode</strong> —
+          for Antigravity, Cursor, Copilot & Windsurf.
         </p>
 
         <div className="hero-actions">

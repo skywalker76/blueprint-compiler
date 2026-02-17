@@ -729,6 +729,9 @@
         </div>
         <div class="nav-group">
             <div class="nav-label">Features & Tools</div>
+            <a class="nav-item" href="#multi-provider">Multi-Provider LLM</a>
+            <a class="nav-item" href="#cli-tool">CLI Tool</a>
+            <a class="nav-item" href="#update-mode">Update Mode</a>
             <a class="nav-item" href="#presets">Quick Start Presets</a>
             <a class="nav-item" href="#agentic-engine">Agentic Generation</a>
             <a class="nav-item" href="#ide-guides">IDE Setup Guides</a>
@@ -761,14 +764,16 @@
             <p>AI coding agents (Google Antigravity, GitHub Copilot, Cursor) are only as good as the context you give
                 them. Most developers provide minimal context — a file or two. Context Engineering provides
                 <strong>systematic, layered context</strong> that covers architecture, security, testing, deployment,
-                and coding style. The result: dramatically better code output with fewer iterations.</p>
+                and coding style. The result: dramatically better code output with fewer iterations.
+            </p>
         </div>
 
         <h3>The Blueprint Compiler</h3>
-        <p>The <strong>Blueprint Compiler</strong> is a web application that generates production-ready Blueprint files
-            through a guided 4-step wizard. You select your domain, configure your technology stack, define your
-            project, and the Compiler generates 5 complete Blueprint files — ready to drop into your AI agent's
-            configuration.</p>
+        <p>The <strong>Blueprint Compiler</strong> is a full platform — <strong>web app + CLI</strong> — that generates
+            production-ready Blueprint files
+            through a guided wizard. Choose your <strong>LLM provider</strong> (Anthropic or OpenAI), select a model,
+            configure your stack, and the Compiler generates 5 complete Blueprint files. Use <strong>Update
+                Mode</strong> to evolve your Blueprint as your project changes.</p>
 
         <!-- ═══ HOW IT WORKS ═══ -->
         <h2 id="how-it-works"><span class="emoji">🔄</span> How It Works</h2>
@@ -788,7 +793,8 @@
         <p>Each domain presents 5-6 technology categories (e.g., Frontend Framework, API Layer, Database,
             Authentication). Every option includes a detailed guide explaining <strong>what it does</strong>,
             <strong>when to choose it</strong>, and <strong>trade-offs</strong>. Defaults are battle-tested — change
-            them only with a clear reason.</p>
+            them only with a clear reason.
+        </p>
 
         <h4>Step 3 — Define Your Project</h4>
         <p>Enter your project name, mission statement, conversation language, code language, and arrange your
@@ -800,9 +806,10 @@
             generates 5 production-ready files. You can generate all at once or one at a time. Each file can be
             regenerated independently.</p>
 
-        <div class="info-box green">💰 <strong>Cost:</strong> Each file costs approximately $0.02-0.05. A full Blueprint
+        <div class="info-box green">💰 <strong>Cost:</strong> Each file costs approximately $0.02-0.05 with Claude
+            Sonnet 4. A full Blueprint
             (all 5 files) costs about $0.15-0.25. Your API key stays in your browser's session storage — it never
-            touches any server except Anthropic's API.</div>
+            touches any server except your chosen provider's API.</div>
 
         <!-- ═══ PRINCIPLES ═══ -->
         <h2 id="principles"><span class="emoji">⚖️</span> The 6 Fundamental Principles</h2>
@@ -1005,7 +1012,8 @@
         <h3 id="layer3"><span class="layer-badge l3">Layer 3</span> Skills</h3>
         <p>Skills are <strong>modular competencies</strong> stored as individual Markdown files in
             <code>.agent/skills/</code>. Each skill teaches the agent HOW to perform a specific task. Skills are loaded
-            <strong>on-demand</strong> — the agent reads them only when needed.</p>
+            <strong>on-demand</strong> — the agent reads them only when needed.
+        </p>
         <div class="card">
             <h4>Skill Structure</h4>
             <pre><code>## Goal
@@ -1031,7 +1039,8 @@ export function exampleFunction(): Result {
         </div>
         <p>A typical Blueprint generates <strong>5-8 skills</strong> tailored to the domain. Examples:
             <code>new-api-endpoint.md</code>, <code>database-migration.md</code>, <code>auth-flow.md</code>,
-            <code>component-creation.md</code>.</p>
+            <code>component-creation.md</code>.
+        </p>
 
         <!-- Layer 4 -->
         <h3 id="layer4"><span class="layer-badge l4">Layer 4</span> Workflows</h3>
@@ -1053,7 +1062,8 @@ export function exampleFunction(): Result {
             <p>5-6 formal records documenting why each major technology was chosen. Each ADR contains:
                 <strong>Title</strong>, <strong>Status</strong> (accepted/deprecated), <strong>Context</strong> (what
                 problem we faced), <strong>Decision</strong> (what we chose), <strong>Alternatives Considered</strong>,
-                <strong>Consequences</strong> (trade-offs accepted).</p>
+                <strong>Consequences</strong> (trade-offs accepted).
+            </p>
             <h4>coding_style.md — Coding Conventions</h4>
             <p>Naming conventions (camelCase vs snake_case), file naming patterns, import ordering, comment style, error
                 handling patterns. Specific to the chosen stack.</p>
@@ -1349,8 +1359,11 @@ export function exampleFunction(): Result {
         <!-- ═══ NEW SECTION 1: QUICK START PRESETS ═══ -->
         <!-- ═══════════════════════════════════════════════════════ -->
         <h2 id="presets"><span class="emoji">🚀</span> Quick Start Presets</h2>
-        <p>The Blueprint Compiler includes <strong>25 one-click preset templates</strong> across 8 categories. Each preset pre-fills the entire wizard (domain, IDE, stack, project name, mission) so you can generate a full Blueprint instantly.</p>
-        <div class="info-box">Click any preset in the <a href="/app">Compiler app</a> to skip the wizard and go straight to generation. Each preset represents a real-world project type with a battle-tested technology stack.</div>
+        <p>The Blueprint Compiler includes <strong>25 one-click preset templates</strong> across 8 categories. Each
+            preset pre-fills the entire wizard (domain, IDE, stack, project name, mission) so you can generate a full
+            Blueprint instantly.</p>
+        <div class="info-box">Click any preset in the <a href="/app">Compiler app</a> to skip the wizard and go straight
+            to generation. Each preset represents a real-world project type with a battle-tested technology stack.</div>
 
         <!-- Business -->
         <div class="preset-category-label">💼 Business</div>
@@ -1667,14 +1680,15 @@ export function exampleFunction(): Result {
         <!-- ═══ NEW SECTION 2: AGENTIC GENERATION ENGINE ═══ -->
         <!-- ═══════════════════════════════════════════════════════ -->
         <h2 id="agentic-engine"><span class="emoji">🤖</span> Agentic Generation Engine</h2>
-        <p>The Blueprint Compiler doesn't just generate files — it uses an <strong>autonomous multi-step loop</strong> that generates, validates, scores, and refines output until it meets quality thresholds.</p>
+        <p>The Blueprint Compiler doesn't just generate files — it uses an <strong>autonomous multi-step loop</strong>
+            that generates, validates, scores, and refines output until it meets quality thresholds.</p>
 
         <h3>How the Loop Works</h3>
         <div class="flow-steps">
             <div class="flow-step">
                 <div class="flow-num">📡</div>
                 <div class="flow-label">Generate</div>
-                <div class="flow-desc">Call Claude with system prompt + config</div>
+                <div class="flow-desc">Call your chosen LLM with system prompt + config</div>
             </div>
             <span class="flow-arrow">→</span>
             <div class="flow-step">
@@ -1693,570 +1707,973 @@ export function exampleFunction(): Result {
                 <div class="flow-num">♻️</div>
                 <div class="flow-label">Refine</div>
                 <div class="flow-desc">Auto-fix issues if score < threshold</div>
-            </div>
-        </div>
-
-        <h3>Quality Scoring</h3>
-        <p>Every generated file is scored on a <strong>0-100 scale</strong> across multiple dimensions:</p>
-        <table>
-            <tr><th>Dimension</th><th>Weight</th><th>Measures</th></tr>
-            <tr><td><strong>Completeness</strong></td><td>30%</td><td>All expected sections present, minimum line count met</td></tr>
-            <tr><td><strong>Specificity</strong></td><td>25%</td><td>References exact stack technologies (not generic), no placeholder text</td></tr>
-            <tr><td><strong>Structure</strong></td><td>20%</td><td>Proper markdown formatting, hierarchy, consistent style</td></tr>
-            <tr><td><strong>Actionability</strong></td><td>15%</td><td>Compilable code snippets, concrete patterns (not abstract advice)</td></tr>
-            <tr><td><strong>Coherence</strong></td><td>10%</td><td>Internal consistency, correct cross-references between files</td></tr>
-        </table>
-        <div class="info-box green">A score of <strong>75+</strong> (Grade B) is the default threshold for automatic refinement. Below this, the engine automatically regenerates with targeted fix instructions.</div>
-
-        <h3>Blueprint Rigor Levels</h3>
-        <p>Control how strict the generated Blueprint is:</p>
-        <div class="card">
-            <h4>🏛️ Strict — Enterprise / Production</h4>
-            <p>Full planning required before every task. 90%+ test coverage. Complete OWASP security checklist. Architecture Decision Records for every choice. For production systems and regulated industries.</p>
-        </div>
-        <div class="card">
-            <h4>⚖️ Balanced — Recommended</h4>
-            <p>Complexity-gated planning (simple tasks skip planning). 80%+ test coverage. Essential security controls. Best for most production projects.</p>
-        </div>
-        <div class="card">
-            <h4>🚀 Rapid — Prototype / MVP</h4>
-            <p>Minimal planning. Critical-path testing only. Ship fast. For hackathons, demos, and quick prototypes where speed matters more than rigor.</p>
-        </div>
-
-        <h3>IDE-Specific Prompt Adaptation</h3>
-        <p>The engine adapts its output format based on the target IDE:</p>
-        <table>
-            <tr><th>IDE</th><th>Config Format</th><th>Adaptation</th></tr>
-            <tr><td><strong>Antigravity</strong></td><td>Markdown (.md)</td><td>Full layered system with Skills, Workflows, and Enforcement Map</td></tr>
-            <tr><td><strong>Cursor</strong></td><td>MDC (.mdc)</td><td>Cursor-specific frontmatter with glob patterns and descriptions (~2000 token limit per rule)</td></tr>
-            <tr><td><strong>GitHub Copilot</strong></td><td>Markdown (.md)</td><td>Concise format optimized for Copilot's smaller context window</td></tr>
-            <tr><td><strong>Windsurf</strong></td><td>Markdown (.md)</td><td>Single .windsurfrules file at project root for Cascade mode</td></tr>
-        </table>
-
-        <!-- ═══════════════════════════════════════════════════════ -->
-        <!-- ═══ NEW SECTION 3: IDE SETUP GUIDES ═══ -->
-        <!-- ═══════════════════════════════════════════════════════ -->
-        <h2 id="ide-guides"><span class="emoji">🖥️</span> IDE Setup Guides</h2>
-        <p>After generating a Blueprint, place the output files in the correct locations for your IDE. Here's a guide for each supported IDE.</p>
-
-        <!-- Antigravity -->
-        <div class="ide-card">
-            <div class="ide-header">
-                <span class="ide-icon">🚀</span>
-                <div>
-                    <h4>Google Antigravity</h4>
-                    <small>Google's agentic IDE with Skills & Workflows system</small>
                 </div>
             </div>
-            <p>Antigravity uses a layered context system: <code>GEMINI.md</code> (global) + <code>rules.md</code> (project) + Skills (on-demand) + Workflows (procedures). This is <strong>THE native target</strong> for the Blueprint Compiler.</p>
-            <table class="path-table">
-                <tr><td>Rules</td><td>.antigravity/rules.md</td></tr>
-                <tr><td>Skills</td><td>.agent/skills/</td></tr>
-                <tr><td>Workflows</td><td>.agent/workflows/</td></tr>
-                <tr><td>Context</td><td>.context/</td></tr>
-                <tr><td>Entry</td><td>PROMPT_START.md</td></tr>
-            </table>
-            <div class="info-box">Use the <strong>Export ZIP</strong> feature to download a pre-structured ZIP file with all files in the correct paths. Unzip into your project root.</div>
-        </div>
 
-        <!-- Cursor -->
-        <div class="ide-card">
-            <div class="ide-header">
-                <span class="ide-icon">⚡</span>
-                <div>
-                    <h4>Cursor</h4>
-                    <small>AI-native code editor with .cursorrules</small>
+            <h3>Quality Scoring</h3>
+            <p>Every generated file is scored on a <strong>0-100 scale</strong> across multiple dimensions:</p>
+            <table>
+                <tr>
+                    <th>Dimension</th>
+                    <th>Weight</th>
+                    <th>Measures</th>
+                </tr>
+                <tr>
+                    <td><strong>Completeness</strong></td>
+                    <td>30%</td>
+                    <td>All expected sections present, minimum line count met</td>
+                </tr>
+                <tr>
+                    <td><strong>Specificity</strong></td>
+                    <td>25%</td>
+                    <td>References exact stack technologies (not generic), no placeholder text</td>
+                </tr>
+                <tr>
+                    <td><strong>Structure</strong></td>
+                    <td>20%</td>
+                    <td>Proper markdown formatting, hierarchy, consistent style</td>
+                </tr>
+                <tr>
+                    <td><strong>Actionability</strong></td>
+                    <td>15%</td>
+                    <td>Compilable code snippets, concrete patterns (not abstract advice)</td>
+                </tr>
+                <tr>
+                    <td><strong>Coherence</strong></td>
+                    <td>10%</td>
+                    <td>Internal consistency, correct cross-references between files</td>
+                </tr>
+            </table>
+            <div class="info-box green">A score of <strong>75+</strong> (Grade B) is the default threshold for automatic
+                refinement. Below this, the engine automatically regenerates with targeted fix instructions.</div>
+
+            <h3>Blueprint Rigor Levels</h3>
+            <p>Control how strict the generated Blueprint is:</p>
+            <div class="card">
+                <h4>🏛️ Strict — Enterprise / Production</h4>
+                <p>Full planning required before every task. 90%+ test coverage. Complete OWASP security checklist.
+                    Architecture Decision Records for every choice. For production systems and regulated industries.</p>
+            </div>
+            <div class="card">
+                <h4>⚖️ Balanced — Recommended</h4>
+                <p>Complexity-gated planning (simple tasks skip planning). 80%+ test coverage. Essential security
+                    controls. Best for most production projects.</p>
+            </div>
+            <div class="card">
+                <h4>🚀 Rapid — Prototype / MVP</h4>
+                <p>Minimal planning. Critical-path testing only. Ship fast. For hackathons, demos, and quick prototypes
+                    where speed matters more than rigor.</p>
+            </div>
+
+            <h3>IDE-Specific Prompt Adaptation</h3>
+            <p>The engine adapts its output format based on the target IDE:</p>
+            <table>
+                <tr>
+                    <th>IDE</th>
+                    <th>Config Format</th>
+                    <th>Adaptation</th>
+                </tr>
+                <tr>
+                    <td><strong>Antigravity</strong></td>
+                    <td>Markdown (.md)</td>
+                    <td>Full layered system with Skills, Workflows, and Enforcement Map</td>
+                </tr>
+                <tr>
+                    <td><strong>Cursor</strong></td>
+                    <td>MDC (.mdc)</td>
+                    <td>Cursor-specific frontmatter with glob patterns and descriptions (~2000 token limit per rule)
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>GitHub Copilot</strong></td>
+                    <td>Markdown (.md)</td>
+                    <td>Concise format optimized for Copilot's smaller context window</td>
+                </tr>
+                <tr>
+                    <td><strong>Windsurf</strong></td>
+                    <td>Markdown (.md)</td>
+                    <td>Single .windsurfrules file at project root for Cascade mode</td>
+                </tr>
+            </table>
+
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <!-- ═══ NEW: MULTI-PROVIDER LLM ═══ -->
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <h2 id="multi-provider"><span class="emoji">🧠</span> Multi-Provider LLM</h2>
+            <p>Blueprint Compiler supports <strong>7 models</strong> across <strong>2 providers</strong>. Choose the
+                right balance of quality, speed, and cost for your project.</p>
+
+            <h3>Anthropic Models</h3>
+            <table>
+                <tr>
+                    <th>Model</th>
+                    <th>Description</th>
+                    <th>Best For</th>
+                </tr>
+                <tr>
+                    <td><strong>Claude Opus 4.6</strong></td>
+                    <td>🆕 Latest flagship, most capable</td>
+                    <td>Complex enterprise Blueprints</td>
+                </tr>
+                <tr>
+                    <td><strong>Claude Sonnet 4</strong> (default)</td>
+                    <td>Best balance speed/quality</td>
+                    <td>Recommended for most projects</td>
+                </tr>
+                <tr>
+                    <td><strong>Claude Opus 4</strong></td>
+                    <td>Powerful, slower</td>
+                    <td>High-quality output, less time-sensitive</td>
+                </tr>
+                <tr>
+                    <td><strong>Claude 3.5 Haiku</strong></td>
+                    <td>Fastest, cheapest</td>
+                    <td>Testing and iteration</td>
+                </tr>
+            </table>
+
+            <h3>OpenAI Models</h3>
+            <table>
+                <tr>
+                    <th>Model</th>
+                    <th>Description</th>
+                    <th>Best For</th>
+                </tr>
+                <tr>
+                    <td><strong>GPT-5.2</strong></td>
+                    <td>🆕 Latest flagship, most capable</td>
+                    <td>Complex enterprise Blueprints</td>
+                </tr>
+                <tr>
+                    <td><strong>GPT-4o</strong> (default)</td>
+                    <td>Fast multimodal, best value</td>
+                    <td>Recommended for most projects</td>
+                </tr>
+                <tr>
+                    <td><strong>GPT-4.1</strong></td>
+                    <td>High quality, reliable</td>
+                    <td>Production Blueprints</td>
+                </tr>
+                <tr>
+                    <td><strong>GPT-4o Mini</strong></td>
+                    <td>Cheapest, good for testing</td>
+                    <td>Quick iterations and testing</td>
+                </tr>
+                <tr>
+                    <td><strong>o3-mini</strong></td>
+                    <td>Reasoning model, slower</td>
+                    <td>Complex architectural decisions</td>
+                </tr>
+            </table>
+
+            <div class="info-box">Select your provider and model in the web UI dropdown (in the API key bar) or during
+                the CLI wizard. The model selection persists across sessions.</div>
+
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <!-- ═══ NEW: CLI TOOL ═══ -->
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <h2 id="cli-tool"><span class="emoji">⌨️</span> CLI Tool</h2>
+            <p>Generate Blueprints directly from your terminal — no browser needed. Install nothing, just use
+                <code>npx</code>:</p>
+
+            <pre><code># Generate a full Blueprint (interactive wizard)
+npx blueprint-compiler init
+
+# Update existing Blueprint after changes
+npx blueprint-compiler update
+
+# Scan project stack from package.json
+npx blueprint-compiler scan</code></pre>
+
+            <h3>CLI Wizard Steps</h3>
+            <div class="flow-steps">
+                <div class="flow-step">
+                    <div class="flow-num">🟠</div>
+                    <div class="flow-label">Provider</div>
+                    <div class="flow-desc">Anthropic or OpenAI</div>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">
+                    <div class="flow-num">🧠</div>
+                    <div class="flow-label">Model</div>
+                    <div class="flow-desc">Select from 7 models</div>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">
+                    <div class="flow-num">🔑</div>
+                    <div class="flow-label">API Key</div>
+                    <div class="flow-desc">Validated on input</div>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">
+                    <div class="flow-num">🎯</div>
+                    <div class="flow-label">Domain</div>
+                    <div class="flow-desc">Auto-detected or manual</div>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">
+                    <div class="flow-num">⚡</div>
+                    <div class="flow-label">Generate</div>
+                    <div class="flow-desc">Write files to disk</div>
                 </div>
             </div>
-            <p>Cursor uses <code>.mdc</code> files in <code>.cursor/rules/</code> for project-specific instructions. Rules are loaded automatically based on file globs and descriptions. Keep each rule under ~2000 tokens.</p>
-            <table class="path-table">
-                <tr><td>Rules</td><td>.cursor/rules/blueprint.mdc</td></tr>
-                <tr><td>Skills</td><td>.cursor/rules/skills/</td></tr>
-                <tr><td>Workflows</td><td>.cursor/rules/workflows/</td></tr>
-                <tr><td>Context</td><td>.context/</td></tr>
-                <tr><td>Entry</td><td>.cursor/rules/overview.mdc</td></tr>
-            </table>
-            <div class="info-box">Cursor's MDC format includes YAML frontmatter (<code>description</code>, <code>globs</code>) that controls when rules are auto-loaded. The Blueprint Compiler generates this automatically.</div>
-        </div>
 
-        <!-- GitHub Copilot -->
-        <div class="ide-card">
-            <div class="ide-header">
-                <span class="ide-icon">🤖</span>
-                <div>
-                    <h4>GitHub Copilot</h4>
-                    <small>GitHub's AI pair programmer with custom instructions</small>
+            <h3>Key Features</h3>
+            <div class="card">
+                <h4>📦 Auto-Detection</h4>
+                <p>If a <code>package.json</code> exists in the current directory, the CLI automatically scans it and
+                    pre-fills your technology stack. No manual configuration needed.</p>
+            </div>
+            <div class="card">
+                <h4>💾 IDE-Aware Writer</h4>
+                <p>Files are written to the correct IDE-specific paths. Existing files are backed up before overwrite
+                    (<code>.backup</code>). Unchanged files are skipped.</p>
+            </div>
+            <div class="card">
+                <h4>📦 Zero Dependencies</h4>
+                <p>The CLI uses only Node.js built-in modules (<code>readline</code>, <code>fs</code>,
+                    <code>path</code>). No external packages needed.</p>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <!-- ═══ NEW: UPDATE MODE ═══ -->
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <h2 id="update-mode"><span class="emoji">🔄</span> Update Mode</h2>
+            <p>Instead of regenerating your Blueprint from scratch when something changes, <strong>describe what
+                    changed</strong> and the AI intelligently updates only the affected sections.</p>
+
+            <div class="flow-steps">
+                <div class="flow-step">
+                    <div class="flow-num">📄</div>
+                    <div class="flow-label">Existing Blueprint</div>
+                    <div class="flow-desc">Your current files</div>
+                </div>
+                <span class="flow-arrow">+</span>
+                <div class="flow-step">
+                    <div class="flow-num">✏️</div>
+                    <div class="flow-label">Change Description</div>
+                    <div class="flow-desc">"Added Redis caching"</div>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">
+                    <div class="flow-num">🧠</div>
+                    <div class="flow-label">AI Merge</div>
+                    <div class="flow-desc">Intelligent update</div>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">
+                    <div class="flow-num">✅</div>
+                    <div class="flow-label">Updated Blueprint</div>
+                    <div class="flow-desc">Validate + refine</div>
                 </div>
             </div>
-            <p>Copilot reads <code>.github/copilot-instructions.md</code> for repository-level custom instructions. The file is loaded automatically for all conversations. Keep content concise — Copilot has a smaller context window.</p>
-            <table class="path-table">
-                <tr><td>Rules</td><td>.github/copilot-instructions.md</td></tr>
-                <tr><td>Skills</td><td>.github/copilot/skills/</td></tr>
-                <tr><td>Workflows</td><td>.github/copilot/workflows/</td></tr>
-                <tr><td>Context</td><td>.context/</td></tr>
-                <tr><td>Entry</td><td>.github/copilot/overview.md</td></tr>
-            </table>
-            <div class="info-box yellow">⚠️ Copilot's context window is smaller than other IDEs. The Blueprint Compiler automatically generates a more concise version when targeting Copilot.</div>
-        </div>
 
-        <!-- Windsurf -->
-        <div class="ide-card">
-            <div class="ide-header">
-                <span class="ide-icon">🌊</span>
-                <div>
-                    <h4>Windsurf</h4>
-                    <small>Codeium's agentic IDE with Cascade flows</small>
+            <h3>How to Use</h3>
+            <div class="card">
+                <h4>Web UI</h4>
+                <p>After generating a file, an update input field appears below the Generate button. Type your change
+                    description (e.g., "switched from REST to GraphQL") and click 🔄 Update.</p>
+            </div>
+            <div class="card">
+                <h4>CLI</h4>
+                <p>Run <code>npx blueprint-compiler update</code> from your project root. The CLI auto-detects your IDE,
+                    finds existing Blueprint files, and prompts for the change description.</p>
+            </div>
+
+            <div class="info-box green">Update Mode preserves [CORE] sections (security, types, clean code) and updates
+                [STACK] sections when technologies change. The same validate → refine pipeline ensures quality.</div>
+
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <!-- ═══ NEW SECTION 3: IDE SETUP GUIDES ═══ -->
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <h2 id="ide-guides"><span class="emoji">🖥️</span> IDE Setup Guides</h2>
+            <p>After generating a Blueprint, place the output files in the correct locations for your IDE. Here's a
+                guide for each supported IDE.</p>
+
+            <!-- Antigravity -->
+            <div class="ide-card">
+                <div class="ide-header">
+                    <span class="ide-icon">🚀</span>
+                    <div>
+                        <h4>Google Antigravity</h4>
+                        <small>Google's agentic IDE with Skills & Workflows system</small>
+                    </div>
+                </div>
+                <p>Antigravity uses a layered context system: <code>GEMINI.md</code> (global) + <code>rules.md</code>
+                    (project) + Skills (on-demand) + Workflows (procedures). This is <strong>THE native target</strong>
+                    for the Blueprint Compiler.</p>
+                <table class="path-table">
+                    <tr>
+                        <td>Rules</td>
+                        <td>.antigravity/rules.md</td>
+                    </tr>
+                    <tr>
+                        <td>Skills</td>
+                        <td>.agent/skills/</td>
+                    </tr>
+                    <tr>
+                        <td>Workflows</td>
+                        <td>.agent/workflows/</td>
+                    </tr>
+                    <tr>
+                        <td>Context</td>
+                        <td>.context/</td>
+                    </tr>
+                    <tr>
+                        <td>Entry</td>
+                        <td>PROMPT_START.md</td>
+                    </tr>
+                </table>
+                <div class="info-box">Use the <strong>Export ZIP</strong> feature to download a pre-structured ZIP file
+                    with all files in the correct paths. Unzip into your project root.</div>
+            </div>
+
+            <!-- Cursor -->
+            <div class="ide-card">
+                <div class="ide-header">
+                    <span class="ide-icon">⚡</span>
+                    <div>
+                        <h4>Cursor</h4>
+                        <small>AI-native code editor with .cursorrules</small>
+                    </div>
+                </div>
+                <p>Cursor uses <code>.mdc</code> files in <code>.cursor/rules/</code> for project-specific instructions.
+                    Rules are loaded automatically based on file globs and descriptions. Keep each rule under ~2000
+                    tokens.</p>
+                <table class="path-table">
+                    <tr>
+                        <td>Rules</td>
+                        <td>.cursor/rules/blueprint.mdc</td>
+                    </tr>
+                    <tr>
+                        <td>Skills</td>
+                        <td>.cursor/rules/skills/</td>
+                    </tr>
+                    <tr>
+                        <td>Workflows</td>
+                        <td>.cursor/rules/workflows/</td>
+                    </tr>
+                    <tr>
+                        <td>Context</td>
+                        <td>.context/</td>
+                    </tr>
+                    <tr>
+                        <td>Entry</td>
+                        <td>.cursor/rules/overview.mdc</td>
+                    </tr>
+                </table>
+                <div class="info-box">Cursor's MDC format includes YAML frontmatter (<code>description</code>,
+                    <code>globs</code>) that controls when rules are auto-loaded. The Blueprint Compiler generates this
+                    automatically.</div>
+            </div>
+
+            <!-- GitHub Copilot -->
+            <div class="ide-card">
+                <div class="ide-header">
+                    <span class="ide-icon">🤖</span>
+                    <div>
+                        <h4>GitHub Copilot</h4>
+                        <small>GitHub's AI pair programmer with custom instructions</small>
+                    </div>
+                </div>
+                <p>Copilot reads <code>.github/copilot-instructions.md</code> for repository-level custom instructions.
+                    The file is loaded automatically for all conversations. Keep content concise — Copilot has a smaller
+                    context window.</p>
+                <table class="path-table">
+                    <tr>
+                        <td>Rules</td>
+                        <td>.github/copilot-instructions.md</td>
+                    </tr>
+                    <tr>
+                        <td>Skills</td>
+                        <td>.github/copilot/skills/</td>
+                    </tr>
+                    <tr>
+                        <td>Workflows</td>
+                        <td>.github/copilot/workflows/</td>
+                    </tr>
+                    <tr>
+                        <td>Context</td>
+                        <td>.context/</td>
+                    </tr>
+                    <tr>
+                        <td>Entry</td>
+                        <td>.github/copilot/overview.md</td>
+                    </tr>
+                </table>
+                <div class="info-box yellow">⚠️ Copilot's context window is smaller than other IDEs. The Blueprint
+                    Compiler automatically generates a more concise version when targeting Copilot.</div>
+            </div>
+
+            <!-- Windsurf -->
+            <div class="ide-card">
+                <div class="ide-header">
+                    <span class="ide-icon">🌊</span>
+                    <div>
+                        <h4>Windsurf</h4>
+                        <small>Codeium's agentic IDE with Cascade flows</small>
+                    </div>
+                </div>
+                <p>Windsurf uses a single <code>.windsurfrules</code> file at the project root for workspace-level
+                    instructions. Cascade (agentic mode) reads it automatically. Supports standard markdown format.</p>
+                <table class="path-table">
+                    <tr>
+                        <td>Rules</td>
+                        <td>.windsurfrules</td>
+                    </tr>
+                    <tr>
+                        <td>Skills</td>
+                        <td>.windsurf/skills/</td>
+                    </tr>
+                    <tr>
+                        <td>Workflows</td>
+                        <td>.windsurf/workflows/</td>
+                    </tr>
+                    <tr>
+                        <td>Context</td>
+                        <td>.context/</td>
+                    </tr>
+                    <tr>
+                        <td>Entry</td>
+                        <td>.windsurf/overview.md</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <!-- ═══ NEW SECTION 4: CLOUD & EXPORT ═══ -->
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <h2 id="cloud-export"><span class="emoji">💾</span> Cloud & Export</h2>
+            <p>The Blueprint Compiler supports multiple persistence and export options for your generated Blueprints.
+            </p>
+
+            <h3>Authentication</h3>
+            <p>Sign in with <strong>email/password</strong> or <strong>GitHub OAuth</strong> via Supabase.
+                Authentication unlocks cloud save, cross-device sync, and the Blueprint Library.</p>
+
+            <h3>Blueprint Library</h3>
+            <div class="card">
+                <h4>📁 My Blueprints</h4>
+                <p>Save generated Blueprints to your personal library. Each saved Blueprint includes the full
+                    configuration (domain, stack, IDE target, priorities) and all generated file outputs. Load any
+                    Blueprint to restore the entire state and continue editing or regenerating.</p>
+            </div>
+            <div class="card">
+                <h4>🌐 Community Gallery</h4>
+                <p>Browse official and community-contributed Blueprints. Each gallery entry shows the project name,
+                    domain, IDE target, author, and quality score. Clone any gallery Blueprint into your own workspace
+                    with one click.</p>
+            </div>
+
+            <h3>Export Formats</h3>
+            <table>
+                <tr>
+                    <th>Format</th>
+                    <th>Description</th>
+                    <th>Best For</th>
+                </tr>
+                <tr>
+                    <td><strong>📋 Copy All</strong></td>
+                    <td>Copy all 5 files to clipboard as a single text block</td>
+                    <td>Quick paste into existing projects</td>
+                </tr>
+                <tr>
+                    <td><strong>📥 JSON</strong></td>
+                    <td>Full Blueprint as a structured JSON file with metadata</td>
+                    <td>Backup, sharing, API integration</td>
+                </tr>
+                <tr>
+                    <td><strong>📦 ZIP</strong></td>
+                    <td>IDE-ready folder structure with files in correct paths</td>
+                    <td>New projects — unzip and start coding</td>
+                </tr>
+            </table>
+
+            <h3>Auto-Migration</h3>
+            <div class="info-box">When you sign in for the first time, any Blueprints saved in your browser's
+                <code>localStorage</code> are automatically migrated to your cloud account. Zero data loss.</div>
+
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <!-- ═══ NEW SECTION 5: PROJECT SCANNER ═══ -->
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <h2 id="scanner"><span class="emoji">🔍</span> Project Scanner</h2>
+            <p>Already have an existing project? The <strong>Project Scanner</strong> analyzes your
+                <code>package.json</code> and auto-fills the wizard with detected technologies.</p>
+
+            <h3>How It Works</h3>
+            <div class="flow-steps">
+                <div class="flow-step">
+                    <div class="flow-num">📋</div>
+                    <div class="flow-label">Paste</div>
+                    <div class="flow-desc">Paste your package.json</div>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">
+                    <div class="flow-num">🔍</div>
+                    <div class="flow-label">Analyze</div>
+                    <div class="flow-desc">Scan dependencies</div>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">
+                    <div class="flow-num">⚡</div>
+                    <div class="flow-label">Detect</div>
+                    <div class="flow-desc">Match to known stacks</div>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">
+                    <div class="flow-num">✅</div>
+                    <div class="flow-label">Auto-fill</div>
+                    <div class="flow-desc">Pre-fill wizard fields</div>
                 </div>
             </div>
-            <p>Windsurf uses a single <code>.windsurfrules</code> file at the project root for workspace-level instructions. Cascade (agentic mode) reads it automatically. Supports standard markdown format.</p>
-            <table class="path-table">
-                <tr><td>Rules</td><td>.windsurfrules</td></tr>
-                <tr><td>Skills</td><td>.windsurf/skills/</td></tr>
-                <tr><td>Workflows</td><td>.windsurf/workflows/</td></tr>
-                <tr><td>Context</td><td>.context/</td></tr>
-                <tr><td>Entry</td><td>.windsurf/overview.md</td></tr>
+
+            <h3>What Gets Detected</h3>
+            <table>
+                <tr>
+                    <th>Category</th>
+                    <th>Example Detections</th>
+                </tr>
+                <tr>
+                    <td><strong>Domain</strong></td>
+                    <td>SaaS (from next + stripe), WordPress (from wordpress), E-commerce (from shopify)</td>
+                </tr>
+                <tr>
+                    <td><strong>Framework</strong></td>
+                    <td>Next.js, Nuxt, SvelteKit, Remix, React Native</td>
+                </tr>
+                <tr>
+                    <td><strong>API Layer</strong></td>
+                    <td>tRPC, Apollo GraphQL, Express, Hono</td>
+                </tr>
+                <tr>
+                    <td><strong>ORM / Database</strong></td>
+                    <td>Drizzle, Prisma, TypeORM, Mongoose</td>
+                </tr>
+                <tr>
+                    <td><strong>Auth</strong></td>
+                    <td>NextAuth.js, Clerk, Auth0, Supabase Auth</td>
+                </tr>
+                <tr>
+                    <td><strong>Project Name</strong></td>
+                    <td>Extracted from package.json <code>name</code> field</td>
+                </tr>
             </table>
+            <div class="info-box">Each detection includes a <strong>confidence score</strong> (percentage) based on how
+                strongly the dependency matches a known technology. You can always override detections manually in the
+                wizard.</div>
+
+            <!-- ═══ OUTPUT FILES ═══ -->
+            <h2 id="output-files"><span class="emoji">📄</span> Output Files</h2>
+            <p>The Compiler generates 5 files. Each corresponds to a specific layer of the Blueprint architecture.</p>
+
+            <table>
+                <tr>
+                    <th>File</th>
+                    <th>Layer</th>
+                    <th>Lines</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td><code>rules.md</code></td>
+                    <td><span class="layer-badge l2">L2</span></td>
+                    <td>400-500</td>
+                    <td>Workspace Rules — the core. Defines identity, stack, architecture, conventions, security. This
+                        is
+                        the most important file.</td>
+                </tr>
+                <tr>
+                    <td><code>Skills</code></td>
+                    <td><span class="layer-badge l3">L3</span></td>
+                    <td>500-700</td>
+                    <td>5-8 modular competencies loaded on-demand. Each teaches the agent HOW to do a specific task with
+                        compilable templates.</td>
+                </tr>
+                <tr>
+                    <td><code>Workflows</code></td>
+                    <td><span class="layer-badge l4">L4</span></td>
+                    <td>200-300</td>
+                    <td>Step-by-step procedures: new-feature, deploy-check, plus domain-specific. The agent follows
+                        these
+                        like a checklist.</td>
+                </tr>
+                <tr>
+                    <td><code>Context</code></td>
+                    <td><span class="layer-badge l5">L5</span></td>
+                    <td>300-400</td>
+                    <td>Architecture Decision Records (ADR) documenting WHY each technology was chosen, plus coding
+                        style
+                        conventions.</td>
+                </tr>
+                <tr>
+                    <td><code>PROMPT_START</code></td>
+                    <td>Entry</td>
+                    <td>60-80</td>
+                    <td>Bootstrap file — project overview, file tree, quick start commands. The agent reads this first.
+                    </td>
+                </tr>
+            </table>
+
+            <!-- ═══ GLOSSARY ═══ -->
+            <h2 id="glossary"><span class="emoji">📚</span> Complete Glossary</h2>
+            <p>An exhaustive, alphabetical reference of every term, concept, and technology used in the Blueprint
+                Compiler
+                ecosystem.</p>
+
+            <dl>
+                <div class="glossary-term">
+                    <dt>ADR (Architecture Decision Record)</dt>
+                    <dd>A formal document recording a significant architectural decision: the context, the decision
+                        itself,
+                        alternatives considered, and consequences. Part of Layer 5. ADRs are immutable — when a decision
+                        changes, a new ADR supersedes the old one rather than editing it.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Agent</dt>
+                    <dd>An AI coding assistant (e.g., Google Antigravity, GitHub Copilot, Cursor) that reads your code,
+                        understands instructions, and generates or modifies code. Without a Blueprint, an agent has no
+                        project-specific context and produces generic output.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>API Layer</dt>
+                    <dd>The communication protocol between frontend and backend. Options include tRPC (type-safe, zero
+                        documentation needed), GraphQL (flexible queries for complex data), REST (universally
+                        understood),
+                        and Hono (edge-first, ultra-lightweight).</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Authentication</dt>
+                    <dd>The system that verifies user identity (login). Options range from self-hosted (NextAuth.js —
+                        full
+                        control, free) to managed services (Clerk — beautiful pre-built UI) to enterprise-grade (Auth0 —
+                        SAML, LDAP, SSO support).</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>BaaS (Backend as a Service)</dt>
+                    <dd>A cloud service providing pre-built backend functionality: database, authentication, file
+                        storage,
+                        serverless functions. Examples: Supabase (open-source, PostgreSQL), Firebase (Google, NoSQL),
+                        Appwrite (self-hosted). Eliminates the need to build a custom backend.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Blueprint</dt>
+                    <dd>A complete set of configuration files (typically 5) that transforms a generic AI agent into a
+                        specialized architect for your specific project. A Blueprint defines your stack, architecture,
+                        conventions, security policies, and coding standards. It consists of Layer 2-6 files.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Blueprint Compiler</dt>
+                    <dd>The web application that generates Blueprints. A 4-step wizard: Domain → Stack → Project →
+                        Generate.
+                        100% client-side React, zero backend. Calls the Anthropic Claude API directly from the browser
+                        using
+                        the user's own API key.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>CDN (Content Delivery Network)</dt>
+                    <dd>A global network of servers that cache and serve content close to users. For e-commerce:
+                        Cloudinary
+                        (image transformation), Imgix (URL-based processing), Vercel Image (zero-config with Next.js),
+                        Cloudflare Images (competitive pricing).</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>CI/CD</dt>
+                    <dd>Continuous Integration / Continuous Deployment. Automated pipelines that test, build, and deploy
+                        code. The deploy-check workflow (Layer 4) defines the exact steps: lint → typecheck → test →
+                        build →
+                        security audit.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Context Engineering</dt>
+                    <dd>The discipline of designing structured, layered configuration systems for AI coding agents. Goes
+                        beyond prompt engineering (which focuses on individual prompts) by creating systematic,
+                        reusable,
+                        enforceable configuration that persists across sessions.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Context Window</dt>
+                    <dd>The maximum amount of text an AI model can process at once. Progressive Disclosure (Principle 2)
+                        prevents filling the context window with irrelevant information, keeping the agent focused on
+                        the
+                        current task.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Custom Domain</dt>
+                    <dd>The 6th domain option in the Compiler. For projects that don't fit predefined categories. Users
+                        describe their domain and stack manually. Examples: IoT, game dev, AI/ML platforms, DevOps
+                        tooling.
+                    </dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Data Platform</dt>
+                    <dd>One of the 6 domains. Covers ETL/ELT pipelines, data warehouses, transformation frameworks, and
+                        visualization tools. Key technologies: Airflow/Dagster (orchestration), BigQuery/Snowflake
+                        (warehouse), dbt (transformation), Metabase/Grafana (visualization).</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Domain</dt>
+                    <dd>A category of software project with distinct architectural patterns, technology choices, and
+                        challenges. The Compiler supports 6 domains: SaaS B2B, WordPress, E-commerce Headless, Mobile
+                        App,
+                        Data Platform, and Custom.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>E-commerce Headless</dt>
+                    <dd>One of the 6 domains. Architecture where the shopping frontend (storefront) is decoupled from
+                        the
+                        commerce backend (products, cart, checkout). Key technologies: Shopify+Hydrogen, Medusa.js
+                        (open-source), Algolia (search), Stripe (payments).</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Enforcement Map</dt>
+                    <dd>Layer 6 of the Blueprint. Maps every critical rule to: (1) what tool enforces it, (2) when it
+                        runs,
+                        (3) what happens if it fails. Ensures rules have technical enforcement, not just documentation.
+                    </dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>ETL / ELT</dt>
+                    <dd>Extract, Transform, Load / Extract, Load, Transform. Data pipeline patterns. ETL transforms data
+                        before loading into the warehouse. ELT loads raw data first, then transforms inside the
+                        warehouse.
+                        Modern stacks favor ELT with tools like dbt.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Global Config</dt>
+                    <dd>Layer 1 of the Blueprint. Lives in <code>~/.gemini/</code>. Contains only the thinking protocol
+                        and
+                        git discipline. Identical across all projects — never includes project-specific settings.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Headless</dt>
+                    <dd>An architecture where the frontend presentation layer is completely separated from the backend
+                        business logic. The frontend communicates with the backend only through APIs. Common in
+                        e-commerce
+                        (Shopify Headless) and CMS (Headless WordPress).</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Layer</dt>
+                    <dd>One of the 6 structural levels of a Blueprint. Layers are loaded in order, with each adding
+                        context:
+                        L1 (global) → L2 (rules) → L3 (skills) → L4 (workflows) → L5 (context) → L6 (enforcement).</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Meta-Template</dt>
+                    <dd>The master system prompt (~1,052 lines) that defines HOW to generate Blueprints. It is the
+                        "Blueprint that generates Blueprints." Embedded in the Compiler as a system prompt sent to
+                        Claude.
+                        This is the core intellectual property of the project.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Mobile App</dt>
+                    <dd>One of the 6 domains. Covers cross-platform and native development. Key technologies: React
+                        Native+Expo (cross-platform), Flutter (Google, Dart), Zustand (state), Supabase/Firebase
+                        (backend),
+                        WatermelonDB (offline storage).</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Multi-tenancy</dt>
+                    <dd>An architecture where multiple organizations share the same application and database
+                        infrastructure,
+                        but each sees only their own data. The SaaS B2B Blueprint enforces this through PostgreSQL Row
+                        Level
+                        Security and middleware-level tenant validation.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>ORM (Object-Relational Mapping)</dt>
+                    <dd>A library that lets you interact with databases using your programming language instead of raw
+                        SQL.
+                        Options: Drizzle (lightweight, SQL-like), Prisma (abstracted, own schema language), TypeORM
+                        (decorator-based, enterprise), Mongoose (MongoDB documents).</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Plan Mode Contract</dt>
+                    <dd>Section 2 of Layer 2 (Workspace Rules). Requires the agent to create an implementation plan,
+                        present
+                        it to the user, and STOP until approved. Prevents the agent from writing code before confirming
+                        the
+                        approach. Enforces Principle 3 (Plan First, Code Second).</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Progressive Disclosure</dt>
+                    <dd>Principle 2 of Context Engineering. Only load context into the agent's attention when it's
+                        relevant
+                        to the current task. Skills are on-demand, workflows are invoked only when needed. Prevents
+                        context
+                        window pollution.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>PROMPT_START</dt>
+                    <dd>The entry point file generated by the Compiler. Contains a project overview, file tree, and
+                        quick
+                        start commands. The agent reads this first when starting work on a project. Typically 60-80
+                        lines.
+                    </dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Row Level Security (RLS)</dt>
+                    <dd>A PostgreSQL feature that restricts which rows a user can access based on policies. Used in SaaS
+                        multi-tenancy: a policy like <code>tenant_id = current_user_tenant()</code> ensures each company
+                        sees only its own data, enforced at the database level.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>SaaS B2B</dt>
+                    <dd>One of the 6 domains. Software as a Service sold to businesses. Multi-tenant architecture. Key
+                        technologies: Next.js (frontend), tRPC (API), Drizzle+PostgreSQL (database), NextAuth.js (auth),
+                        Stripe (billing), Vercel (hosting).</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Skill</dt>
+                    <dd>A Layer 3 file that teaches the agent a specific competency. Each skill has: Goal (what),
+                        Instructions (how), Template (compilable code), Constraints (boundaries). Loaded on-demand, not
+                        always active. Examples: <code>new-api-endpoint.md</code>, <code>database-migration.md</code>.
+                    </dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Stack</dt>
+                    <dd>The complete set of technology choices for a project. Each domain has 5-6 categories with
+                        multiple
+                        options. The Stack is "LOCKED" in the Blueprint (Section 7 of L2) — the agent cannot substitute
+                        technologies without explicit approval.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>System Prompt</dt>
+                    <dd>Initial instructions given to an AI model before any user messages. The Meta-Template serves as
+                        the
+                        system prompt when the Compiler generates Blueprint files. It tells Claude how to structure the
+                        output according to Context Engineering methodology.</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Workflow</dt>
+                    <dd>A Layer 4 file defining a step-by-step procedure. Unlike Skills (which teach HOW to do
+                        something),
+                        Workflows define WHEN and IN WHAT ORDER steps must happen. Universal workflows:
+                        <code>new-feature.md</code> (Plan→Data→Logic→UI→Test→Verify), <code>deploy-check.md</code>
+                        (lint→typecheck→test→build→audit).
+                    </dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>WordPress</dt>
+                    <dd>One of the 6 domains. World's most popular CMS (43% of websites). Key technologies: WordPress
+                        6.7+
+                        (latest), Gutenberg Block Editor (native, zero overhead), WooCommerce (e-commerce), Yoast SEO,
+                        WP
+                        Rocket+Redis (caching), Kinsta (hosting).</dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Workspace Rules</dt>
+                    <dd>Layer 2 of the Blueprint. The single most important file (<code>.antigravity/rules.md</code>).
+                        Contains 13-14 sections defining everything project-specific: language, plan mode, code quality,
+                        security, stack, architecture, folder structure, testing, and more. Typically 400-500 lines.
+                    </dd>
+                </div>
+            </dl>
+
+            <!-- ═══ FAQ ═══ -->
+            <h2 id="faq"><span class="emoji">❓</span> Frequently Asked Questions</h2>
+
+            <div class="card">
+                <h4>Do I need to know how to code to use the Blueprint Compiler?</h4>
+                <p>Not necessarily. The Compiler generates configuration files that tell an AI agent how to code for
+                    you.
+                    However, basic understanding of your chosen technologies helps you make better stack choices. The
+                    contextual guides next to each option are designed to educate you during the process.</p>
+            </div>
+
+            <div class="card">
+                <h4>Which AI agent works with these Blueprints?</h4>
+                <p>Blueprints are primarily designed for <strong>Google Antigravity</strong>, but the concepts are
+                    transferable to any AI coding agent that supports custom instructions or system prompts (Cursor,
+                    GitHub
+                    Copilot, etc.).</p>
+            </div>
+
+            <div class="card">
+                <h4>How much does it cost?</h4>
+                <p>The Compiler itself is free. You need an <strong>Anthropic API key</strong> to generate files. Each
+                    file
+                    costs $0.02-0.05 in API usage. A complete Blueprint (5 files) costs approximately $0.15-0.25.</p>
+            </div>
+
+            <div class="card">
+                <h4>Is my API key safe?</h4>
+                <p>Yes. Your API key is stored in <code>sessionStorage</code> (browser tab only — disappears when you
+                    close
+                    the tab). API calls go <strong>directly from your browser to Anthropic</strong> — the key never
+                    touches
+                    any intermediate server.</p>
+            </div>
+
+            <div class="card">
+                <h4>Can I regenerate individual files?</h4>
+                <p>Yes. Each of the 5 files can be generated and regenerated independently. If the Skills output doesn't
+                    match your needs, regenerate just that file without affecting the others.</p>
+            </div>
+
+            <div class="card">
+                <h4>What if my project doesn't fit any domain?</h4>
+                <p>Choose <strong>Custom Domain</strong>. You'll describe your domain and technology stack manually. The
+                    Compiler will generate a Blueprint tailored to your specific needs, following the same 6-Layer
+                    methodology.</p>
+            </div>
+
+            <div class="card">
+                <h4>Can I modify the generated files?</h4>
+                <p>Absolutely — and you should. Generated Blueprints are a strong starting point (rated 8.5/10 by an
+                    independent reviewer). Customize them to match your team's exact conventions, add project-specific
+                    skills, and evolve them as your project grows.</p>
+            </div>
+
+            <!-- Footer -->
+            <div
+                style="margin-top:64px;padding-top:24px;border-top:1px solid var(--border);text-align:center;color:var(--text3);font-size:12px">
+                <p>Built with Context Engineering methodology. <a href="/">← Back to Blueprint Compiler</a></p>
+                <p style="margin-top:8px">© 2026 Gianluca Amati. All rights reserved.</p>
+            </div>
+
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════ -->
-        <!-- ═══ NEW SECTION 4: CLOUD & EXPORT ═══ -->
-        <!-- ═══════════════════════════════════════════════════════ -->
-        <h2 id="cloud-export"><span class="emoji">💾</span> Cloud & Export</h2>
-        <p>The Blueprint Compiler supports multiple persistence and export options for your generated Blueprints.</p>
-
-        <h3>Authentication</h3>
-        <p>Sign in with <strong>email/password</strong> or <strong>GitHub OAuth</strong> via Supabase. Authentication unlocks cloud save, cross-device sync, and the Blueprint Library.</p>
-
-        <h3>Blueprint Library</h3>
-        <div class="card">
-            <h4>📁 My Blueprints</h4>
-            <p>Save generated Blueprints to your personal library. Each saved Blueprint includes the full configuration (domain, stack, IDE target, priorities) and all generated file outputs. Load any Blueprint to restore the entire state and continue editing or regenerating.</p>
-        </div>
-        <div class="card">
-            <h4>🌐 Community Gallery</h4>
-            <p>Browse official and community-contributed Blueprints. Each gallery entry shows the project name, domain, IDE target, author, and quality score. Clone any gallery Blueprint into your own workspace with one click.</p>
-        </div>
-
-        <h3>Export Formats</h3>
-        <table>
-            <tr><th>Format</th><th>Description</th><th>Best For</th></tr>
-            <tr><td><strong>📋 Copy All</strong></td><td>Copy all 5 files to clipboard as a single text block</td><td>Quick paste into existing projects</td></tr>
-            <tr><td><strong>📥 JSON</strong></td><td>Full Blueprint as a structured JSON file with metadata</td><td>Backup, sharing, API integration</td></tr>
-            <tr><td><strong>📦 ZIP</strong></td><td>IDE-ready folder structure with files in correct paths</td><td>New projects — unzip and start coding</td></tr>
-        </table>
-
-        <h3>Auto-Migration</h3>
-        <div class="info-box">When you sign in for the first time, any Blueprints saved in your browser's <code>localStorage</code> are automatically migrated to your cloud account. Zero data loss.</div>
-
-        <!-- ═══════════════════════════════════════════════════════ -->
-        <!-- ═══ NEW SECTION 5: PROJECT SCANNER ═══ -->
-        <!-- ═══════════════════════════════════════════════════════ -->
-        <h2 id="scanner"><span class="emoji">🔍</span> Project Scanner</h2>
-        <p>Already have an existing project? The <strong>Project Scanner</strong> analyzes your <code>package.json</code> and auto-fills the wizard with detected technologies.</p>
-
-        <h3>How It Works</h3>
-        <div class="flow-steps">
-            <div class="flow-step">
-                <div class="flow-num">📋</div>
-                <div class="flow-label">Paste</div>
-                <div class="flow-desc">Paste your package.json</div>
-            </div>
-            <span class="flow-arrow">→</span>
-            <div class="flow-step">
-                <div class="flow-num">🔍</div>
-                <div class="flow-label">Analyze</div>
-                <div class="flow-desc">Scan dependencies</div>
-            </div>
-            <span class="flow-arrow">→</span>
-            <div class="flow-step">
-                <div class="flow-num">⚡</div>
-                <div class="flow-label">Detect</div>
-                <div class="flow-desc">Match to known stacks</div>
-            </div>
-            <span class="flow-arrow">→</span>
-            <div class="flow-step">
-                <div class="flow-num">✅</div>
-                <div class="flow-label">Auto-fill</div>
-                <div class="flow-desc">Pre-fill wizard fields</div>
-            </div>
-        </div>
-
-        <h3>What Gets Detected</h3>
-        <table>
-            <tr><th>Category</th><th>Example Detections</th></tr>
-            <tr><td><strong>Domain</strong></td><td>SaaS (from next + stripe), WordPress (from wordpress), E-commerce (from shopify)</td></tr>
-            <tr><td><strong>Framework</strong></td><td>Next.js, Nuxt, SvelteKit, Remix, React Native</td></tr>
-            <tr><td><strong>API Layer</strong></td><td>tRPC, Apollo GraphQL, Express, Hono</td></tr>
-            <tr><td><strong>ORM / Database</strong></td><td>Drizzle, Prisma, TypeORM, Mongoose</td></tr>
-            <tr><td><strong>Auth</strong></td><td>NextAuth.js, Clerk, Auth0, Supabase Auth</td></tr>
-            <tr><td><strong>Project Name</strong></td><td>Extracted from package.json <code>name</code> field</td></tr>
-        </table>
-        <div class="info-box">Each detection includes a <strong>confidence score</strong> (percentage) based on how strongly the dependency matches a known technology. You can always override detections manually in the wizard.</div>
-
-        <!-- ═══ OUTPUT FILES ═══ -->
-        <h2 id="output-files"><span class="emoji">📄</span> Output Files</h2>
-        <p>The Compiler generates 5 files. Each corresponds to a specific layer of the Blueprint architecture.</p>
-
-        <table>
-            <tr>
-                <th>File</th>
-                <th>Layer</th>
-                <th>Lines</th>
-                <th>Purpose</th>
-            </tr>
-            <tr>
-                <td><code>rules.md</code></td>
-                <td><span class="layer-badge l2">L2</span></td>
-                <td>400-500</td>
-                <td>Workspace Rules — the core. Defines identity, stack, architecture, conventions, security. This is
-                    the most important file.</td>
-            </tr>
-            <tr>
-                <td><code>Skills</code></td>
-                <td><span class="layer-badge l3">L3</span></td>
-                <td>500-700</td>
-                <td>5-8 modular competencies loaded on-demand. Each teaches the agent HOW to do a specific task with
-                    compilable templates.</td>
-            </tr>
-            <tr>
-                <td><code>Workflows</code></td>
-                <td><span class="layer-badge l4">L4</span></td>
-                <td>200-300</td>
-                <td>Step-by-step procedures: new-feature, deploy-check, plus domain-specific. The agent follows these
-                    like a checklist.</td>
-            </tr>
-            <tr>
-                <td><code>Context</code></td>
-                <td><span class="layer-badge l5">L5</span></td>
-                <td>300-400</td>
-                <td>Architecture Decision Records (ADR) documenting WHY each technology was chosen, plus coding style
-                    conventions.</td>
-            </tr>
-            <tr>
-                <td><code>PROMPT_START</code></td>
-                <td>Entry</td>
-                <td>60-80</td>
-                <td>Bootstrap file — project overview, file tree, quick start commands. The agent reads this first.</td>
-            </tr>
-        </table>
-
-        <!-- ═══ GLOSSARY ═══ -->
-        <h2 id="glossary"><span class="emoji">📚</span> Complete Glossary</h2>
-        <p>An exhaustive, alphabetical reference of every term, concept, and technology used in the Blueprint Compiler
-            ecosystem.</p>
-
-        <dl>
-            <div class="glossary-term">
-                <dt>ADR (Architecture Decision Record)</dt>
-                <dd>A formal document recording a significant architectural decision: the context, the decision itself,
-                    alternatives considered, and consequences. Part of Layer 5. ADRs are immutable — when a decision
-                    changes, a new ADR supersedes the old one rather than editing it.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Agent</dt>
-                <dd>An AI coding assistant (e.g., Google Antigravity, GitHub Copilot, Cursor) that reads your code,
-                    understands instructions, and generates or modifies code. Without a Blueprint, an agent has no
-                    project-specific context and produces generic output.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>API Layer</dt>
-                <dd>The communication protocol between frontend and backend. Options include tRPC (type-safe, zero
-                    documentation needed), GraphQL (flexible queries for complex data), REST (universally understood),
-                    and Hono (edge-first, ultra-lightweight).</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Authentication</dt>
-                <dd>The system that verifies user identity (login). Options range from self-hosted (NextAuth.js — full
-                    control, free) to managed services (Clerk — beautiful pre-built UI) to enterprise-grade (Auth0 —
-                    SAML, LDAP, SSO support).</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>BaaS (Backend as a Service)</dt>
-                <dd>A cloud service providing pre-built backend functionality: database, authentication, file storage,
-                    serverless functions. Examples: Supabase (open-source, PostgreSQL), Firebase (Google, NoSQL),
-                    Appwrite (self-hosted). Eliminates the need to build a custom backend.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Blueprint</dt>
-                <dd>A complete set of configuration files (typically 5) that transforms a generic AI agent into a
-                    specialized architect for your specific project. A Blueprint defines your stack, architecture,
-                    conventions, security policies, and coding standards. It consists of Layer 2-6 files.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Blueprint Compiler</dt>
-                <dd>The web application that generates Blueprints. A 4-step wizard: Domain → Stack → Project → Generate.
-                    100% client-side React, zero backend. Calls the Anthropic Claude API directly from the browser using
-                    the user's own API key.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>CDN (Content Delivery Network)</dt>
-                <dd>A global network of servers that cache and serve content close to users. For e-commerce: Cloudinary
-                    (image transformation), Imgix (URL-based processing), Vercel Image (zero-config with Next.js),
-                    Cloudflare Images (competitive pricing).</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>CI/CD</dt>
-                <dd>Continuous Integration / Continuous Deployment. Automated pipelines that test, build, and deploy
-                    code. The deploy-check workflow (Layer 4) defines the exact steps: lint → typecheck → test → build →
-                    security audit.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Context Engineering</dt>
-                <dd>The discipline of designing structured, layered configuration systems for AI coding agents. Goes
-                    beyond prompt engineering (which focuses on individual prompts) by creating systematic, reusable,
-                    enforceable configuration that persists across sessions.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Context Window</dt>
-                <dd>The maximum amount of text an AI model can process at once. Progressive Disclosure (Principle 2)
-                    prevents filling the context window with irrelevant information, keeping the agent focused on the
-                    current task.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Custom Domain</dt>
-                <dd>The 6th domain option in the Compiler. For projects that don't fit predefined categories. Users
-                    describe their domain and stack manually. Examples: IoT, game dev, AI/ML platforms, DevOps tooling.
-                </dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Data Platform</dt>
-                <dd>One of the 6 domains. Covers ETL/ELT pipelines, data warehouses, transformation frameworks, and
-                    visualization tools. Key technologies: Airflow/Dagster (orchestration), BigQuery/Snowflake
-                    (warehouse), dbt (transformation), Metabase/Grafana (visualization).</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Domain</dt>
-                <dd>A category of software project with distinct architectural patterns, technology choices, and
-                    challenges. The Compiler supports 6 domains: SaaS B2B, WordPress, E-commerce Headless, Mobile App,
-                    Data Platform, and Custom.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>E-commerce Headless</dt>
-                <dd>One of the 6 domains. Architecture where the shopping frontend (storefront) is decoupled from the
-                    commerce backend (products, cart, checkout). Key technologies: Shopify+Hydrogen, Medusa.js
-                    (open-source), Algolia (search), Stripe (payments).</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Enforcement Map</dt>
-                <dd>Layer 6 of the Blueprint. Maps every critical rule to: (1) what tool enforces it, (2) when it runs,
-                    (3) what happens if it fails. Ensures rules have technical enforcement, not just documentation.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>ETL / ELT</dt>
-                <dd>Extract, Transform, Load / Extract, Load, Transform. Data pipeline patterns. ETL transforms data
-                    before loading into the warehouse. ELT loads raw data first, then transforms inside the warehouse.
-                    Modern stacks favor ELT with tools like dbt.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Global Config</dt>
-                <dd>Layer 1 of the Blueprint. Lives in <code>~/.gemini/</code>. Contains only the thinking protocol and
-                    git discipline. Identical across all projects — never includes project-specific settings.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Headless</dt>
-                <dd>An architecture where the frontend presentation layer is completely separated from the backend
-                    business logic. The frontend communicates with the backend only through APIs. Common in e-commerce
-                    (Shopify Headless) and CMS (Headless WordPress).</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Layer</dt>
-                <dd>One of the 6 structural levels of a Blueprint. Layers are loaded in order, with each adding context:
-                    L1 (global) → L2 (rules) → L3 (skills) → L4 (workflows) → L5 (context) → L6 (enforcement).</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Meta-Template</dt>
-                <dd>The master system prompt (~1,052 lines) that defines HOW to generate Blueprints. It is the
-                    "Blueprint that generates Blueprints." Embedded in the Compiler as a system prompt sent to Claude.
-                    This is the core intellectual property of the project.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Mobile App</dt>
-                <dd>One of the 6 domains. Covers cross-platform and native development. Key technologies: React
-                    Native+Expo (cross-platform), Flutter (Google, Dart), Zustand (state), Supabase/Firebase (backend),
-                    WatermelonDB (offline storage).</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Multi-tenancy</dt>
-                <dd>An architecture where multiple organizations share the same application and database infrastructure,
-                    but each sees only their own data. The SaaS B2B Blueprint enforces this through PostgreSQL Row Level
-                    Security and middleware-level tenant validation.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>ORM (Object-Relational Mapping)</dt>
-                <dd>A library that lets you interact with databases using your programming language instead of raw SQL.
-                    Options: Drizzle (lightweight, SQL-like), Prisma (abstracted, own schema language), TypeORM
-                    (decorator-based, enterprise), Mongoose (MongoDB documents).</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Plan Mode Contract</dt>
-                <dd>Section 2 of Layer 2 (Workspace Rules). Requires the agent to create an implementation plan, present
-                    it to the user, and STOP until approved. Prevents the agent from writing code before confirming the
-                    approach. Enforces Principle 3 (Plan First, Code Second).</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Progressive Disclosure</dt>
-                <dd>Principle 2 of Context Engineering. Only load context into the agent's attention when it's relevant
-                    to the current task. Skills are on-demand, workflows are invoked only when needed. Prevents context
-                    window pollution.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>PROMPT_START</dt>
-                <dd>The entry point file generated by the Compiler. Contains a project overview, file tree, and quick
-                    start commands. The agent reads this first when starting work on a project. Typically 60-80 lines.
-                </dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Row Level Security (RLS)</dt>
-                <dd>A PostgreSQL feature that restricts which rows a user can access based on policies. Used in SaaS
-                    multi-tenancy: a policy like <code>tenant_id = current_user_tenant()</code> ensures each company
-                    sees only its own data, enforced at the database level.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>SaaS B2B</dt>
-                <dd>One of the 6 domains. Software as a Service sold to businesses. Multi-tenant architecture. Key
-                    technologies: Next.js (frontend), tRPC (API), Drizzle+PostgreSQL (database), NextAuth.js (auth),
-                    Stripe (billing), Vercel (hosting).</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Skill</dt>
-                <dd>A Layer 3 file that teaches the agent a specific competency. Each skill has: Goal (what),
-                    Instructions (how), Template (compilable code), Constraints (boundaries). Loaded on-demand, not
-                    always active. Examples: <code>new-api-endpoint.md</code>, <code>database-migration.md</code>.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Stack</dt>
-                <dd>The complete set of technology choices for a project. Each domain has 5-6 categories with multiple
-                    options. The Stack is "LOCKED" in the Blueprint (Section 7 of L2) — the agent cannot substitute
-                    technologies without explicit approval.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>System Prompt</dt>
-                <dd>Initial instructions given to an AI model before any user messages. The Meta-Template serves as the
-                    system prompt when the Compiler generates Blueprint files. It tells Claude how to structure the
-                    output according to Context Engineering methodology.</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Workflow</dt>
-                <dd>A Layer 4 file defining a step-by-step procedure. Unlike Skills (which teach HOW to do something),
-                    Workflows define WHEN and IN WHAT ORDER steps must happen. Universal workflows:
-                    <code>new-feature.md</code> (Plan→Data→Logic→UI→Test→Verify), <code>deploy-check.md</code>
-                    (lint→typecheck→test→build→audit).</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>WordPress</dt>
-                <dd>One of the 6 domains. World's most popular CMS (43% of websites). Key technologies: WordPress 6.7+
-                    (latest), Gutenberg Block Editor (native, zero overhead), WooCommerce (e-commerce), Yoast SEO, WP
-                    Rocket+Redis (caching), Kinsta (hosting).</dd>
-            </div>
-
-            <div class="glossary-term">
-                <dt>Workspace Rules</dt>
-                <dd>Layer 2 of the Blueprint. The single most important file (<code>.antigravity/rules.md</code>).
-                    Contains 13-14 sections defining everything project-specific: language, plan mode, code quality,
-                    security, stack, architecture, folder structure, testing, and more. Typically 400-500 lines.</dd>
-            </div>
-        </dl>
-
-        <!-- ═══ FAQ ═══ -->
-        <h2 id="faq"><span class="emoji">❓</span> Frequently Asked Questions</h2>
-
-        <div class="card">
-            <h4>Do I need to know how to code to use the Blueprint Compiler?</h4>
-            <p>Not necessarily. The Compiler generates configuration files that tell an AI agent how to code for you.
-                However, basic understanding of your chosen technologies helps you make better stack choices. The
-                contextual guides next to each option are designed to educate you during the process.</p>
-        </div>
-
-        <div class="card">
-            <h4>Which AI agent works with these Blueprints?</h4>
-            <p>Blueprints are primarily designed for <strong>Google Antigravity</strong>, but the concepts are
-                transferable to any AI coding agent that supports custom instructions or system prompts (Cursor, GitHub
-                Copilot, etc.).</p>
-        </div>
-
-        <div class="card">
-            <h4>How much does it cost?</h4>
-            <p>The Compiler itself is free. You need an <strong>Anthropic API key</strong> to generate files. Each file
-                costs $0.02-0.05 in API usage. A complete Blueprint (5 files) costs approximately $0.15-0.25.</p>
-        </div>
-
-        <div class="card">
-            <h4>Is my API key safe?</h4>
-            <p>Yes. Your API key is stored in <code>sessionStorage</code> (browser tab only — disappears when you close
-                the tab). API calls go <strong>directly from your browser to Anthropic</strong> — the key never touches
-                any intermediate server.</p>
-        </div>
-
-        <div class="card">
-            <h4>Can I regenerate individual files?</h4>
-            <p>Yes. Each of the 5 files can be generated and regenerated independently. If the Skills output doesn't
-                match your needs, regenerate just that file without affecting the others.</p>
-        </div>
-
-        <div class="card">
-            <h4>What if my project doesn't fit any domain?</h4>
-            <p>Choose <strong>Custom Domain</strong>. You'll describe your domain and technology stack manually. The
-                Compiler will generate a Blueprint tailored to your specific needs, following the same 6-Layer
-                methodology.</p>
-        </div>
-
-        <div class="card">
-            <h4>Can I modify the generated files?</h4>
-            <p>Absolutely — and you should. Generated Blueprints are a strong starting point (rated 8.5/10 by an
-                independent reviewer). Customize them to match your team's exact conventions, add project-specific
-                skills, and evolve them as your project grows.</p>
-        </div>
-
-        <!-- Footer -->
-        <div
-            style="margin-top:64px;padding-top:24px;border-top:1px solid var(--border);text-align:center;color:var(--text3);font-size:12px">
-            <p>Built with Context Engineering methodology. <a href="/">← Back to Blueprint Compiler</a></p>
-            <p style="margin-top:8px">© 2026 Gianluca Amati. All rights reserved.</p>
-        </div>
-
-    </div>
-
-    <script>
-        // Sidebar active state
-        const items = document.querySelectorAll('.sidebar .nav-item');
-        const obs = new IntersectionObserver(e => { e.forEach(en => { if (en.isIntersecting) { items.forEach(i => i.classList.remove('active')); const a = document.querySelector('.sidebar a[href="#' + en.target.id + '"]'); if (a) a.classList.add('active') } }) }, { rootMargin: '-80px 0px -70% 0px' });
-        document.querySelectorAll('h2[id],h3[id]').forEach(el => obs.observe(el));
-        // Domain toggle
-        function toggleDomain(id) { const el = document.getElementById('detail-' + id); if (el) el.classList.toggle('open') }
-    </script>
+        <script>
+            // Sidebar active state
+            const items = document.querySelectorAll('.sidebar .nav-item');
+            const obs = new IntersectionObserver(e => { e.forEach(en => { if (en.isIntersecting) { items.forEach(i => i.classList.remove('active')); const a = document.querySelector('.sidebar a[href="#' + en.target.id + '"]'); if (a) a.classList.add('active') } }) }, { rootMargin: '-80px 0px -70% 0px' });
+            document.querySelectorAll('h2[id],h3[id]').forEach(el => obs.observe(el));
+            // Domain toggle
+            function toggleDomain(id) { const el = document.getElementById('detail-' + id); if (el) el.classList.toggle('open') }
+        </script>
 </body>
 
 </html>
