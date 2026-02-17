@@ -133,14 +133,15 @@ export default function LandingPage() {
         </div>
 
         <h1>
-          Transform Ideas Into<br />
-          <span className="gradient-text">AI Agent Blueprints</span>
+          Make Your AI Agent<br />
+          <span className="gradient-text">10x Smarter</span>
         </h1>
 
         <p className="subtitle">
-          Generate production-ready AI agent Blueprints with <strong>7 LLM models</strong>,
-          a <strong>CLI tool</strong>, and <strong>smart Update Mode</strong> —
-          for Antigravity, Cursor, Copilot & Windsurf.
+          Stop repeating context. Generate production-ready Blueprints with
+          <strong> 7 LLM models</strong>, a <strong>CLI tool</strong>,
+          and <strong>smart Update Mode</strong> —
+          for Cursor, Antigravity, Copilot & Windsurf.
         </p>
 
         <div className="hero-actions">
