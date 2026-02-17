@@ -86,7 +86,17 @@ export const TIERS = {
     },
     pro: {
         name: "Pro",
-        price: "$9/mo",
+        price: "$19/mo",
+        maxGenerations: Infinity,
+        maxSavedBlueprints: Infinity,
+        ideTargets: ["antigravity", "cursor", "copilot", "windsurf"],
+        hasScanner: true,
+        hasRefinement: true,
+        hasExportZip: true,
+    },
+    team: {
+        name: "Team",
+        price: "$49/mo",
         maxGenerations: Infinity,
         maxSavedBlueprints: Infinity,
         ideTargets: ["antigravity", "cursor", "copilot", "windsurf"],
