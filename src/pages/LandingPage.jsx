@@ -222,9 +222,9 @@ export default function LandingPage() {
       {/* ━━━ v1 vs v2 Comparison ━━━ */}
       <section className="section">
         <div className="section-label">Evolution</div>
-        <h2>v1.0 vs v2.0 — A Quantum Leap</h2>
+        <h2>v1.0 vs v2.1 — A Quantum Leap</h2>
         <p className="section-desc">
-          Blueprint Compiler v2.0 isn't an update — it's a complete rearchitecture.
+          Blueprint Compiler v2.1 isn't an update — it's a complete rearchitecture.
         </p>
 
         <div className="comparison">
@@ -233,7 +233,7 @@ export default function LandingPage() {
               <tr>
                 <th>Feature</th>
                 <th>v1.0</th>
-                <th>v2.0</th>
+                <th>v2.1</th>
               </tr>
             </thead>
             <tbody>
