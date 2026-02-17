@@ -28,6 +28,8 @@ Instead of repeating instructions every chat, your agent starts with deep knowle
 | **🤖 Agentic Generation** | Generate → Validate → Score → Refine autonomous loop |
 | **🎯 4 IDE Support** | Antigravity, Cursor, GitHub Copilot, Windsurf |
 | **⚡ 36 Quick Start Presets** | One-click templates across 8 categories |
+| **🎮 Interactive Demo** | Explore a real generated Blueprint on the landing page — no API key required |
+| **📊 Progress Feedback** | Visual progress bar during generation + success toast with quality score |
 | **📦 Multi-Format Export** | JSON, YAML, ZIP (IDE-ready folder structure) |
 | **🔒 Cloud Auth & Library** | Supabase authentication, cloud sync, blueprint library |
 | **📊 Auto-Detect** | Scan `package.json` to pre-fill your stack |
@@ -201,7 +203,8 @@ src/
 │   ├── stacks.js           # Technology configurations per domain
 │   ├── constants.js         # IDE targets, tiers, file types
 │   ├── gallery.js           # Community blueprint gallery
-│   └── presets.js           # 36 Quick Start preset configs
+│   ├── presets.js           # 36 Quick Start preset configs
+│   └── demoBlueprint.js     # Pre-generated demo Blueprint data
 ├── engine/
 │   ├── generator.js         # Agentic generation + Update Mode
 │   ├── validator.js         # Quality scoring (0-100)
@@ -212,7 +215,7 @@ src/
 │       ├── anthropic.js     # Claude Opus 4.6, Sonnet 4, Opus 4, Haiku 3.5
 │       ├── openai.js        # GPT-5.2, GPT-4o, GPT-4.1, GPT-4o Mini, o3-mini
 │       └── index.js         # Provider registry + factory
-├── components/              # React UI components
+├── components/              # React UI components (BlueprintTabs, SuccessToast, etc.)
 ├── context/                 # Auth context (Supabase)
 ├── pages/
 │   └── LandingPage.jsx      # Marketing landing page
