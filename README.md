@@ -23,7 +23,7 @@ Instead of repeating instructions every chat, your agent starts with deep knowle
 |---------|-------------|
 | **4 IDE Support** | Antigravity, Cursor, GitHub Copilot, Windsurf |
 | **Agentic Generation** | Generate → Validate → Refine loop with quality scoring |
-| **30 Quick Start Presets** | One-click templates across 8 categories (SaaS, AI, Commerce, Content, DevTools, Mobile, Data) |
+| **27 Quick Start Presets** | One-click templates across 8 categories (SaaS, AI, Commerce, Content, DevTools, Mobile, Data) |
 | **Tabbed Output** | Overview, Architecture, Tools & Skills, Prompts, Raw Files |
 | **Multi-Format Export** | Copy JSON, Download YAML, Download ZIP (IDE-ready) |
 | **Cloud Auth** | Supabase authentication (email + GitHub) |
@@ -45,18 +45,67 @@ Instead of repeating instructions every chat, your agent starts with deep knowle
 
 Click a preset card → wizard auto-fills → jump straight to Generate. Zero friction.
 
-| Preset | Domain | Key Stack |
-|--------|--------|-----------|
-| 🏢 SaaS Starter | SaaS B2B | Next.js 15, tRPC, Drizzle, Stripe |
-| 📝 WordPress Pro | WordPress | WP 6.7+, Gutenberg, WooCommerce, WP Rocket |
-| 🛒 Headless Shop | E-commerce | Shopify + Hydrogen, Next.js, Algolia |
-| 📱 Mobile App | Mobile | Expo, Zustand, Supabase, EAS Build |
-| 📊 Data Pipeline | Data | Airflow, BigQuery, dbt, Metabase |
-| 🤝 CRM Platform | SaaS B2B | Supabase Auth, Prisma, real-time |
-| 🤖 AI SaaS Product | SaaS B2B | OpenAI, Prisma, usage billing |
-| ⚡ WordPress Headless | WordPress | REST API, Next.js, ISR |
-| 🏪 Marketplace | E-commerce | Medusa.js, Stripe Connect, Algolia |
-| 📋 Admin Dashboard | SaaS B2B | Prisma, Recharts, RBAC |
+### 💼 Business (6 presets)
+
+| Preset | Key Stack |
+|--------|-----------|
+| 🏢 SaaS Starter | Next.js 15, tRPC, Drizzle, Stripe |
+| 🤝 CRM Platform | Next.js 15, Supabase, Prisma, Stripe |
+| 📋 Admin Dashboard | Next.js 15, Prisma, Recharts, NextAuth |
+| 📌 Project Manager | Next.js 15, Prisma, Supabase, DnD Kit |
+| 👥 HR Platform | Next.js 15, Prisma, NextAuth, Resend |
+| 🧾 Invoice & Billing | Next.js 15, Prisma, Stripe, PDF |
+
+### 🤖 AI / LLM (4 presets)
+
+| Preset | Key Stack |
+|--------|-----------|
+| 🤖 AI SaaS Product | Next.js 15, OpenAI, Prisma, Stripe |
+| 💬 Chatbot Builder | Next.js 15, LangChain, Pinecone, OpenAI |
+| ✍️ AI Content Studio | Next.js 15, OpenAI, Tiptap, Supabase |
+| 🎨 AI Image Platform | Next.js 15, Replicate, Cloudinary, Stripe |
+
+### 🛒 Commerce (4 presets)
+
+| Preset | Key Stack |
+|--------|-----------|
+| 🛒 Headless Shop | Shopify, Next.js 15, Algolia, Stripe |
+| 🏪 Marketplace | Medusa.js, Next.js 15, Stripe, Algolia |
+| 📦 Subscription Box | Next.js 15, Stripe, Prisma, Resend |
+| 📅 Booking Platform | Next.js 15, Prisma, Stripe, Cal.com |
+
+### 📝 Content (4 presets)
+
+| Preset | Key Stack |
+|--------|-----------|
+| 📝 WordPress Pro | WP 6.7+, Gutenberg, WooCommerce, WP Rocket |
+| ⚡ WordPress Headless | WP 6.7+, REST API, Next.js, ISR |
+| 📰 Blog Platform | Next.js 15, MDX, Resend, Plausible |
+| 🎓 LMS / Course Platform | Next.js 15, Prisma, Mux, Stripe |
+
+### 🛠️ DevTools (3 presets)
+
+| Preset | Key Stack |
+|--------|-----------|
+| 🔌 API Platform | Fastify, Prisma, Redis, Swagger |
+| 🖥️ DevOps Dashboard | Next.js 15, Grafana, Prometheus, Docker |
+| ⌨️ CLI Tool | Node.js, Commander, Inquirer, Chalk |
+
+### 📱 Mobile (3 presets)
+
+| Preset | Key Stack |
+|--------|-----------|
+| 📱 Mobile App | Expo, Zustand, Supabase, EAS Build |
+| 💪 Fitness App | Expo, Supabase, HealthKit, Zustand |
+| 💰 FinTech App | Expo, Plaid, Supabase, Charts |
+
+### 📊 Data (3 presets)
+
+| Preset | Key Stack |
+|--------|-----------|
+| 📊 Data Pipeline | Airflow, BigQuery, dbt, Metabase |
+| 📈 Analytics Dashboard | Next.js 15, ClickHouse, Recharts, Redis |
+| 🔄 ETL Platform | Node.js, PostgreSQL, Redis, Docker |
 
 ## 🚀 Run Locally
 
