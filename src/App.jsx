@@ -72,6 +72,7 @@ export default function App() {
   const [generationProgress, setGenerationProgress] = useState(null); // { current, total, label }
   const [showSuccess, setShowSuccess] = useState(null); // null | { fileCount, totalLines, qualityScore }
   const resultRef = useRef(null);
+  const libraryRef = useRef(null);
 
   // ─── Load library (async, depends on auth) ───
   useEffect(() => {
@@ -336,7 +337,7 @@ export default function App() {
         <a href="/" style={{ fontSize: 14, fontWeight: 800, color: "#fb923c", letterSpacing: 0.5, textDecoration: "none" }}>⚡ Blueprint Compiler <span style={{ fontSize: 10, color: "#475569", fontWeight: 400 }}>v2.0</span></a>
         <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
           <a href="/" style={{ fontSize: 12, color: "#94a3b8", textDecoration: "none", fontWeight: 500 }}>🏠 Home</a>
-          <button onClick={() => setShowLibrary(!showLibrary)} style={{ background: "none", border: "1px solid #334155", borderRadius: 6, color: "#94a3b8", cursor: "pointer", padding: "4px 12px", fontSize: 12, fontWeight: 600 }}>
+          <button onClick={() => { const willShow = !showLibrary; setShowLibrary(willShow); if (willShow) setTimeout(() => libraryRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100); }} style={{ background: "none", border: "1px solid #334155", borderRadius: 6, color: "#94a3b8", cursor: "pointer", padding: "4px 12px", fontSize: 12, fontWeight: 600 }}>
             📁 Library ({library.length})
           </button>
           {user && (!profile?.tier || profile?.tier === "free") && (
@@ -389,7 +390,7 @@ export default function App() {
 
         {/* ═══ LIBRARY PANEL ═══ */}
         {showLibrary && (
-          <div style={{ ...S.card, borderColor: "#334155" }}>
+          <div ref={libraryRef} style={{ ...S.card, borderColor: "#334155" }}>
             <SectionTitle icon="📁" title="Blueprint Library" subtitle={libraryTab === "my" ? `${library.length} saved blueprint(s)` : "Community & Official Blueprints"} />
 
             <div style={{ display: "flex", gap: 16, marginBottom: 16, borderBottom: "1px solid #334155", paddingBottom: 0 }}>
