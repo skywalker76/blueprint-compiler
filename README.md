@@ -143,12 +143,13 @@ Click a preset card → wizard auto-fills → jump straight to Generate. Zero fr
 | 📦 Subscription Box | Next.js 15, Stripe, Prisma, Resend |
 | 📅 Booking Platform | Next.js 15, Prisma, Stripe, Cal.com |
 
-### 📝 Content (4 presets)
+### 📝 Content (5 presets)
 
 | Preset | Key Stack |
 |--------|-----------|
 | 📝 WordPress Pro | WP 6.7+, Gutenberg, WooCommerce, WP Rocket |
 | ⚡ WordPress Headless | WP 6.7+, REST API, Next.js, ISR |
+| 🏛️ WP Corporate Non-Profit | WP 6.7+, Gutenberg, ACF Pro, Leaflet |
 | 📰 Blog Platform | Next.js 15, MDX, Resend, Plausible |
 | 🎓 LMS / Course Platform | Next.js 15, Prisma, Mux, Stripe |
 
