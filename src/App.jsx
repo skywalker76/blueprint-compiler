@@ -201,43 +201,48 @@ export default function App() {
       return;
     }
 
-    // Gate 2: Limite mensile
-    if (tierLimits.maxGenerations !== Infinity) {
-      const count = await getUsageCount(user.id);
-      if (count >= tierLimits.maxGenerations) {
-        setShowUpgradeModal({ reason: "generation_limit", data: { count, max: tierLimits.maxGenerations } });
-        return;
+    try {
+      // Gate 2: Limite mensile
+      if (tierLimits.maxGenerations !== Infinity) {
+        const count = await getUsageCount(user.id);
+        if (count >= tierLimits.maxGenerations) {
+          setShowUpgradeModal({ reason: "generation_limit", data: { count, max: tierLimits.maxGenerations } });
+          return;
+        }
       }
+
+      if (!apiKey) { setError("Please enter your API key first"); return; }
+      setError(null);
+      setGenerationProgress({ current: 0, total: FILE_TYPES.length, label: "Starting..." });
+
+      // Track usage BEFORE calling Claude API (costs money)
+      try { await trackUsage(user.id, "generate", { fileType: "all" }); } catch (_) { /* non-blocking */ }
+
+      for (let i = 0; i < FILE_TYPES.length; i++) {
+        const ft = FILE_TYPES[i];
+        setGenerationProgress({ current: i + 1, total: FILE_TYPES.length, label: ft.label });
+        await handleGenerateFile(ft.id);
+      }
+      setGenerationProgress(null);
+
+      // Calculate stats for success toast
+      const finalGenerated = { ...generated };
+      // Need a small timeout to let state settle
+      setTimeout(() => {
+        const fileCount = Object.values(finalGenerated).filter(r => r?.output).length;
+        const totalLines = Object.values(finalGenerated)
+          .filter(r => r?.output && typeof r.output === "string")
+          .reduce((sum, r) => sum + r.output.split("\n").length, 0);
+        const scores = Object.values(finalGenerated).filter(r => r?.quality?.score).map(r => r.quality.score);
+        const avgQ = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : null;
+        setShowSuccess({ fileCount: fileCount || FILE_TYPES.length, totalLines: totalLines || 0, qualityScore: avgQ });
+      }, 100);
+
+      resultRef.current?.scrollIntoView({ behavior: "smooth" });
+    } catch (err) {
+      setError(`Generation failed: ${err.message}`);
+      setGenerationProgress(null);
     }
-
-    if (!apiKey) { setError("Please enter your API key first"); return; }
-    setError(null);
-    setGenerationProgress({ current: 0, total: FILE_TYPES.length, label: "Starting..." });
-
-    // Track usage BEFORE calling Claude API (costs money)
-    await trackUsage(user.id, "generate", { fileType: "all" });
-
-    for (let i = 0; i < FILE_TYPES.length; i++) {
-      const ft = FILE_TYPES[i];
-      setGenerationProgress({ current: i + 1, total: FILE_TYPES.length, label: ft.label });
-      await handleGenerateFile(ft.id);
-    }
-    setGenerationProgress(null);
-
-    // Calculate stats for success toast
-    const finalGenerated = { ...generated };
-    // Need a small timeout to let state settle
-    setTimeout(() => {
-      const fileCount = Object.values(finalGenerated).filter(r => r?.output).length;
-      const totalLines = Object.values(finalGenerated)
-        .filter(r => r?.output && typeof r.output === "string")
-        .reduce((sum, r) => sum + r.output.split("\n").length, 0);
-      const scores = Object.values(finalGenerated).filter(r => r?.quality?.score).map(r => r.quality.score);
-      const avgQ = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : null;
-      setShowSuccess({ fileCount: fileCount || FILE_TYPES.length, totalLines: totalLines || 0, qualityScore: avgQ });
-    }, 100);
-
-    resultRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   // ─── Persistence ───
