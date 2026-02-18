@@ -61,7 +61,20 @@ Maps each rule to enforcement (lint rule, git hook, CI check, test).
 - Every code snippet must be valid for the chosen stack
 - Be opinionated — make concrete technology choices, not generic suggestions
 - Include line counts and file paths in your output
-- Optimize for context window efficiency: compress without losing precision`;
+- Optimize for context window efficiency: compress without losing precision
+
+## TONE & DENSITY CALIBRATION (MICRO-SHOT)
+Adopt this EXACT imperative, high-density tone. DO NOT use conversational filler.
+
+🔴 ANTI-PATTERN (Chatty, Generic, Weak):
+"For testing, you should probably use Jest because it's standard. Try to write good tests for your components and make sure to mock the database."
+
+🟢 PRO-PATTERN (Dense, Agentic, Enforceable):
+"### 10. Testing Requirements [CORE]
+- **Framework**: \`Vitest\` + \`React Testing Library\`.
+- **Rule**: 80% minimum global coverage. CI will fail < 80%.
+- **Pattern**: AAA (Arrange, Act, Assert).
+- **Mocks**: Use MSW for network APIs. NEVER mock Prisma client (use test DB schema)."`;
 
 // ─── RIGOR LEVEL MODIFIERS ───
 const RIGOR_MODIFIERS = {
@@ -91,31 +104,27 @@ const RIGOR_MODIFIERS = {
 
 // ─── IDE-SPECIFIC PROMPT ADAPTERS ───
 const IDE_ADAPTERS = {
-    antigravity: (basePrompt) => basePrompt,
-    cursor: (basePrompt) => basePrompt + `
-
-## IDE-SPECIFIC: CURSOR
-- Output rules.md as .mdc format with YAML frontmatter: description, globs, alwaysApply
-- Use .cursor/rules/ directory for all rule files
-- Keep each rule file under 2000 tokens for optimal loading
-- Skills become separate .mdc files with relevant glob patterns
-- Reference: https://docs.cursor.com/context/rules`,
-    copilot: (basePrompt) => basePrompt + `
-
-## IDE-SPECIFIC: GITHUB COPILOT
-- Output as .github/copilot-instructions.md (single file for core rules)
-- Keep instructions concise — Copilot has a smaller context window
-- Focus on coding conventions, architecture patterns, and naming
-- Skills become additional instruction files in .github/copilot/
-- Reference: https://docs.github.com/en/copilot/customizing-copilot`,
-    windsurf: (basePrompt) => basePrompt + `
-
-## IDE-SPECIFIC: WINDSURF (CODEIUM)
-- Output as .windsurfrules at project root
-- Format: markdown with clear section headers
-- Cascade (agentic mode) reads this file automatically
-- Skills become separate files in .windsurf/skills/
-- Keep rules actionable and specific for Cascade's agent loop`,
+    antigravity: (basePrompt) => basePrompt + `\n\n## IDE: ANTIGRAVITY
+- Target: Native multi-agent framework.
+- Structure: Output Rules to \`.antigravity/rules.md\`, Skills to \`.agent/skills/\`.
+- Differentiate clearly between 'Plan Mode' and 'Execute Mode' triggers using state markers.`,
+    cursor: (basePrompt) => basePrompt + `\n\n## IDE: CURSOR (.mdc FORMAT REQUIRED)
+- **Format:** Output MUST be a strictly valid Cursor Markdown Rule (\`.mdc\` extension).
+- **Frontmatter:** You MUST start the file with EXACTLY this YAML frontmatter:
+  ---
+  description: "Actionable description of the rule (max 10 words)"
+  globs: ["src/**/*.ts", "src/**/*.tsx"] # Specify relevant extensions
+  alwaysApply: false # True only for global workspace rules
+  ---
+- **Parsing:** Cursor Claude/GPT models degrade past 2000 tokens. Use <rule>, <example>, and <critical> XML tags to help the parser. Break large rules into chunked lists.`,
+    copilot: (basePrompt) => basePrompt + `\n\n## IDE: GITHUB COPILOT
+- **Format:** Output as a single, extremely dense \`.github/copilot-instructions.md\`.
+- **Constraint:** Copilot has a tiny context window for custom instructions (~500 lines). EXTREME COMPRESSION REQUIRED.
+- **Focus:** Omit complex autonomous agent workflows. Strictly enforce Naming conventions, Test boundaries, and Code Quality. Copilot is an autocomplete engine, not an autonomous agent.`,
+    windsurf: (basePrompt) => basePrompt + `\n\n## IDE: WINDSURF (CASCADE AGENT)
+- **Format:** Output as \`.windsurfrules\` file at project root.
+- **Agent Awareness:** Address the 'Cascade' agent directly.
+- **Workflow:** Define exact triggers for when Cascade must STOP and wait for user approval. Explicitly authorize which terminal commands Cascade can run autonomously (e.g., "Cascade may run \`npm run lint\` automatically").`,
 };
 
 // ─── REFINEMENT PROMPT ───
@@ -130,6 +139,31 @@ Please regenerate the file fixing ALL the issues listed above. The output must:
 4. Maximize technical density. Ensure EVERY required section is thoroughly defined. Do NOT use generic filler to pad length
 5. Be complete and production-ready`;
 
+// ─── SECTION SKELETONS ───
+const SECTION_SKELETONS = {
+    "rules": `\n## MANDATORY OUTPUT SKELETON
+You MUST structure your output using EXACTLY these headings in this order. Do not rename or skip them:
+# Workspace Rules & Identity
+## 1. Role & Plan Mode Contract
+## 2. Architecture & Stack [STACK]
+## 3. Code Quality & Typing [CORE]
+## 4. Security Posture [CORE]
+## 5. Testing & Validation
+## 6. File Conventions
+## 7. Domain Metrics`,
+
+    "skills": `\n## MANDATORY OUTPUT SKELETON
+You MUST structure your output using exactly this format:
+---
+name: [Skill Name]
+description: [Actionable description]
+---
+# Trigger (When to activate)
+# Context Required
+# Execution Steps
+# Validation Criteria`,
+};
+
 // ─── BUILD PROMPT ───
 export function buildPrompt(fileType, config, ideTarget) {
     const ide = IDE_TARGETS.find(t => t.id === ideTarget) || IDE_TARGETS[0];
@@ -141,6 +175,7 @@ export function buildPrompt(fileType, config, ideTarget) {
 
     const priorities = (config.priorities || []).join(", ");
     const rigor = config.rigor || "balanced";
+    const skeleton = SECTION_SKELETONS[fileMeta?.id] || "";
 
     let prompt = `Generate the **${fileMeta?.label || fileType}** file (${fileMeta?.layer || ""}) for this project:
 
@@ -156,9 +191,12 @@ export function buildPrompt(fileType, config, ideTarget) {
 - **Project Topology:** ${config.topology || "Standard Single-App"}
 ${config.customDomain ? `- **Custom Domain Description:** ${config.customDomain}` : ""}
 
-## Technology Stack
-${stackSummary || "Not configured — use sensible defaults for the domain"}
-IMPORTANT: Reference stack by stable feature set. Include version ONLY if user explicitly provided it.
+## 🔒 STRICT STACK CONTRACT (ANTI-HALLUCINATION)
+You are generating ONE file in a multi-file system. To ensure cross-file coherence:
+1. You are BOUND to this exact stack:
+${stackSummary || "Native language defaults"}
+2. You are STRICTLY FORBIDDEN from suggesting, hallucinating, or writing snippets for ANY third-party library, framework, or tool not explicitly listed above.
+3. If a category (like Testing) is missing from the stack, dictate the standard NATIVE tool for the primary language.
 
 ## Target IDE: ${ide.name}
 - Rules path: ${ide.rulesPath}
@@ -166,10 +204,13 @@ IMPORTANT: Reference stack by stable feature set. Include version ONLY if user e
 - Workflows path: ${ide.workflowsPath}
 - Context path: ${ide.contextPath}
 - Config format: ${ide.configFormat}
+${skeleton}
 
-## Expected Output
-Generate a complete, production-ready ${fileMeta?.label || fileType} file.
-Expected length: ${fileMeta?.lines || "200-400"} lines.
+## DENSITY & OPTIMIZATION CONSTRAINT
+**Target Density: Maximum.**
+Every single sentence MUST dictate a concrete technical behavior, a configuration value, or a strict constraint.
+DO NOT use conversational filler, pleasantries, or explanatory prose.
+Do NOT artificially pad the output. Short, hyper-dense, and highly actionable is vastly superior to long and generic.
 ${fileMeta?.expectedSections ? `Must contain at least ${fileMeta.expectedSections} major sections.` : ""}
 Include file paths relative to the target IDE's directory structure.
 Separate [CORE] rules (security, types, clean code) from [STACK] rules (ORM, API layer, auth provider) with clear markers.`;

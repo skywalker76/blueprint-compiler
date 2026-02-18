@@ -14,7 +14,7 @@ export function validateOutput(output, fileType, config) {
     const issues = [];
 
     // ─── Completeness (30%) ───
-    const completenessScore = checkCompleteness(output, fileMeta, issues);
+    const completenessScore = checkCompleteness(output, fileMeta, config, issues);
 
     // ─── Specificity (25%) ───
     const specificityScore = checkSpecificity(output, issues);
@@ -45,31 +45,53 @@ export function validateOutput(output, fileType, config) {
     };
 }
 
-// ─── COMPLETENESS CHECK ───
-function checkCompleteness(output, fileMeta, issues) {
+// ─── COMPLETENESS CHECK (Semantic) ───
+function checkCompleteness(output, fileMeta, config, issues) {
     if (!fileMeta) return 70;
+    let score = 100;
+    const lowerOut = output.toLowerCase();
 
-    // Count markdown headings (## or ###)
+    // 1. Core Semantic Concepts (required per file type)
+    const coreSemantics = {
+        "rules": ["security", "architecture", "test", "convention", "quality"],
+        "skills": ["trigger", "step", "validation"],
+        "workflows": ["step", "verify", "rollback"],
+    };
+
+    const required = coreSemantics[fileMeta.id] || [];
+    const missingCore = required.filter(concept => !lowerOut.includes(concept));
+
+    if (missingCore.length > 0) {
+        issues.push({ category: "completeness", message: `Missing fundamental technical concepts: ${missingCore.map(c => c.toUpperCase()).join(", ")}`, severity: "high" });
+        score -= (missingCore.length * 15);
+    }
+
+    // 2. Domain Verification (e.g. SaaS requires auth/RBAC/tenant)
+    const domainKws = {
+        "SaaS B2B": ["tenant", "rbac", "auth", "subscription", "role"],
+        "E-commerce": ["cart", "checkout", "payment", "inventory"],
+        "Data": ["pipeline", "etl", "throughput", "batch", "memory"],
+    };
+
+    const expectedDomainKws = domainKws[config?.domain] || [];
+    if (expectedDomainKws.length > 0 && !expectedDomainKws.some(kw => lowerOut.includes(kw))) {
+        issues.push({ category: "completeness", message: `Output lacks specific architecture concepts for domain: ${config.domain}`, severity: "medium" });
+        score -= 15;
+    }
+
+    // 3. Heading structure (secondary check — still useful)
     const headings = (output.match(/^#{1,3}\s+.+$/gm) || []);
-    const headingCount = headings.length;
     const expected = fileMeta.expectedSections || 5;
 
-    if (headingCount === 0) {
-        issues.push({ category: "completeness", message: "No section headings found. Expected structured output with at least " + expected + " sections.", severity: "critical" });
-        return 10;
+    if (headings.length === 0) {
+        issues.push({ category: "completeness", message: `No section headings found. Expected structured output with at least ${expected} sections.`, severity: "critical" });
+        score -= 40;
+    } else if (headings.length < expected * 0.5) {
+        issues.push({ category: "completeness", message: `Only ${headings.length} sections found, expected at least ${expected}.`, severity: "high" });
+        score -= 20;
     }
 
-    if (headingCount < expected * 0.5) {
-        issues.push({ category: "completeness", message: `Only ${headingCount} sections found, expected at least ${expected}. Missing sections reduce Blueprint usefulness.`, severity: "high" });
-        return 40;
-    }
-
-    if (headingCount < expected) {
-        issues.push({ category: "completeness", message: `${headingCount}/${expected} sections found. Consider adding more sections for completeness.`, severity: "medium" });
-        return 70;
-    }
-
-    return 100;
+    return Math.max(0, score);
 }
 
 // ─── SPECIFICITY CHECK ───
