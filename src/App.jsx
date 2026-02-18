@@ -248,7 +248,6 @@ export default function App() {
   // ─── Persistence ───
   const [saveStatus, setSaveStatus] = useState(null); // "saving" | "saved" | "error" | null
   const handleSave = async () => {
-    console.log("[Save] handleSave called, generated keys:", Object.keys(generated));
     if (!generated || Object.keys(generated).length === 0) {
       setError("Nothing to save. Generate a blueprint first.");
       return;
@@ -260,10 +259,8 @@ export default function App() {
       ideTarget,
       generated: { ...generated },
     };
-    console.log("[Save] Blueprint to save:", bp.id, "user:", user?.id);
     try {
       const result = await saveBlueprint(bp, user?.id);
-      console.log("[Save] Result:", result);
       if (result.success) {
         const updated = await loadLibrary(user?.id);
         setLibrary(updated);
@@ -271,13 +268,11 @@ export default function App() {
         setSaveStatus("saved");
         setTimeout(() => setSaveStatus(null), 3000);
       } else {
-        console.error("[Save] Failed:", result.error);
         setError(result.error || "Save failed");
         setSaveStatus("error");
         setTimeout(() => setSaveStatus(null), 3000);
       }
     } catch (err) {
-      console.error("[Save] Exception:", err);
       setError(`Save failed: ${err.message}`);
       setSaveStatus("error");
       setTimeout(() => setSaveStatus(null), 3000);
