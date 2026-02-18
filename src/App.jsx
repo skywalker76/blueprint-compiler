@@ -390,7 +390,7 @@ export default function App() {
 
         {/* ═══ LIBRARY PANEL ═══ */}
         {showLibrary && (
-          <div ref={libraryRef} style={{ ...S.card, borderColor: "#334155" }}>
+          <div ref={libraryRef} style={{ ...S.card, borderColor: "#334155", scrollMarginTop: 64 }}>
             <SectionTitle icon="📁" title="Blueprint Library" subtitle={libraryTab === "my" ? `${library.length} saved blueprint(s)` : "Community & Official Blueprints"} />
 
             <div style={{ display: "flex", gap: 16, marginBottom: 16, borderBottom: "1px solid #334155", paddingBottom: 0 }}>
