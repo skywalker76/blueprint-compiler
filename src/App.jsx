@@ -246,7 +246,12 @@ export default function App() {
   };
 
   // ─── Persistence ───
+  const [saveStatus, setSaveStatus] = useState(null); // "saved" | "error" | null
   const handleSave = async () => {
+    if (!generated || Object.keys(generated).length === 0) {
+      setError("Nothing to save. Generate a blueprint first.");
+      return;
+    }
     const bp = {
       id: config.projectName + "-" + Date.now().toString(36),
       config: { ...config },
@@ -259,11 +264,17 @@ export default function App() {
         const updated = await loadLibrary(user?.id);
         setLibrary(updated);
         setError(null);
+        setSaveStatus("saved");
+        setTimeout(() => setSaveStatus(null), 3000);
       } else {
-        setError(result.error);
+        setError(result.error || "Save failed");
+        setSaveStatus("error");
+        setTimeout(() => setSaveStatus(null), 3000);
       }
     } catch (err) {
-      setError(err.message);
+      setError(`Save failed: ${err.message}`);
+      setSaveStatus("error");
+      setTimeout(() => setSaveStatus(null), 3000);
     }
   };
 
@@ -793,7 +804,7 @@ export default function App() {
                 <button style={S.btn(false)} onClick={() => setStep(3)}>← Edit</button>
                 <div style={{ display: "flex", gap: 8 }}>
                   {Object.keys(generated).length > 0 && (
-                    <button style={S.btn(false)} onClick={handleSave}>💾 Save</button>
+                    <button style={{ ...S.btn(false), ...(saveStatus === "saved" ? { borderColor: "#22c55e", color: "#22c55e" } : saveStatus === "error" ? { borderColor: "#ef4444", color: "#ef4444" } : {}) }} onClick={handleSave}>{saveStatus === "saved" ? "✅ Saved!" : saveStatus === "error" ? "❌ Error" : "💾 Save"}</button>
                   )}
                   <button style={S.btn(true, !!generating || !apiKey)} onClick={handleGenerateAll} disabled={!!generating || !apiKey}>
                     {generating ? `⏳ ${generating}...` : "⚡ Generate All Blueprint Files"}
@@ -969,7 +980,7 @@ Before every complex action, use a <thought> block to:
               <div style={{ ...S.card, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
                 <div style={{ fontSize: 13, fontWeight: 600, color: "#e2e8f0" }}>📦 Export Blueprint</div>
                 <div style={{ display: "flex", gap: 8 }}>
-                  <button onClick={handleSave} style={S.btn(false)}>💾 Save to Library</button>
+                  <button onClick={handleSave} style={{ ...S.btn(false), ...(saveStatus === "saved" ? { borderColor: "#22c55e", color: "#22c55e" } : saveStatus === "error" ? { borderColor: "#ef4444", color: "#ef4444" } : {}) }}>{saveStatus === "saved" ? "✅ Saved!" : saveStatus === "error" ? "❌ Error" : "💾 Save to Library"}</button>
                   <button onClick={() => {
                     if (!tierLimits.hasExportZip) {
                       setShowUpgradeModal({ reason: "zip_locked", data: {} });
