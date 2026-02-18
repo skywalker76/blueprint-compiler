@@ -1,5 +1,6 @@
 import { useState, Component } from "react";
 import { CopyButton } from "./CopyButton.jsx";
+import { ZipPreview } from "./ZipPreview.jsx";
 import { exportAsJson, exportAsYaml, exportAsZip, getBlueprintJsonString } from "../engine/persistence.js";
 
 // ─── ERROR BOUNDARY ───
@@ -273,6 +274,7 @@ function ParsedPanel({ generated, fileIds, keywords, emptyMsg }) {
 // ─── EXPORT BAR ───
 function ExportBar({ blueprint }) {
     const [feedback, setFeedback] = useState(null);
+    const [showZipPreview, setShowZipPreview] = useState(false);
 
     const showFeedback = (key) => {
         setFeedback(key);
@@ -295,9 +297,8 @@ function ExportBar({ blueprint }) {
         showFeedback("yaml");
     };
 
-    const handleZip = async () => {
-        await exportAsZip(blueprint);
-        showFeedback("zip");
+    const handleZip = () => {
+        setShowZipPreview(prev => !prev);
     };
 
     const handleCopySystemPrompt = async () => {
@@ -357,59 +358,67 @@ function ExportBar({ blueprint }) {
     };
 
     return (
-        <div style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            padding: "8px 12px",
-            background: "#060b14",
-            borderLeft: "1px solid #1e293b",
-            borderRight: "1px solid #1e293b",
-            flexWrap: "wrap",
-        }}>
-            <span style={{ fontSize: 11, color: "#475569", fontWeight: 600, marginRight: 4 }}>EXPORT</span>
-            <button
-                onClick={handleCopySystemPrompt}
-                style={{
-                    ...btnBase,
-                    background: feedback === "sysprompt" ? "#064e3b" : "linear-gradient(135deg, #1c1208 0%, #0f172a 100%)",
-                    color: feedback === "sysprompt" ? "#6ee7b7" : "#fbbf24",
-                    border: "1px solid #92400e",
-                }}
-            >
-                {feedback === "sysprompt" ? "✓ Copied!" : "📋 Copy System Prompt"}
-            </button>
-            <button
-                onClick={handleCopyJson}
-                style={{
-                    ...btnBase,
-                    background: feedback === "json" ? "#064e3b" : "#0f172a",
-                    color: feedback === "json" ? "#6ee7b7" : "#7dd3fc",
-                }}
-            >
-                {feedback === "json" ? "✓ Copied!" : "📋 Copy JSON"}
-            </button>
-            <button
-                onClick={handleYaml}
-                style={{
-                    ...btnBase,
-                    background: feedback === "yaml" ? "#064e3b" : "#0f172a",
-                    color: feedback === "yaml" ? "#6ee7b7" : "#a78bfa",
-                }}
-            >
-                {feedback === "yaml" ? "✓ Downloaded!" : "📥 YAML"}
-            </button>
-            <button
-                onClick={handleZip}
-                style={{
-                    ...btnBase,
-                    background: feedback === "zip" ? "#064e3b" : "#0f172a",
-                    color: feedback === "zip" ? "#6ee7b7" : "#fb923c",
-                }}
-            >
-                {feedback === "zip" ? "✓ Downloaded!" : "📦 ZIP"}
-            </button>
-        </div>
+        <>
+            <div style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "8px 12px",
+                background: "#060b14",
+                borderLeft: "1px solid #1e293b",
+                borderRight: "1px solid #1e293b",
+                flexWrap: "wrap",
+            }}>
+                <span style={{ fontSize: 11, color: "#475569", fontWeight: 600, marginRight: 4 }}>EXPORT</span>
+                <button
+                    onClick={handleCopySystemPrompt}
+                    style={{
+                        ...btnBase,
+                        background: feedback === "sysprompt" ? "#064e3b" : "linear-gradient(135deg, #1c1208 0%, #0f172a 100%)",
+                        color: feedback === "sysprompt" ? "#6ee7b7" : "#fbbf24",
+                        border: "1px solid #92400e",
+                    }}
+                >
+                    {feedback === "sysprompt" ? "✓ Copied!" : "📋 Copy System Prompt"}
+                </button>
+                <button
+                    onClick={handleCopyJson}
+                    style={{
+                        ...btnBase,
+                        background: feedback === "json" ? "#064e3b" : "#0f172a",
+                        color: feedback === "json" ? "#6ee7b7" : "#7dd3fc",
+                    }}
+                >
+                    {feedback === "json" ? "✓ Copied!" : "📋 Copy JSON"}
+                </button>
+                <button
+                    onClick={handleYaml}
+                    style={{
+                        ...btnBase,
+                        background: feedback === "yaml" ? "#064e3b" : "#0f172a",
+                        color: feedback === "yaml" ? "#6ee7b7" : "#a78bfa",
+                    }}
+                >
+                    {feedback === "yaml" ? "✓ Downloaded!" : "📥 YAML"}
+                </button>
+                <button
+                    onClick={handleZip}
+                    style={{
+                        ...btnBase,
+                        background: feedback === "zip" ? "#064e3b" : "#0f172a",
+                        color: feedback === "zip" ? "#6ee7b7" : "#fb923c",
+                    }}
+                >
+                    {feedback === "zip" ? "✓ Downloaded!" : showZipPreview ? "✕ Close Preview" : "📦 ZIP"}
+                </button>
+            </div>
+            {showZipPreview && (
+                <ZipPreview
+                    blueprint={blueprint}
+                    onClose={() => setShowZipPreview(false)}
+                />
+            )}
+        </>
     );
 }
 
