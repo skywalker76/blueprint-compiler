@@ -271,6 +271,21 @@ export const PRESETS = [
         },
     },
     {
+        id: "wp-corporate-nonprofit", category: "content",
+        icon: "🏛️", title: "WP Corporate Non-Profit",
+        subtitle: "Consortium portal with reserved areas & store locator",
+        gradient: "linear-gradient(135deg, #1e3a5f, #2d6a9f)",
+        stackPills: ["WP 6.7+", "Gutenberg", "ACF Pro", "Leaflet"],
+        ideTarget: "antigravity",
+        config: {
+            domain: "wordpress", projectName: "consorzio-portal",
+            mission: "A WordPress corporate/non-profit consortium portal with role-based reserved areas (Consorziati, Fornitori, Dipendenti, Consiglio di Amministrazione, Presidenza, Associazioni), each with dedicated dashboards, private documents, internal communications, and member directories. Features an interactive store locator map (Leaflet/OpenStreetMap) for supplier geolocation with category filters, address search, and cluster view. Includes public institutional pages (mission, governance, news, events, press), document management with version control, internal bulletin board, contact forms per department, and GDPR-compliant member registration with approval workflow. No e-commerce",
+            langConvo: "it", langCode: "en",
+            stack: { wpversion: "WordPress 6.7+", builder: "Gutenberg (Block Editor)", customfields: "ACF Pro", maps: "Leaflet + OpenStreetMap", membership: "Members Plugin + Custom Roles", forms: "Gravity Forms", seo: "Yoast SEO", caching: "WP Rocket + Redis", hosting: "Managed WordPress (Cloudways/Kinsta)" },
+            customDomain: "", customStack: "", priorities: ["security", "maintainability", "performance", "scalability"], rigor: "balanced",
+        },
+    },
+    {
         id: "blog-platform", category: "content",
         icon: "📰", title: "Blog Platform",
         subtitle: "MDX blog with newsletter & analytics",
