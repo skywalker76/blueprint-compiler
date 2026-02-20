@@ -49,16 +49,36 @@ export default function App() {
   const [modelId, setModelId] = useState(() => sessionStorage.getItem("bc_model") || "");
   const [showKeyInfo, setShowKeyInfo] = useState(false);
   const [updateInput, setUpdateInput] = useState({}); // { [fileType]: "change description" }
-  const [step, setStep] = useState(0);
-  const [config, setConfig] = useState({
-    domain: "", projectName: "", mission: "",
-    langConvo: "it", langCode: "en",
-    stack: {}, customDomain: "", customStack: "",
-    priorities: ["performance", "security", "maintainability", "scalability"],
-    rigor: "balanced",
+  const [step, setStep] = useState(() => {
+    try {
+      const saved = localStorage.getItem("bc_wizard_step");
+      return saved ? parseInt(saved, 10) : 0;
+    } catch { return 0; }
   });
-  const [ideTarget, setIdeTarget] = useState("antigravity");
-  const [generated, setGenerated] = useState({});
+  const [config, setConfig] = useState(() => {
+    const defaultConf = {
+      domain: "", projectName: "", mission: "",
+      langConvo: "it", langCode: "en",
+      stack: {}, customDomain: "", customStack: "",
+      priorities: ["performance", "security", "maintainability", "scalability"],
+      rigor: "balanced",
+    };
+    try {
+      const saved = localStorage.getItem("bc_wizard_config");
+      return saved ? { ...defaultConf, ...JSON.parse(saved) } : defaultConf;
+    } catch { return defaultConf; }
+  });
+  const [ideTarget, setIdeTarget] = useState(() => {
+    try {
+      return localStorage.getItem("bc_wizard_ide") || "antigravity";
+    } catch { return "antigravity"; }
+  });
+  const [generated, setGenerated] = useState(() => {
+    try {
+      const saved = localStorage.getItem("bc_wizard_generated");
+      return saved ? JSON.parse(saved) : {};
+    } catch { return {}; }
+  });
   const [generating, setGenerating] = useState(null);
   const [activeTab, setActiveTab] = useState("rules");
   const [error, setError] = useState(null);
@@ -104,6 +124,16 @@ export default function App() {
     sessionStorage.setItem("bc_provider", provider);
     if (modelId) sessionStorage.setItem("bc_model", modelId);
   }, [apiKey, provider, modelId]);
+
+  // Save Wizard State to localStorage (Autosave)
+  useEffect(() => {
+    try {
+      localStorage.setItem("bc_wizard_step", step);
+      localStorage.setItem("bc_wizard_config", JSON.stringify(config));
+      localStorage.setItem("bc_wizard_ide", ideTarget);
+      localStorage.setItem("bc_wizard_generated", JSON.stringify(generated));
+    } catch (e) { console.warn("Failed to save wizard state to localStorage", e); }
+  }, [step, config, ideTarget, generated]);
 
   // Initialize stack when domain changes
   useEffect(() => {
@@ -339,6 +369,18 @@ export default function App() {
           <a href="/" style={{ fontSize: 12, color: "#94a3b8", textDecoration: "none", fontWeight: 500 }}>🏠 Home</a>
           <button onClick={() => { const willShow = !showLibrary; setShowLibrary(willShow); if (willShow) setTimeout(() => libraryRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100); }} style={{ background: "none", border: "1px solid #334155", borderRadius: 6, color: "#94a3b8", cursor: "pointer", padding: "4px 12px", fontSize: 12, fontWeight: 600 }}>
             📁 Library ({library.length})
+          </button>
+
+          <button onClick={() => {
+            if (confirm("Are you sure you want to clear your current progress and start over?")) {
+              localStorage.removeItem("bc_wizard_config");
+              localStorage.removeItem("bc_wizard_step");
+              localStorage.removeItem("bc_wizard_ide");
+              localStorage.removeItem("bc_wizard_generated");
+              window.location.reload();
+            }
+          }} style={{ background: "none", border: "1px dashed #334155", borderRadius: 6, color: "#cbd5e1", cursor: "pointer", padding: "4px 12px", fontSize: 12, fontWeight: 600 }}>
+            🔄 Reset
           </button>
           {user && (!profile?.tier || profile?.tier === "free") && (
             <a href="/#pricing" style={{ fontSize: 12, color: "#fb923c", textDecoration: "none", fontWeight: 700, background: "linear-gradient(135deg, #fb923c22, #f9731622)", padding: "4px 12px", borderRadius: 6, border: "1px solid #fb923c44" }}>⚡ Upgrade</a>
