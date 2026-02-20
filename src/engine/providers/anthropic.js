@@ -9,8 +9,8 @@ export class AnthropicProvider extends BaseProvider {
             icon: "🟠",
             models: [
                 { id: "claude-3-7-sonnet-20250219", name: "Claude 3.7 Sonnet", description: "🆕 Newest & most intelligent", maxTokens: 8192 },
-                { id: "claude-3-5-sonnet-20241022", name: "Claude 3.5 Sonnet", description: "Very fast, highly capable", maxTokens: 8192 },
-                { id: "claude-3-opus-20240229", name: "Claude 3 Opus", description: "Powerful, excellent for complex reasoning", maxTokens: 4096 },
+                { id: "claude-3-5-sonnet-20241022", name: "Claude 3.5 Sonnet (4.5)", description: "Very fast, highly capable", maxTokens: 8192 },
+                { id: "claude-3-opus-20240229", name: "Claude 3 Opus (4.5)", description: "Powerful, excellent for complex reasoning", maxTokens: 4096 },
                 { id: "claude-3-5-haiku-20241022", name: "Claude 3.5 Haiku", description: "Fastest, cheapest", maxTokens: 8192 },
             ],
             defaultModel: "claude-3-7-sonnet-20250219",
