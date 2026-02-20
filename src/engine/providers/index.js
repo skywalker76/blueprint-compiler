@@ -3,23 +3,23 @@
 // Import this file anywhere you need to work with providers.
 
 import { AnthropicProvider } from "./anthropic.js";
-import { OpenAIProvider } from "./openai.js";
-import { GeminiProvider } from "./gemini.js";
+// import { OpenAIProvider } from "./openai.js";
+// import { GeminiProvider } from "./gemini.js";
 
-// ─── Instantiate all providers ───
+// ─── Instantiate providers ───
 const anthropic = new AnthropicProvider();
-const openai = new OpenAIProvider();
-const gemini = new GeminiProvider();
+// const openai = new OpenAIProvider();
+// const gemini = new GeminiProvider();
 
 // ─── Registry map ───
 export const PROVIDERS = {
     anthropic,
-    openai,
-    gemini,
+    // openai,
+    // gemini,
 };
 
 // ─── Ordered list for UI dropdowns ───
-export const PROVIDER_LIST = [anthropic, openai, gemini];
+export const PROVIDER_LIST = [anthropic]; // OpenAI and Gemini temporarily disabled
 
 // ─── Factory ───
 export function getProvider(id) {
