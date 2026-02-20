@@ -39,7 +39,7 @@ const STEPS = ["Domain", "IDE", "Stack", "Project", "Generate"];
 // ─── MAIN APP ───
 export default function App() {
   // ─── Auth ───
-  const { user, profile, loading: authLoading, signOut } = useAuth();
+  const { user, profile, session, loading: authLoading, signOut } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(null); // null | { reason, data }
 
@@ -100,6 +100,16 @@ export default function App() {
     loadLibrary(user?.id).then(setLibrary).catch(console.error);
     if (getTelemetryPreference()) trackAnonymousEvent("app_loaded");
   }, [user, authLoading]);
+
+  // ─── Auth diagnostics (console trace for systematic debugging) ───
+  useEffect(() => {
+    console.group("[Auth] State update");
+    console.log("loading:", authLoading);
+    console.log("user:", user ? `${user.email} (id: ${user.id})` : "null");
+    console.log("session:", session ? `valid (expires: ${new Date(session.expires_at * 1000).toLocaleTimeString()})` : "null");
+    console.log("profile tier:", profile?.tier ?? "(no profile)");
+    console.groupEnd();
+  }, [user, session, profile, authLoading]);
 
   // ─── Auto-migrate localStorage → Supabase on first login ───
   useEffect(() => {
