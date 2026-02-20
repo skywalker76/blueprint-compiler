@@ -155,17 +155,26 @@ export async function trackUsage(userId, action, details = {}) {
 
 export async function getUsageCount(userId = null) {
     if (userId && isSupabaseConfigured()) {
-        const now = new Date();
-        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+        try {
+            const now = new Date();
+            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
-        const { count, error } = await supabase
-            .from("usage_tracking")
-            .select("*", { count: "exact", head: true })
-            .eq("user_id", userId)
-            .eq("action", "generate")
-            .gte("created_at", startOfMonth);
+            const { count, error } = await supabase
+                .from("usage_tracking")
+                .select("*", { count: "exact", head: true })
+                .eq("user_id", userId)
+                .eq("action", "generate")
+                .gte("created_at", startOfMonth);
 
-        if (!error) return count || 0;
+            if (error) {
+                console.error("Supabase getUsageCount error:", error);
+                return getUsageCountLocal();
+            }
+            return count || 0;
+        } catch (e) {
+            console.error("Exception in getUsageCount:", e);
+            return getUsageCountLocal();
+        }
     }
 
     return getUsageCountLocal();

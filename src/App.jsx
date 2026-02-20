@@ -169,15 +169,15 @@ export default function App() {
   const tierLimits = TIERS[userTier] || TIERS.free;
 
   // ─── Generation (Agentic) ───
-  const handleGenerateFile = async (fileType) => {
+  const handleGenerateFile = async (fileType, isGenerateAll = false) => {
     // Gate 1: Login obbligatorio
     if (!user) {
       setShowAuthModal(true);
       return;
     }
 
-    // Gate 2: Limite mensile (solo per tier con limiti)
-    if (tierLimits.maxGenerations !== Infinity) {
+    // Gate 2: Limite mensile (solo per tier con limiti, e solo se non è parte di Generate All)
+    if (!isGenerateAll && tierLimits.maxGenerations !== Infinity) {
       const count = await getUsageCount(user.id);
       if (count >= tierLimits.maxGenerations) {
         setShowUpgradeModal({ reason: "generation_limit", data: { count, max: tierLimits.maxGenerations } });
@@ -198,7 +198,11 @@ export default function App() {
       setError(`${fileType}: ${err.message}`);
     }
     setGenerating(null);
-    trackAnonymousEvent("generate_file", { fileType });
+    if (!isGenerateAll) {
+      trackAnonymousEvent("generate_file", { fileType });
+      // Usage is tracked here when generating a single file, handled at start of handleGenerateAll otherwise
+      try { await trackUsage(user?.id, "generate", { fileType }); } catch (_) { /* non-blocking */ }
+    }
   };
 
   // ─── Update Mode ───
@@ -252,7 +256,7 @@ export default function App() {
       for (let i = 0; i < FILE_TYPES.length; i++) {
         const ft = FILE_TYPES[i];
         setGenerationProgress({ current: i + 1, total: FILE_TYPES.length, label: ft.label });
-        await handleGenerateFile(ft.id);
+        await handleGenerateFile(ft.id, true);
       }
       setGenerationProgress(null);
 
