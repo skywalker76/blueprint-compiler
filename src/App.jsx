@@ -155,8 +155,9 @@ export default function App() {
   }, [config.domain]);
 
   // ─── Scanner ───
-  const handleScan = () => {
-    const result = scanPackageJson(scannerInput);
+  const handleScan = (textOverride) => {
+    const textToScan = typeof textOverride === 'string' ? textOverride : scannerInput;
+    const result = scanPackageJson(textToScan);
     setScanResult(result);
     if (result.success) {
       // Apply detected values
@@ -171,6 +172,17 @@ export default function App() {
         }
         upd("stack", newStack);
       }
+    }
+  };
+
+  const handleFileUpload = async (file) => {
+    if (!file) return;
+    try {
+      const text = await file.text();
+      setScannerInput(text);
+      handleScan(text); // Auto-trigger scan
+    } catch (err) {
+      setScanResult({ success: false, error: "Failed to read file: " + err.message });
     }
   };
 
@@ -553,12 +565,57 @@ export default function App() {
         </div>
         {showScanner && (
           <div style={{ ...S.card, borderColor: "#0c4a6e55", background: "#0c192988" }}>
-            <SectionTitle icon="🔍" title="Project Scanner" subtitle="Paste your package.json — we'll auto-detect your stack" />
-            <textarea style={{ ...S.textarea, minHeight: 150, fontFamily: "JetBrains Mono, monospace", fontSize: 12 }}
+            <SectionTitle icon="🔍" title="Project Scanner" subtitle="Upload or paste your package.json — we'll auto-detect your stack" />
+            
+            <div 
+              onDragOver={e => { e.preventDefault(); e.stopPropagation(); }}
+              onDrop={e => {
+                e.preventDefault(); e.stopPropagation();
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                  handleFileUpload(e.dataTransfer.files[0]);
+                }
+              }}
+              onClick={() => document.getElementById('package-upload').click()}
+              style={{
+                border: "2px dashed #0ea5e955",
+                borderRadius: 12,
+                padding: "32px 16px",
+                textAlign: "center",
+                background: "rgba(14, 165, 233, 0.03)",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+                marginBottom: 16
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = "rgba(14, 165, 233, 0.08)"}
+              onMouseLeave={e => e.currentTarget.style.background = "rgba(14, 165, 233, 0.03)"}
+            >
+              <input 
+                id="package-upload" 
+                type="file" 
+                accept=".json,application/json" 
+                style={{ display: 'none' }} 
+                onChange={e => {
+                  if (e.target.files && e.target.files[0]) {
+                    handleFileUpload(e.target.files[0]);
+                  }
+                }} 
+              />
+              <div style={{ fontSize: 24, marginBottom: 8 }}>📁</div>
+              <div style={{ fontSize: 13, color: "#e2e8f0", fontWeight: 600 }}>Drag & Drop your package.json here</div>
+              <div style={{ fontSize: 11, color: "#64748b", marginTop: 4 }}>or click to browse files</div>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+              <div style={{ height: 1, flex: 1, background: "#1e293b" }}></div>
+              <span style={{ fontSize: 10, color: "#64748b", fontWeight: 700, textTransform: "uppercase" }}>OR PASTE MANUALLY</span>
+              <div style={{ height: 1, flex: 1, background: "#1e293b" }}></div>
+            </div>
+
+            <textarea style={{ ...S.textarea, minHeight: 80, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}
               value={scannerInput} onChange={e => setScannerInput(e.target.value)}
-              placeholder='Paste the contents of your package.json here...' />
+              placeholder='Paste contents here...' />
             <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 8 }}>
-              <button onClick={handleScan} style={S.btn(true, !scannerInput)} disabled={!scannerInput}>
+              <button onClick={() => handleScan()} style={S.btn(true, !scannerInput)} disabled={!scannerInput}>
                 ⚡ Analyze
               </button>
             </div>
