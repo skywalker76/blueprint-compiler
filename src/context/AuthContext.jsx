@@ -137,7 +137,13 @@ export function AuthProvider({ children }) {
         if (!isSupabaseConfigured()) throw new Error("Auth not configured");
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: "google",
-            options: { redirectTo: window.location.origin + "/app" },
+            options: {
+                redirectTo: window.location.origin + "/app",
+                queryParams: {
+                    prompt: "select_account", // ← Always show Google account picker
+                    access_type: "offline",
+                },
+            },
         });
         if (error) throw error;
         return data;
@@ -162,7 +168,12 @@ export function AuthProvider({ children }) {
         } catch (err) {
             console.warn("[Auth] signOut exception:", err.message);
         }
-        // Always clear local state regardless of Supabase result
+        // Explicitly wipe Supabase session from localStorage
+        // This prevents auto-login with the previous user on next sign-in
+        try {
+            localStorage.removeItem("blueprint-compiler-auth");
+        } catch (e) { /* ignore */ }
+        // Clear React state
         setUser(null);
         setSession(null);
         setProfile(null);
