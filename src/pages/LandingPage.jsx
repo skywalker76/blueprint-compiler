@@ -12,7 +12,7 @@ import "./LandingPage.css";
 const FEATURES = [
   { icon: "🧠", title: "Multi-Provider LLM", desc: "Choose Anthropic (Opus 4.6, Sonnet 4) or OpenAI (GPT-5.2, GPT-4o). Select the perfect model for your budget and quality needs.", color: "orange" },
   { icon: "🤖", title: "Agentic Generation", desc: "Generate → Validate → Score → Refine. An autonomous loop that iterates until quality exceeds your threshold.", color: "blue" },
-  { icon: "⌨️", title: "CLI Tool", desc: "npx blueprint-compiler init — interactive terminal wizard. Auto-detects your stack from package.json. Zero config.", color: "green" },
+  { icon: "🔍", title: "Project Scanner", desc: "Paste your package.json and AI auto-detects framework, ORM, DB, auth provider and pre-fills your entire config. Zero manual setup.", color: "green", badge: "PRO" },
   { icon: "🔄", title: "Update Mode", desc: "Changed your stack? Describe what changed and the AI intelligently updates your Blueprint — preserving what's still valid.", color: "purple" },
   { icon: "🎯", title: "4 IDE Targets", desc: "One wizard, four outputs. Antigravity, Cursor, GitHub Copilot, and Windsurf — each with native file structure.", color: "cyan" },
   { icon: "⚡", title: "36 Quick Start Presets", desc: "SaaS, CRM, AI Agent, Real-time Chat, Healthcare, Real Estate and more. Click a card → skip the wizard → generate instantly.", color: "orange" },
@@ -29,6 +29,7 @@ const STEPS_DATA = [
 const COMPARISON = [
   { feature: "LLM Support", before: "Claude only", after: "7 models (Anthropic + OpenAI)" },
   { feature: "Interface", before: "Web only", after: "Web App + CLI" },
+  { feature: "Stack Detection", before: "Manual input", after: "🔍 Auto-detect from package.json" },
   { feature: "Updates", before: "Regenerate all", after: "Smart Update Mode" },
   { feature: "IDE Support", before: "1 IDE", after: "4 IDEs" },
   { feature: "Generation", before: "Single-shot", after: "Agentic loop" },
@@ -50,7 +51,7 @@ const PRICING = [
     tier: "Pro",
     price: "$19",
     sub: "per month",
-    features: ["Unlimited blueprints", "All 4 IDE targets", "Advanced quality scoring", "Cloud persistence", "Priority support", "Export ZIP / JSON"],
+    features: ["Unlimited blueprints", "All 4 IDE targets", "🔍 Project Scanner (auto-detect stack)", "Advanced quality scoring", "Cloud persistence", "Priority support", "Export ZIP / JSON"],
     cta: "Start Free Trial",
     ctaStyle: "primary",
     featured: true,
@@ -116,6 +117,7 @@ export default function LandingPage() {
           </Link>
           <div className="nav-links">
             <a href="#features" className="nav-link">Features</a>
+            <a href="#scanner" className="nav-link" style={{ color: "#6ee7b7" }}>🔍 Scanner</a>
             <a href="#how-it-works" className="nav-link">How It Works</a>
             <a href="#demo" className="nav-link">Demo</a>
             <a href="#pricing" className="nav-link">Pricing</a>
@@ -199,10 +201,77 @@ export default function LandingPage() {
           {FEATURES.map((f, i) => (
             <div className="feature-card" key={i}>
               <div className={`feature-icon ${f.color}`}>{f.icon}</div>
-              <h3>{f.title}</h3>
+              <h3>
+                {f.title}
+                {f.badge && <span className="feature-badge">{f.badge}</span>}
+              </h3>
               <p>{f.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ━━━ Scanner Spotlight ━━━ */}
+      <section className="section scanner-spotlight" id="scanner">
+        <div className="scanner-inner">
+          <div className="scanner-text">
+            <div className="section-label">🔍 Project Scanner</div>
+            <h2>From <span className="gradient-text">package.json</span><br />to Full Blueprint in Seconds</h2>
+            <p className="section-desc" style={{ textAlign: "left", maxWidth: 480 }}>
+              Stop manually typing framework names. The Project Scanner reads your <code>package.json</code>,
+              identifies your entire tech stack — framework, ORM, DB, auth, testing library — and
+              auto-fills the entire Blueprint wizard. <strong>One paste. Zero guesswork.</strong>
+            </p>
+            <div className="scanner-benefits">
+              <div className="scanner-benefit">
+                <span className="benefit-icon">⚡</span>
+                <div>
+                  <strong>Instant Detection</strong>
+                  <p>Identifies 30+ technologies from a single package.json</p>
+                </div>
+              </div>
+              <div className="scanner-benefit">
+                <span className="benefit-icon">🎯</span>
+                <div>
+                  <strong>Zero Manual Entry</strong>
+                  <p>Framework, DB, ORM, auth, testing — all auto-filled</p>
+                </div>
+              </div>
+              <div className="scanner-benefit">
+                <span className="benefit-icon">📊</span>
+                <div>
+                  <strong>Confidence Scoring</strong>
+                  <p>Each detection shows a % confidence so you know what was certain</p>
+                </div>
+              </div>
+            </div>
+            <a href="/app" className="btn-primary" style={{ display: "inline-flex", marginTop: 24 }}>
+              Try Scanner — Upgrade to Pro
+            </a>
+          </div>
+          <div className="scanner-demo">
+            <div className="scanner-terminal">
+              <div className="terminal-header">
+                <span className="dot-red" /><span className="dot-yellow" /><span className="dot-green" />
+                <span className="terminal-title">package.json → Blueprint Compiler Scanner</span>
+              </div>
+              <div className="terminal-body">
+                <div className="terminal-line"><span className="t-dim">$</span> <span className="t-cmd">blueprint-compiler scan package.json</span></div>
+                <div className="terminal-line t-space"> </div>
+                <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Framework:</span> <span className="t-val">Next.js App Router</span> <span className="t-conf">99%</span></div>
+                <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Database:</span> <span className="t-val">PostgreSQL (Prisma)</span> <span className="t-conf">97%</span></div>
+                <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Auth:</span> <span className="t-val">Supabase Auth</span> <span className="t-conf">95%</span></div>
+                <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Styling:</span> <span className="t-val">Tailwind CSS</span> <span className="t-conf">100%</span></div>
+                <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Testing:</span> <span className="t-val">Vitest + RTL</span> <span className="t-conf">94%</span></div>
+                <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Deploy:</span> <span className="t-val">Vercel</span> <span className="t-conf">98%</span></div>
+                <div className="terminal-line t-space"> </div>
+                <div className="terminal-line"><span className="t-info">→</span> <span className="t-bright">Detected 6 technologies from 87 dependencies</span></div>
+                <div className="terminal-line"><span className="t-info">→</span> <span className="t-bright">Blueprint wizard pre-filled. Ready to generate.</span></div>
+                <div className="terminal-line t-space"> </div>
+                <div className="terminal-line terminal-cursor"><span className="t-dim">$</span> <span className="cursor-blink">▋</span></div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
