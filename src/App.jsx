@@ -448,628 +448,631 @@ export default function App() {
 
         <InfoBox type="info">
           A <strong>Blueprint</strong> is a set of configuration files that transforms a generic AI agent into a specialized architect for YOUR project.
-          {/* ═══ QUICK START ═══ */}
-          {step === 0 && Object.keys(generated).length === 0 && (
-            <QuickStartBar presets={PRESETS} onSelect={handlePresetSelect} />
-          )}
+          Now supporting <strong>4 IDEs</strong>: Antigravity, Cursor, GitHub Copilot, and Windsurf.
+        </InfoBox>
 
-          {/* ═══ LIBRARY PANEL ═══ */}
-          {showLibrary && (
-            <div ref={libraryRef} style={{ ...S.card, borderColor: "#334155", scrollMarginTop: 64 }}>
-              <SectionTitle icon="📁" title="Blueprint Library" subtitle={libraryTab === "my" ? `${library.length} saved blueprint(s)` : "Community & Official Blueprints"} />
+        {/* ═══ QUICK START ═══ */}
+        {step === 0 && Object.keys(generated).length === 0 && (
+          <QuickStartBar presets={PRESETS} onSelect={handlePresetSelect} />
+        )}
 
-              <div style={{ display: "flex", gap: 16, marginBottom: 16, borderBottom: "1px solid #334155", paddingBottom: 0 }}>
-                <button onClick={() => setLibraryTab("my")} style={{ paddingBottom: 8, background: "none", border: "none", borderBottom: libraryTab === "my" ? "2px solid #fb923c" : "2px solid transparent", color: libraryTab === "my" ? "#fb923c" : "#64748b", cursor: "pointer", fontWeight: 600, fontSize: 13 }}>My Blueprints</button>
-                <button onClick={() => setLibraryTab("gallery")} style={{ paddingBottom: 8, background: "none", border: "none", borderBottom: libraryTab === "gallery" ? "2px solid #fb923c" : "2px solid transparent", color: libraryTab === "gallery" ? "#fb923c" : "#64748b", cursor: "pointer", fontWeight: 600, fontSize: 13 }}>Community Gallery</button>
-              </div>
+        {/* ═══ LIBRARY PANEL ═══ */}
+        {showLibrary && (
+          <div ref={libraryRef} style={{ ...S.card, borderColor: "#334155", scrollMarginTop: 64 }}>
+            <SectionTitle icon="📁" title="Blueprint Library" subtitle={libraryTab === "my" ? `${library.length} saved blueprint(s)` : "Community & Official Blueprints"} />
 
-              {libraryTab === "my" ? (
-                library.length === 0 ? (
-                  <p style={{ fontSize: 13, color: "#475569", textAlign: "center", padding: 20 }}>No saved blueprints yet. Generate one and click "Save".</p>
-                ) : (
-                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    {library.map(bp => (
-                      <div key={bp.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: 12, background: "#0f172a", borderRadius: 8, border: "1px solid #1e293b" }}>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: 14, fontWeight: 700, color: "#e2e8f0" }}>{bp.config?.projectName || "Untitled"}</div>
-                          <div style={{ fontSize: 11, color: "#64748b" }}>
-                            {bp.config?.domain} · {bp.ideTarget || "antigravity"} · {new Date(bp.createdAt).toLocaleDateString()}
-                          </div>
-                        </div>
-                        <button onClick={() => handleLoadBlueprint(bp)} style={S.btn(true, false)}>Load</button>
-                        <button onClick={() => exportAsJson(bp)} style={S.btn(false, false)}>JSON</button>
-                        <button onClick={() => handleDeleteBlueprint(bp.id)} style={{ ...S.btn(false, false), color: "#ef4444" }}>✕</button>
-                      </div>
-                    ))}
-                  </div>
-                )
+            <div style={{ display: "flex", gap: 16, marginBottom: 16, borderBottom: "1px solid #334155", paddingBottom: 0 }}>
+              <button onClick={() => setLibraryTab("my")} style={{ paddingBottom: 8, background: "none", border: "none", borderBottom: libraryTab === "my" ? "2px solid #fb923c" : "2px solid transparent", color: libraryTab === "my" ? "#fb923c" : "#64748b", cursor: "pointer", fontWeight: 600, fontSize: 13 }}>My Blueprints</button>
+              <button onClick={() => setLibraryTab("gallery")} style={{ paddingBottom: 8, background: "none", border: "none", borderBottom: libraryTab === "gallery" ? "2px solid #fb923c" : "2px solid transparent", color: libraryTab === "gallery" ? "#fb923c" : "#64748b", cursor: "pointer", fontWeight: 600, fontSize: 13 }}>Community Gallery</button>
+            </div>
+
+            {libraryTab === "my" ? (
+              library.length === 0 ? (
+                <p style={{ fontSize: 13, color: "#475569", textAlign: "center", padding: 20 }}>No saved blueprints yet. Generate one and click "Save".</p>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  {GALLERY_BLUEPRINTS.map(bp => (
+                  {library.map(bp => (
                     <div key={bp.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: 12, background: "#0f172a", borderRadius: 8, border: "1px solid #1e293b" }}>
                       <div style={{ flex: 1 }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                          <div style={{ fontSize: 14, fontWeight: 700, color: "#e2e8f0" }}>{bp.config?.projectName}</div>
-                          {bp.isOfficial && <span style={{ fontSize: 9, background: "#065f46", color: "#6ee7b7", padding: "1px 4px", borderRadius: 4, fontWeight: 700 }}>OFFICIAL</span>}
-                        </div>
-                        <div style={{ fontSize: 11, color: "#94a3b8", margin: "2px 0 4px" }}>{bp.config?.mission}</div>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: "#e2e8f0" }}>{bp.config?.projectName || "Untitled"}</div>
                         <div style={{ fontSize: 11, color: "#64748b" }}>
-                          {bp.config?.domain} · {bp.ideTarget} · by {bp.author} · Quality: {bp.quality?.score}%
+                          {bp.config?.domain} · {bp.ideTarget || "antigravity"} · {new Date(bp.createdAt).toLocaleDateString()}
                         </div>
                       </div>
-                      <button onClick={() => handleLoadBlueprint(bp)} style={S.btn(true, false)}>Clone</button>
+                      <button onClick={() => handleLoadBlueprint(bp)} style={S.btn(true, false)}>Load</button>
+                      <button onClick={() => exportAsJson(bp)} style={S.btn(false, false)}>JSON</button>
+                      <button onClick={() => handleDeleteBlueprint(bp.id)} style={{ ...S.btn(false, false), color: "#ef4444" }}>✕</button>
                     </div>
                   ))}
                 </div>
-              )}
-            </div>
-          )}
-
-          {/* ═══ API KEY BAR ═══ */}
-          <div style={{ ...S.card, padding: 16, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-            {/* Provider Selector */}
-            <select value={provider} onChange={e => { setProvider(e.target.value); setApiKey(""); setModelId(""); }}
-              style={{ ...S.input, width: "auto", minWidth: 150, fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
-              {PROVIDER_LIST.map(p => (
-                <option key={p.id} value={p.id}>{p.icon} {p.name}</option>
-              ))}
-            </select>
-            {/* Model Selector */}
-            <select value={modelId || getProvider(provider).defaultModel} onChange={e => setModelId(e.target.value)}
-              style={{ ...S.input, width: "auto", minWidth: 160, fontSize: 12, cursor: "pointer" }}>
-              {getProvider(provider).models.map(m => (
-                <option key={m.id} value={m.id}>{m.name} — {m.description}</option>
-              ))}
-            </select>
-            <span style={{ fontSize: 13, color: "#64748b", whiteSpace: "nowrap" }}>🔑</span>
-            <input type="password" value={apiKey} onChange={e => setApiKey(e.target.value)}
-              placeholder={getProvider(provider).keyPlaceholder} style={{ ...S.input, flex: 1, minWidth: 180, fontSize: 13 }} />
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              {apiKey && <span style={{ color: "#6ee7b7", fontSize: 12 }}>✓ Saved</span>}
-              <button onClick={() => setShowKeyInfo(!showKeyInfo)}
-                style={{ background: "none", border: "1px solid #334155", borderRadius: 6, color: "#64748b", cursor: "pointer", padding: "4px 10px", fontSize: 12 }}>
-                {showKeyInfo ? "Hide info" : "How to get a key?"}
-              </button>
-            </div>
-            {showKeyInfo && (
-              <div style={{ width: "100%", marginTop: 8 }}>
-                <InfoBox type="tip">
-                  <strong>How to get your {getProvider(provider).name} API key:</strong><br />
-                  1. Go to <a href={getProvider(provider).keyHelpUrl} target="_blank" rel="noreferrer" style={{ color: "#fb923c" }}><strong>{getProvider(provider).keyHelpUrl.replace("https://", "")}</strong></a><br />
-                  2. Sign up or log in<br />
-                  3. Navigate to API Keys section<br />
-                  4. Create a new key and copy it<br />
-                  5. Paste it above — it stays in your browser only (session storage), never sent to any server except the provider's API directly.<br /><br />
-                  <strong>Cost:</strong> Each Blueprint generation costs approximately $0.02-0.05 (a few cents). A full Blueprint (all 5 files) costs about $0.15-0.25.
-                </InfoBox>
-              </div>
-            )}
-          </div>
-
-          {/* ═══ PROJECT SCANNER ═══ */}
-          <div style={{ textAlign: "center", marginBottom: 16 }}>
-            <button onClick={() => {
-              if (!tierLimits.hasScanner) {
-                setShowUpgradeModal({ reason: "scanner_locked", data: {} });
-                return;
-              }
-              setShowScanner(!showScanner);
-            }}
-              style={{ background: "none", border: "1px dashed #334155", borderRadius: 8, color: "#64748b", cursor: "pointer", padding: "8px 20px", fontSize: 12, fontWeight: 600, transition: "all .2s", position: "relative" }}>
-              {showScanner ? "✕ Close Scanner" : "🔍 Auto-detect stack from package.json"}
-              {!tierLimits.hasScanner && <span style={{ fontSize: 9, background: "linear-gradient(135deg, #f59e0b, #fb923c)", color: "#0a0f1a", padding: "1px 5px", borderRadius: 4, fontWeight: 800, marginLeft: 6 }}>PRO</span>}
-            </button>
-          </div>
-          {showScanner && (
-            <div style={{ ...S.card, borderColor: "#0c4a6e55", background: "#0c192988" }}>
-              <SectionTitle icon="🔍" title="Project Scanner" subtitle="Upload or paste your package.json — we'll auto-detect your stack" />
-
-              <div
-                onDragOver={e => { e.preventDefault(); e.stopPropagation(); }}
-                onDrop={e => {
-                  e.preventDefault(); e.stopPropagation();
-                  if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                    handleFileUpload(e.dataTransfer.files[0]);
-                  }
-                }}
-                onClick={() => document.getElementById('package-upload').click()}
-                style={{
-                  border: "2px dashed #0ea5e955",
-                  borderRadius: 12,
-                  padding: "32px 16px",
-                  textAlign: "center",
-                  background: "rgba(14, 165, 233, 0.03)",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                  marginBottom: 16
-                }}
-                onMouseEnter={e => e.currentTarget.style.background = "rgba(14, 165, 233, 0.08)"}
-                onMouseLeave={e => e.currentTarget.style.background = "rgba(14, 165, 233, 0.03)"}
-              >
-                <input
-                  id="package-upload"
-                  type="file"
-                  accept=".json,application/json"
-                  style={{ display: 'none' }}
-                  onChange={e => {
-                    if (e.target.files && e.target.files[0]) {
-                      handleFileUpload(e.target.files[0]);
-                    }
-                  }}
-                />
-                <div style={{ fontSize: 24, marginBottom: 8 }}>📁</div>
-                <div style={{ fontSize: 13, color: "#e2e8f0", fontWeight: 600 }}>Drag & Drop your package.json here</div>
-                <div style={{ fontSize: 11, color: "#64748b", marginTop: 4 }}>or click to browse files</div>
-              </div>
-
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-                <div style={{ height: 1, flex: 1, background: "#1e293b" }}></div>
-                <span style={{ fontSize: 10, color: "#64748b", fontWeight: 700, textTransform: "uppercase" }}>OR PASTE MANUALLY</span>
-                <div style={{ height: 1, flex: 1, background: "#1e293b" }}></div>
-              </div>
-
-              <textarea style={{ ...S.textarea, minHeight: 80, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}
-                value={scannerInput} onChange={e => setScannerInput(e.target.value)}
-                placeholder='Paste contents here...' />
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 8 }}>
-                <button onClick={() => handleScan()} style={S.btn(true, !scannerInput)} disabled={!scannerInput}>
-                  ⚡ Analyze
-                </button>
-              </div>
-              {scanResult && (
-                <div style={{ marginTop: 12 }}>
-                  {scanResult.success ? (
-                    <div>
-                      <InfoBox type="success">
-                        <strong>Detected {Object.keys(scanResult.detected).length} technologies</strong> from {scanResult.totalDeps} dependencies
-                        {scanResult.domain && <> · Domain: <strong>{scanResult.domain}</strong></>}
-                        {scanResult.projectName && <> · Project: <strong>{scanResult.projectName}</strong></>}
-                      </InfoBox>
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
-                        {Object.entries(scanResult.detected).map(([cat, det]) => (
-                          <span key={cat} style={S.tag}>
-                            ⚡ {cat}: {det.value} ({det.confidence}%)
-                          </span>
-                        ))}
+              )
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {GALLERY_BLUEPRINTS.map(bp => (
+                  <div key={bp.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: 12, background: "#0f172a", borderRadius: 8, border: "1px solid #1e293b" }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: "#e2e8f0" }}>{bp.config?.projectName}</div>
+                        {bp.isOfficial && <span style={{ fontSize: 9, background: "#065f46", color: "#6ee7b7", padding: "1px 4px", borderRadius: 4, fontWeight: 700 }}>OFFICIAL</span>}
+                      </div>
+                      <div style={{ fontSize: 11, color: "#94a3b8", margin: "2px 0 4px" }}>{bp.config?.mission}</div>
+                      <div style={{ fontSize: 11, color: "#64748b" }}>
+                        {bp.config?.domain} · {bp.ideTarget} · by {bp.author} · Quality: {bp.quality?.score}%
                       </div>
                     </div>
-                  ) : (
-                    <InfoBox type="warn">{scanResult.error}</InfoBox>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-
-          <StepBar steps={STEPS} current={step} />
-
-          {/* ═══════════════════════════════════════════ */}
-          {/* ═══ STEP 0: DOMAIN ═══ */}
-          {/* ═══════════════════════════════════════════ */}
-          {step === 0 && (
-            <div style={S.card}>
-              <SectionTitle icon="🎯" title="Choose Your Domain" subtitle="What type of project are you building?" />
-              <InfoBox type="tip">
-                Each domain comes with pre-configured technology options, specialized skills, and architecture patterns.
-                If none match, choose "Custom" to define your own.
-              </InfoBox>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 16 }}>
-                {DOMAINS.map(d => (
-                  <div key={d.id} onClick={() => upd("domain", d.id)} style={{
-                    padding: 16, borderRadius: 10, cursor: "pointer", transition: "all 0.2s",
-                    border: config.domain === d.id ? "2px solid #fb923c" : "2px solid #1e293b",
-                    background: config.domain === d.id ? "#1c1208" : "#0f172a",
-                  }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-                      <span style={{ fontSize: 24 }}>{d.icon}</span>
-                      <div>
-                        <div style={{ fontSize: 14, fontWeight: 700, color: config.domain === d.id ? "#fb923c" : "#e2e8f0" }}>{d.name}</div>
-                        <div style={{ fontSize: 11, color: "#64748b" }}>{d.shortDesc}</div>
-                      </div>
-                    </div>
+                    <button onClick={() => handleLoadBlueprint(bp)} style={S.btn(true, false)}>Clone</button>
                   </div>
                 ))}
               </div>
-              {config.domain && (
-                <div style={{ marginTop: 20, padding: 20, background: "#0c1929", borderRadius: 10, border: "1px solid #1e3a5f" }}>
-                  <div style={{ fontSize: 15, fontWeight: 700, color: "#7dd3fc", marginBottom: 10 }}>{domain?.icon} {domain?.name} — When to Choose This</div>
-                  <p style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.7, margin: "0 0 12px" }}>{domain?.guide}</p>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                    <div style={{ padding: 12, background: "#0f172a", borderRadius: 8, borderLeft: "3px solid #065f46" }}>
-                      <div style={{ fontSize: 11, fontWeight: 700, color: "#6ee7b7", marginBottom: 4 }}>IDEAL FOR</div>
-                      <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.5 }}>{domain?.idealFor}</div>
-                    </div>
-                    <div style={{ padding: 12, background: "#0f172a", borderRadius: 8, borderLeft: "3px solid #92400e" }}>
-                      <div style={{ fontSize: 11, fontWeight: 700, color: "#fbbf24", marginBottom: 4 }}>KEY CHALLENGE</div>
-                      <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.5 }}>{domain?.keyChallenge}</div>
-                    </div>
-                  </div>
-                  {config.domain === "custom" && (
-                    <div style={{ marginTop: 16 }}>
-                      <label style={S.label}>Describe your domain</label>
-                      <textarea style={S.textarea} value={config.customDomain} onChange={e => upd("customDomain", e.target.value)}
-                        placeholder="Example: IoT monitoring platform for industrial manufacturing..." />
-                      <label style={{ ...S.label, marginTop: 12 }}>Define your tech stack</label>
-                      <textarea style={S.textarea} value={config.customStack} onChange={e => upd("customStack", e.target.value)}
-                        placeholder={"Example:\n- Frontend: Next.js 15\n- Backend: Node.js with Fastify\n- Database: TimescaleDB"} />
-                    </div>
-                  )}
-                </div>
-              )}
-              <div style={S.nav}>
-                <div />
-                <button style={S.btn(true, !canProceed[0]())} onClick={() => canProceed[0]() && setStep(1)}>Select IDE →</button>
-              </div>
+            )}
+          </div>
+        )}
+
+        {/* ═══ API KEY BAR ═══ */}
+        <div style={{ ...S.card, padding: 16, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+          {/* Provider Selector */}
+          <select value={provider} onChange={e => { setProvider(e.target.value); setApiKey(""); setModelId(""); }}
+            style={{ ...S.input, width: "auto", minWidth: 150, fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
+            {PROVIDER_LIST.map(p => (
+              <option key={p.id} value={p.id}>{p.icon} {p.name}</option>
+            ))}
+          </select>
+          {/* Model Selector */}
+          <select value={modelId || getProvider(provider).defaultModel} onChange={e => setModelId(e.target.value)}
+            style={{ ...S.input, width: "auto", minWidth: 160, fontSize: 12, cursor: "pointer" }}>
+            {getProvider(provider).models.map(m => (
+              <option key={m.id} value={m.id}>{m.name} — {m.description}</option>
+            ))}
+          </select>
+          <span style={{ fontSize: 13, color: "#64748b", whiteSpace: "nowrap" }}>🔑</span>
+          <input type="password" value={apiKey} onChange={e => setApiKey(e.target.value)}
+            placeholder={getProvider(provider).keyPlaceholder} style={{ ...S.input, flex: 1, minWidth: 180, fontSize: 13 }} />
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            {apiKey && <span style={{ color: "#6ee7b7", fontSize: 12 }}>✓ Saved</span>}
+            <button onClick={() => setShowKeyInfo(!showKeyInfo)}
+              style={{ background: "none", border: "1px solid #334155", borderRadius: 6, color: "#64748b", cursor: "pointer", padding: "4px 10px", fontSize: 12 }}>
+              {showKeyInfo ? "Hide info" : "How to get a key?"}
+            </button>
+          </div>
+          {showKeyInfo && (
+            <div style={{ width: "100%", marginTop: 8 }}>
+              <InfoBox type="tip">
+                <strong>How to get your {getProvider(provider).name} API key:</strong><br />
+                1. Go to <a href={getProvider(provider).keyHelpUrl} target="_blank" rel="noreferrer" style={{ color: "#fb923c" }}><strong>{getProvider(provider).keyHelpUrl.replace("https://", "")}</strong></a><br />
+                2. Sign up or log in<br />
+                3. Navigate to API Keys section<br />
+                4. Create a new key and copy it<br />
+                5. Paste it above — it stays in your browser only (session storage), never sent to any server except the provider's API directly.<br /><br />
+                <strong>Cost:</strong> Each Blueprint generation costs approximately $0.02-0.05 (a few cents). A full Blueprint (all 5 files) costs about $0.15-0.25.
+              </InfoBox>
             </div>
           )}
+        </div>
 
-          {/* ═══════════════════════════════════════════ */}
-          {/* ═══ STEP 1: IDE TARGET (NEW) ═══ */}
-          {/* ═══════════════════════════════════════════ */}
-          {step === 1 && (
-            <div style={S.card}>
-              <SectionTitle icon="🖥️" title="Choose Your IDE" subtitle="Blueprint files will be formatted for your IDE's specific configuration system" />
-              <InfoBox type="info">
-                Each IDE has its own configuration format and directory structure. Your Blueprint will be tailored for optimal integration with the selected IDE.
-              </InfoBox>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 16 }}>
-                {IDE_TARGETS.map(ide => {
-                  const isLocked = !tierLimits.ideTargets.includes(ide.id);
-                  return (
-                    <div key={ide.id} onClick={() => {
-                      if (isLocked) {
-                        setShowUpgradeModal({ reason: "ide_locked", data: {} });
-                        return;
-                      }
-                      setIdeTarget(ide.id);
-                    }} style={{
-                      padding: 18, borderRadius: 10, cursor: isLocked ? "not-allowed" : "pointer", transition: "all 0.2s",
-                      border: ideTarget === ide.id ? "2px solid #fb923c" : "2px solid #1e293b",
-                      background: ideTarget === ide.id ? "#1c1208" : "#0f172a",
-                      opacity: isLocked ? 0.5 : 1, position: "relative",
-                    }}>
-                      {isLocked && <span style={{ position: "absolute", top: 8, right: 8, fontSize: 9, background: "linear-gradient(135deg, #f59e0b, #fb923c)", color: "#0a0f1a", padding: "2px 6px", borderRadius: 4, fontWeight: 800 }}>PRO</span>}
-                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-                        <span style={{ fontSize: 28 }}>{isLocked ? "🔒" : ide.icon}</span>
-                        <div>
-                          <div style={{ fontSize: 15, fontWeight: 700, color: ideTarget === ide.id ? "#fb923c" : "#e2e8f0" }}>{ide.name}</div>
-                          <div style={{ fontSize: 11, color: "#64748b" }}>{ide.shortDesc}</div>
-                        </div>
+        {/* ═══ PROJECT SCANNER ═══ */}
+        <div style={{ textAlign: "center", marginBottom: 16 }}>
+          <button onClick={() => {
+            if (!tierLimits.hasScanner) {
+              setShowUpgradeModal({ reason: "scanner_locked", data: {} });
+              return;
+            }
+            setShowScanner(!showScanner);
+          }}
+            style={{ background: "none", border: "1px dashed #334155", borderRadius: 8, color: "#64748b", cursor: "pointer", padding: "8px 20px", fontSize: 12, fontWeight: 600, transition: "all .2s", position: "relative" }}>
+            {showScanner ? "✕ Close Scanner" : "🔍 Auto-detect stack from package.json"}
+            {!tierLimits.hasScanner && <span style={{ fontSize: 9, background: "linear-gradient(135deg, #f59e0b, #fb923c)", color: "#0a0f1a", padding: "1px 5px", borderRadius: 4, fontWeight: 800, marginLeft: 6 }}>PRO</span>}
+          </button>
+        </div>
+        {showScanner && (
+          <div style={{ ...S.card, borderColor: "#0c4a6e55", background: "#0c192988" }}>
+            <SectionTitle icon="🔍" title="Project Scanner" subtitle="Upload or paste your package.json — we'll auto-detect your stack" />
+
+            <div
+              onDragOver={e => { e.preventDefault(); e.stopPropagation(); }}
+              onDrop={e => {
+                e.preventDefault(); e.stopPropagation();
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                  handleFileUpload(e.dataTransfer.files[0]);
+                }
+              }}
+              onClick={() => document.getElementById('package-upload').click()}
+              style={{
+                border: "2px dashed #0ea5e955",
+                borderRadius: 12,
+                padding: "32px 16px",
+                textAlign: "center",
+                background: "rgba(14, 165, 233, 0.03)",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+                marginBottom: 16
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = "rgba(14, 165, 233, 0.08)"}
+              onMouseLeave={e => e.currentTarget.style.background = "rgba(14, 165, 233, 0.03)"}
+            >
+              <input
+                id="package-upload"
+                type="file"
+                accept=".json,application/json"
+                style={{ display: 'none' }}
+                onChange={e => {
+                  if (e.target.files && e.target.files[0]) {
+                    handleFileUpload(e.target.files[0]);
+                  }
+                }}
+              />
+              <div style={{ fontSize: 24, marginBottom: 8 }}>📁</div>
+              <div style={{ fontSize: 13, color: "#e2e8f0", fontWeight: 600 }}>Drag & Drop your package.json here</div>
+              <div style={{ fontSize: 11, color: "#64748b", marginTop: 4 }}>or click to browse files</div>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+              <div style={{ height: 1, flex: 1, background: "#1e293b" }}></div>
+              <span style={{ fontSize: 10, color: "#64748b", fontWeight: 700, textTransform: "uppercase" }}>OR PASTE MANUALLY</span>
+              <div style={{ height: 1, flex: 1, background: "#1e293b" }}></div>
+            </div>
+
+            <textarea style={{ ...S.textarea, minHeight: 80, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}
+              value={scannerInput} onChange={e => setScannerInput(e.target.value)}
+              placeholder='Paste contents here...' />
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 8 }}>
+              <button onClick={() => handleScan()} style={S.btn(true, !scannerInput)} disabled={!scannerInput}>
+                ⚡ Analyze
+              </button>
+            </div>
+            {scanResult && (
+              <div style={{ marginTop: 12 }}>
+                {scanResult.success ? (
+                  <div>
+                    <InfoBox type="success">
+                      <strong>Detected {Object.keys(scanResult.detected).length} technologies</strong> from {scanResult.totalDeps} dependencies
+                      {scanResult.domain && <> · Domain: <strong>{scanResult.domain}</strong></>}
+                      {scanResult.projectName && <> · Project: <strong>{scanResult.projectName}</strong></>}
+                    </InfoBox>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
+                      {Object.entries(scanResult.detected).map(([cat, det]) => (
+                        <span key={cat} style={S.tag}>
+                          ⚡ {cat}: {det.value} ({det.confidence}%)
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <InfoBox type="warn">{scanResult.error}</InfoBox>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        <StepBar steps={STEPS} current={step} />
+
+        {/* ═══════════════════════════════════════════ */}
+        {/* ═══ STEP 0: DOMAIN ═══ */}
+        {/* ═══════════════════════════════════════════ */}
+        {step === 0 && (
+          <div style={S.card}>
+            <SectionTitle icon="🎯" title="Choose Your Domain" subtitle="What type of project are you building?" />
+            <InfoBox type="tip">
+              Each domain comes with pre-configured technology options, specialized skills, and architecture patterns.
+              If none match, choose "Custom" to define your own.
+            </InfoBox>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 16 }}>
+              {DOMAINS.map(d => (
+                <div key={d.id} onClick={() => upd("domain", d.id)} style={{
+                  padding: 16, borderRadius: 10, cursor: "pointer", transition: "all 0.2s",
+                  border: config.domain === d.id ? "2px solid #fb923c" : "2px solid #1e293b",
+                  background: config.domain === d.id ? "#1c1208" : "#0f172a",
+                }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+                    <span style={{ fontSize: 24 }}>{d.icon}</span>
+                    <div>
+                      <div style={{ fontSize: 14, fontWeight: 700, color: config.domain === d.id ? "#fb923c" : "#e2e8f0" }}>{d.name}</div>
+                      <div style={{ fontSize: 11, color: "#64748b" }}>{d.shortDesc}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {config.domain && (
+              <div style={{ marginTop: 20, padding: 20, background: "#0c1929", borderRadius: 10, border: "1px solid #1e3a5f" }}>
+                <div style={{ fontSize: 15, fontWeight: 700, color: "#7dd3fc", marginBottom: 10 }}>{domain?.icon} {domain?.name} — When to Choose This</div>
+                <p style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.7, margin: "0 0 12px" }}>{domain?.guide}</p>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                  <div style={{ padding: 12, background: "#0f172a", borderRadius: 8, borderLeft: "3px solid #065f46" }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: "#6ee7b7", marginBottom: 4 }}>IDEAL FOR</div>
+                    <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.5 }}>{domain?.idealFor}</div>
+                  </div>
+                  <div style={{ padding: 12, background: "#0f172a", borderRadius: 8, borderLeft: "3px solid #92400e" }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: "#fbbf24", marginBottom: 4 }}>KEY CHALLENGE</div>
+                    <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.5 }}>{domain?.keyChallenge}</div>
+                  </div>
+                </div>
+                {config.domain === "custom" && (
+                  <div style={{ marginTop: 16 }}>
+                    <label style={S.label}>Describe your domain</label>
+                    <textarea style={S.textarea} value={config.customDomain} onChange={e => upd("customDomain", e.target.value)}
+                      placeholder="Example: IoT monitoring platform for industrial manufacturing..." />
+                    <label style={{ ...S.label, marginTop: 12 }}>Define your tech stack</label>
+                    <textarea style={S.textarea} value={config.customStack} onChange={e => upd("customStack", e.target.value)}
+                      placeholder={"Example:\n- Frontend: Next.js 15\n- Backend: Node.js with Fastify\n- Database: TimescaleDB"} />
+                  </div>
+                )}
+              </div>
+            )}
+            <div style={S.nav}>
+              <div />
+              <button style={S.btn(true, !canProceed[0]())} onClick={() => canProceed[0]() && setStep(1)}>Select IDE →</button>
+            </div>
+          </div>
+        )}
+
+        {/* ═══════════════════════════════════════════ */}
+        {/* ═══ STEP 1: IDE TARGET (NEW) ═══ */}
+        {/* ═══════════════════════════════════════════ */}
+        {step === 1 && (
+          <div style={S.card}>
+            <SectionTitle icon="🖥️" title="Choose Your IDE" subtitle="Blueprint files will be formatted for your IDE's specific configuration system" />
+            <InfoBox type="info">
+              Each IDE has its own configuration format and directory structure. Your Blueprint will be tailored for optimal integration with the selected IDE.
+            </InfoBox>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 16 }}>
+              {IDE_TARGETS.map(ide => {
+                const isLocked = !tierLimits.ideTargets.includes(ide.id);
+                return (
+                  <div key={ide.id} onClick={() => {
+                    if (isLocked) {
+                      setShowUpgradeModal({ reason: "ide_locked", data: {} });
+                      return;
+                    }
+                    setIdeTarget(ide.id);
+                  }} style={{
+                    padding: 18, borderRadius: 10, cursor: isLocked ? "not-allowed" : "pointer", transition: "all 0.2s",
+                    border: ideTarget === ide.id ? "2px solid #fb923c" : "2px solid #1e293b",
+                    background: ideTarget === ide.id ? "#1c1208" : "#0f172a",
+                    opacity: isLocked ? 0.5 : 1, position: "relative",
+                  }}>
+                    {isLocked && <span style={{ position: "absolute", top: 8, right: 8, fontSize: 9, background: "linear-gradient(135deg, #f59e0b, #fb923c)", color: "#0a0f1a", padding: "2px 6px", borderRadius: 4, fontWeight: 800 }}>PRO</span>}
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                      <span style={{ fontSize: 28 }}>{isLocked ? "🔒" : ide.icon}</span>
+                      <div>
+                        <div style={{ fontSize: 15, fontWeight: 700, color: ideTarget === ide.id ? "#fb923c" : "#e2e8f0" }}>{ide.name}</div>
+                        <div style={{ fontSize: 11, color: "#64748b" }}>{ide.shortDesc}</div>
                       </div>
-                      {ideTarget === ide.id && !isLocked && (
-                        <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.6, marginTop: 8, paddingTop: 8, borderTop: "1px solid #1e293b" }}>
-                          {ide.guide}
-                        </div>
-                      )}
+                    </div>
+                    {ideTarget === ide.id && !isLocked && (
+                      <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.6, marginTop: 8, paddingTop: 8, borderTop: "1px solid #1e293b" }}>
+                        {ide.guide}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            {ideTarget && (
+              <div style={{ marginTop: 16, padding: 14, background: "#0c192988", borderRadius: 8, border: "1px solid #1e3a5f" }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "#7dd3fc", marginBottom: 8 }}>📂 Output File Paths for {currentIde.name}</div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4, fontSize: 11, fontFamily: "JetBrains Mono, monospace" }}>
+                  <span style={{ color: "#475569" }}>Rules:</span><span style={{ color: "#e2e8f0" }}>{currentIde.rulesPath}</span>
+                  <span style={{ color: "#475569" }}>Skills:</span><span style={{ color: "#e2e8f0" }}>{currentIde.skillsPath}</span>
+                  <span style={{ color: "#475569" }}>Workflows:</span><span style={{ color: "#e2e8f0" }}>{currentIde.workflowsPath}</span>
+                  <span style={{ color: "#475569" }}>Context:</span><span style={{ color: "#e2e8f0" }}>{currentIde.contextPath}</span>
+                  <span style={{ color: "#475569" }}>Entry:</span><span style={{ color: "#e2e8f0" }}>{currentIde.promptPath}</span>
+                </div>
+              </div>
+            )}
+            <div style={S.nav}>
+              <button style={S.btn(false)} onClick={() => setStep(0)}>← Domain</button>
+              <button style={S.btn(true)} onClick={() => setStep(2)}>Configure Stack →</button>
+            </div>
+          </div>
+        )}
+
+        {/* ═══════════════════════════════════════════ */}
+        {/* ═══ STEP 2: STACK ═══ */}
+        {/* ═══════════════════════════════════════════ */}
+        {step === 2 && (
+          <div style={S.card}>
+            <SectionTitle icon={domain?.icon} title={`${domain?.name} — Technology Stack`} subtitle="Defaults are battle-tested — change only with a clear reason." />
+            <InfoBox type="info">{stackInfo.intro}</InfoBox>
+            {config.domain === "custom" ? (
+              <InfoBox type="tip">Your custom stack was defined in the previous step. Proceed to project details.</InfoBox>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: 20, marginTop: 8 }}>
+                {stackInfo.categories.map(cat => {
+                  const selectedOpt = cat.options.find(o => o.value === config.stack[cat.key]);
+                  const isAutoDetected = scanResult?.detected?.[cat.key]?.value === config.stack[cat.key];
+                  return (
+                    <div key={cat.key} style={{ padding: 16, background: "#0f172a", borderRadius: 10, border: `1px solid ${isAutoDetected ? "#065f4655" : "#1e293b"}` }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <label style={{ ...S.label, margin: 0, flex: 1 }}>{cat.label}</label>
+                        {isAutoDetected && <span style={S.tag}>⚡ Auto-detected</span>}
+                      </div>
+                      <div style={{ fontSize: 12, color: "#64748b", marginBottom: 10, lineHeight: 1.5 }}>{cat.why}</div>
+                      <select style={{ ...S.input, cursor: "pointer" }} value={config.stack[cat.key] || ""}
+                        onChange={e => upd("stack", { ...config.stack, [cat.key]: e.target.value })}>
+                        {cat.options.map(o => <option key={o.value} value={o.value}>{o.value}</option>)}
+                      </select>
+                      <OptionGuide guide={selectedOpt?.guide} visible={!!selectedOpt} />
                     </div>
                   );
                 })}
               </div>
-              {ideTarget && (
-                <div style={{ marginTop: 16, padding: 14, background: "#0c192988", borderRadius: 8, border: "1px solid #1e3a5f" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#7dd3fc", marginBottom: 8 }}>📂 Output File Paths for {currentIde.name}</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4, fontSize: 11, fontFamily: "JetBrains Mono, monospace" }}>
-                    <span style={{ color: "#475569" }}>Rules:</span><span style={{ color: "#e2e8f0" }}>{currentIde.rulesPath}</span>
-                    <span style={{ color: "#475569" }}>Skills:</span><span style={{ color: "#e2e8f0" }}>{currentIde.skillsPath}</span>
-                    <span style={{ color: "#475569" }}>Workflows:</span><span style={{ color: "#e2e8f0" }}>{currentIde.workflowsPath}</span>
-                    <span style={{ color: "#475569" }}>Context:</span><span style={{ color: "#e2e8f0" }}>{currentIde.contextPath}</span>
-                    <span style={{ color: "#475569" }}>Entry:</span><span style={{ color: "#e2e8f0" }}>{currentIde.promptPath}</span>
+            )}
+            <div style={S.nav}>
+              <button style={S.btn(false)} onClick={() => setStep(1)}>← IDE</button>
+              <button style={S.btn(true)} onClick={() => setStep(3)}>Project Details →</button>
+            </div>
+          </div>
+        )}
+
+        {/* ═══════════════════════════════════════════ */}
+        {/* ═══ STEP 3: PROJECT DETAILS ═══ */}
+        {/* ═══════════════════════════════════════════ */}
+        {step === 3 && (
+          <div style={S.card}>
+            <SectionTitle icon="📋" title="Project Details" subtitle="The more precise you are, the more useful the generated files." />
+            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              <div>
+                <label style={S.label}>Project Name</label>
+                <div style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Short, lowercase, hyphenated. Used in folders, packages, git repos.</div>
+                <input style={S.input} value={config.projectName} onChange={e => upd("projectName", e.target.value)}
+                  placeholder="e.g. invoice-saas, flavor-theme, shopfront-headless" />
+              </div>
+              <div>
+                <label style={S.label}>Project Mission</label>
+                <div style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>1-3 sentences: what you're building, for whom, and why. This is the most important input.</div>
+                <textarea style={{ ...S.textarea, minHeight: 100 }} value={config.mission} onChange={e => upd("mission", e.target.value)}
+                  placeholder="Example: Multi-tenant invoicing platform for European freelancers. Supports automatic VAT calculation, multi-currency, PDF generation, and Stripe billing." />
+                <span style={{ fontSize: 11, color: config.mission.length < 20 ? "#ef4444" : config.mission.length < 80 ? "#fbbf24" : "#6ee7b7" }}>
+                  {config.mission.length < 20 ? "⚠️ Too short" : config.mission.length < 80 ? "📝 Good, more detail helps" : "✅ Great detail"} ({config.mission.length} chars)
+                </span>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                <div>
+                  <label style={S.label}>Conversation Language</label>
+                  <div style={{ fontSize: 11, color: "#64748b", marginBottom: 6 }}>Language for AI explanations and plans.</div>
+                  <select style={{ ...S.input, cursor: "pointer" }} value={config.langConvo} onChange={e => upd("langConvo", e.target.value)}>
+                    {LANGUAGES.map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label style={S.label}>Code Language</label>
+                  <div style={{ fontSize: 11, color: "#64748b", marginBottom: 6 }}>Language for code, comments, commits. English recommended.</div>
+                  <select style={{ ...S.input, cursor: "pointer" }} value={config.langCode} onChange={e => upd("langCode", e.target.value)}>
+                    {LANGUAGES.map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label style={S.label}>Architecture Priorities</label>
+                <div style={{ fontSize: 12, color: "#64748b", marginBottom: 10 }}>When the agent faces trade-offs, it prioritizes based on this ranking.</div>
+                {config.priorities.map((p, i) => (
+                  <div key={p} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", marginBottom: 4, background: "#0f172a", borderRadius: 6, border: "1px solid #1e293b" }}>
+                    <span style={{ color: i === 0 ? "#fb923c" : "#64748b", fontWeight: 700, fontSize: 13, width: 24 }}>#{i + 1}</span>
+                    <span style={{ flex: 1, fontSize: 14, textTransform: "capitalize", color: i === 0 ? "#e2e8f0" : "#94a3b8" }}>{p}</span>
+                    <button onClick={() => movePriority(i, -1)} disabled={i === 0} style={{ background: "none", border: "none", color: i === 0 ? "#1e293b" : "#64748b", cursor: "pointer", fontSize: 15, padding: "0 4px" }}>↑</button>
+                    <button onClick={() => movePriority(i, 1)} disabled={i === config.priorities.length - 1} style={{ background: "none", border: "none", color: i === config.priorities.length - 1 ? "#1e293b" : "#64748b", cursor: "pointer", fontSize: 15, padding: "0 4px" }}>↓</button>
+                  </div>
+                ))}
+              </div>
+              <div>
+                <label style={S.label}>Blueprint Rigor</label>
+                <div style={{ fontSize: 12, color: "#64748b", marginBottom: 10 }}>Controls planning depth, test coverage, and security requirements in generated Blueprints.</div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+                  {RIGOR_LEVELS.map(r => (
+                    <button key={r.id}
+                      onClick={() => upd("rigor", r.id)}
+                      style={{
+                        padding: "14px 12px", borderRadius: 10, cursor: "pointer", textAlign: "left",
+                        background: config.rigor === r.id ? "#1e293b" : "#0f172a",
+                        border: `2px solid ${config.rigor === r.id ? (r.id === "strict" ? "#3b82f6" : r.id === "rapid" ? "#f59e0b" : "#fb923c") : "#1e293b"}`,
+                        transition: "all 0.2s",
+                      }}>
+                      <div style={{ fontSize: 16, marginBottom: 4 }}>{r.label}</div>
+                      <div style={{ fontSize: 11, color: config.rigor === r.id ? "#e2e8f0" : "#64748b", fontWeight: 600, marginBottom: 4 }}>{r.name}</div>
+                      <div style={{ fontSize: 10, color: "#475569", lineHeight: 1.4 }}>{r.desc}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div style={S.nav}>
+              <button style={S.btn(false)} onClick={() => setStep(2)}>← Stack</button>
+              <button style={S.btn(true, !canProceed[3]())} onClick={() => canProceed[3]() && setStep(4)}>Review & Generate →</button>
+            </div>
+          </div>
+        )}
+
+        {/* ═══════════════════════════════════════════ */}
+        {/* ═══ STEP 4: GENERATE & REVIEW ═══ */}
+        {/* ═══════════════════════════════════════════ */}
+        {step === 4 && (
+          <>
+            {/* Review Panel */}
+            <div style={S.card}>
+              <SectionTitle icon="🔍" title="Review Configuration" subtitle="Verify before generating." />
+              <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 20 }}>
+                <div>
+                  <div style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", fontWeight: 600 }}>Project</div>
+                  <div style={{ fontSize: 18, fontWeight: 800, color: "#fb923c", marginTop: 4 }}>{config.projectName}</div>
+                  <div style={{ fontSize: 13, color: "#94a3b8", marginTop: 6, lineHeight: 1.5 }}>{config.mission}</div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <span style={{ fontSize: 32 }}>{domain?.icon}</span>
+                  <div style={{ fontSize: 13, color: "#64748b" }}>{domain?.name}</div>
+                  <div style={{ display: "flex", gap: 4, justifyContent: "flex-end", marginTop: 6 }}>
+                    <span style={S.badge(true)}>{currentIde.icon} {currentIde.name}</span>
+                  </div>
+                  <div style={{ fontSize: 11, color: "#475569", marginTop: 6 }}>Priorities: {config.priorities.join(" > ")}</div>
+                  <div style={{ marginTop: 4 }}><span style={{ ...S.badge(true), background: config.rigor === "strict" ? "#1e3a5f" : config.rigor === "rapid" ? "#422006" : "#3b1a08" }}>{RIGOR_LEVELS.find(r => r.id === config.rigor)?.label} {RIGOR_LEVELS.find(r => r.id === config.rigor)?.name}</span></div>
+                </div>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginTop: 16 }}>
+                {Object.entries(config.stack).map(([k, v]) => (
+                  <div key={k} style={{ padding: "6px 10px", background: "#0f172a", borderRadius: 6, fontSize: 11 }}>
+                    <span style={{ color: "#475569" }}>{k}: </span><span style={{ color: "#e2e8f0", fontWeight: 600 }}>{v}</span>
+                  </div>
+                ))}
+              </div>
+              {!apiKey && <InfoBox type="warn">You need to enter your API key above before generating.</InfoBox>}
+              <div style={S.nav}>
+                <button style={S.btn(false)} onClick={() => setStep(3)}>← Edit</button>
+                <div style={{ display: "flex", gap: 8 }}>
+                  {Object.keys(generated).length > 0 && (
+                    <button style={{ ...S.btn(false), ...(saveStatus === "saved" ? { borderColor: "#22c55e", color: "#22c55e" } : saveStatus === "error" ? { borderColor: "#ef4444", color: "#ef4444" } : saveStatus === "saving" ? { opacity: 0.7 } : {}) }} onClick={handleSave} disabled={saveStatus === "saving"}>{saveStatus === "saving" ? "⏳ Saving..." : saveStatus === "saved" ? "✅ Saved!" : saveStatus === "error" ? "❌ Error" : "💾 Save"}</button>
+                  )}
+                  <button style={S.btn(true, !!generating || !apiKey)} onClick={handleGenerateAll} disabled={!!generating || !apiKey}>
+                    {generating ? `⏳ ${generating}...` : "⚡ Generate All Blueprint Files"}
+                  </button>
+                </div>
+              </div>
+
+              {/* Progress Bar for Generate All */}
+              {generationProgress && (
+                <div style={{ marginTop: 12, padding: "12px 16px", background: "#0c1929", borderRadius: 10, border: "1px solid #1e3a5f" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                    <span style={{ fontSize: 12, fontWeight: 600, color: "#7dd3fc" }}>
+                      ⚡ Generating {generationProgress.label}...
+                    </span>
+                    <span style={{ fontSize: 11, color: "#64748b" }}>
+                      {generationProgress.current}/{generationProgress.total} files
+                    </span>
+                  </div>
+                  <div style={{ height: 6, background: "#1e293b", borderRadius: 3, overflow: "hidden" }}>
+                    <div style={{
+                      height: "100%",
+                      width: `${(generationProgress.current / generationProgress.total) * 100}%`,
+                      background: "linear-gradient(90deg, #fb923c, #f97316, #ef4444)",
+                      borderRadius: 3,
+                      transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                      boxShadow: "0 0 10px #fb923c66",
+                    }} />
                   </div>
                 </div>
               )}
-              <div style={S.nav}>
-                <button style={S.btn(false)} onClick={() => setStep(0)}>← Domain</button>
-                <button style={S.btn(true)} onClick={() => setStep(2)}>Configure Stack →</button>
-              </div>
             </div>
-          )}
 
-          {/* ═══════════════════════════════════════════ */}
-          {/* ═══ STEP 2: STACK ═══ */}
-          {/* ═══════════════════════════════════════════ */}
-          {step === 2 && (
-            <div style={S.card}>
-              <SectionTitle icon={domain?.icon} title={`${domain?.name} — Technology Stack`} subtitle="Defaults are battle-tested — change only with a clear reason." />
-              <InfoBox type="info">{stackInfo.intro}</InfoBox>
-              {config.domain === "custom" ? (
-                <InfoBox type="tip">Your custom stack was defined in the previous step. Proceed to project details.</InfoBox>
-              ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: 20, marginTop: 8 }}>
-                  {stackInfo.categories.map(cat => {
-                    const selectedOpt = cat.options.find(o => o.value === config.stack[cat.key]);
-                    const isAutoDetected = scanResult?.detected?.[cat.key]?.value === config.stack[cat.key];
+            {/* Overall Quality Score */}
+            {avgQuality() !== null && (
+              <div style={{ ...S.card, borderColor: "#065f46", background: "#021c14" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#6ee7b7" }}>📊 Overall Blueprint Quality</div>
+                  <QualityScore quality={{ score: avgQuality(), grade: avgQuality() >= 90 ? "A" : avgQuality() >= 75 ? "B" : avgQuality() >= 60 ? "C" : "D", breakdown: null, issues: [] }} compact={true} />
+                  <span style={{ fontSize: 11, color: "#64748b" }}>
+                    {Object.values(generated).filter(r => r?.quality).length}/{FILE_TYPES.length} files scored
+                    {Object.values(generated).some(r => r?.refined) && " · ♻️ Some files were auto-refined"}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* ═══ BLUEPRINT TABS (new tabbed view) ═══ */}
+            <div ref={resultRef} style={S.card}>
+              <BlueprintTabs
+                generated={generated}
+                config={config}
+                ideTarget={ideTarget}
+                avgQuality={avgQuality()}
+                domain={domain}
+                currentIde={currentIde}
+                FILE_TYPES={FILE_TYPES}
+              >
+                <InfoBox type="info">Each file serves a specific purpose. Generate all, or click individual tabs. Quality scores show how production-ready each file is.</InfoBox>
+                <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginTop: 12 }}>
+                  {FILE_TYPES.map(ft => {
+                    const result = generated[ft.id];
+                    const hasScore = result?.quality?.score;
                     return (
-                      <div key={cat.key} style={{ padding: 16, background: "#0f172a", borderRadius: 10, border: `1px solid ${isAutoDetected ? "#065f4655" : "#1e293b"}` }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                          <label style={{ ...S.label, margin: 0, flex: 1 }}>{cat.label}</label>
-                          {isAutoDetected && <span style={S.tag}>⚡ Auto-detected</span>}
-                        </div>
-                        <div style={{ fontSize: 12, color: "#64748b", marginBottom: 10, lineHeight: 1.5 }}>{cat.why}</div>
-                        <select style={{ ...S.input, cursor: "pointer" }} value={config.stack[cat.key] || ""}
-                          onChange={e => upd("stack", { ...config.stack, [cat.key]: e.target.value })}>
-                          {cat.options.map(o => <option key={o.value} value={o.value}>{o.value}</option>)}
-                        </select>
-                        <OptionGuide guide={selectedOpt?.guide} visible={!!selectedOpt} />
-                      </div>
+                      <button key={ft.id} style={{
+                        padding: "8px 14px", borderRadius: "8px 8px 0 0", border: "1px solid #1e293b",
+                        borderBottom: activeTab === ft.id ? "2px solid #fb923c" : "1px solid #1e293b",
+                        background: activeTab === ft.id ? "#111827" : "#0a0f1a",
+                        color: activeTab === ft.id ? "#fb923c" : "#64748b",
+                        cursor: "pointer", fontSize: 11, fontWeight: 600, display: "flex", alignItems: "center", gap: 4,
+                      }} onClick={() => setActiveTab(ft.id)}>
+                        {result?.output ? "✓ " : generating?.startsWith(ft.id) ? "⏳ " : ""}{ft.label}
+                        {hasScore && <QualityScore quality={result.quality} compact={true} />}
+                      </button>
                     );
                   })}
                 </div>
-              )}
-              <div style={S.nav}>
-                <button style={S.btn(false)} onClick={() => setStep(1)}>← IDE</button>
-                <button style={S.btn(true)} onClick={() => setStep(3)}>Project Details →</button>
-              </div>
-            </div>
-          )}
-
-          {/* ═══════════════════════════════════════════ */}
-          {/* ═══ STEP 3: PROJECT DETAILS ═══ */}
-          {/* ═══════════════════════════════════════════ */}
-          {step === 3 && (
-            <div style={S.card}>
-              <SectionTitle icon="📋" title="Project Details" subtitle="The more precise you are, the more useful the generated files." />
-              <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-                <div>
-                  <label style={S.label}>Project Name</label>
-                  <div style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Short, lowercase, hyphenated. Used in folders, packages, git repos.</div>
-                  <input style={S.input} value={config.projectName} onChange={e => upd("projectName", e.target.value)}
-                    placeholder="e.g. invoice-saas, flavor-theme, shopfront-headless" />
-                </div>
-                <div>
-                  <label style={S.label}>Project Mission</label>
-                  <div style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>1-3 sentences: what you're building, for whom, and why. This is the most important input.</div>
-                  <textarea style={{ ...S.textarea, minHeight: 100 }} value={config.mission} onChange={e => upd("mission", e.target.value)}
-                    placeholder="Example: Multi-tenant invoicing platform for European freelancers. Supports automatic VAT calculation, multi-currency, PDF generation, and Stripe billing." />
-                  <span style={{ fontSize: 11, color: config.mission.length < 20 ? "#ef4444" : config.mission.length < 80 ? "#fbbf24" : "#6ee7b7" }}>
-                    {config.mission.length < 20 ? "⚠️ Too short" : config.mission.length < 80 ? "📝 Good, more detail helps" : "✅ Great detail"} ({config.mission.length} chars)
-                  </span>
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                  <div>
-                    <label style={S.label}>Conversation Language</label>
-                    <div style={{ fontSize: 11, color: "#64748b", marginBottom: 6 }}>Language for AI explanations and plans.</div>
-                    <select style={{ ...S.input, cursor: "pointer" }} value={config.langConvo} onChange={e => upd("langConvo", e.target.value)}>
-                      {LANGUAGES.map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label style={S.label}>Code Language</label>
-                    <div style={{ fontSize: 11, color: "#64748b", marginBottom: 6 }}>Language for code, comments, commits. English recommended.</div>
-                    <select style={{ ...S.input, cursor: "pointer" }} value={config.langCode} onChange={e => upd("langCode", e.target.value)}>
-                      {LANGUAGES.map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label style={S.label}>Architecture Priorities</label>
-                  <div style={{ fontSize: 12, color: "#64748b", marginBottom: 10 }}>When the agent faces trade-offs, it prioritizes based on this ranking.</div>
-                  {config.priorities.map((p, i) => (
-                    <div key={p} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", marginBottom: 4, background: "#0f172a", borderRadius: 6, border: "1px solid #1e293b" }}>
-                      <span style={{ color: i === 0 ? "#fb923c" : "#64748b", fontWeight: 700, fontSize: 13, width: 24 }}>#{i + 1}</span>
-                      <span style={{ flex: 1, fontSize: 14, textTransform: "capitalize", color: i === 0 ? "#e2e8f0" : "#94a3b8" }}>{p}</span>
-                      <button onClick={() => movePriority(i, -1)} disabled={i === 0} style={{ background: "none", border: "none", color: i === 0 ? "#1e293b" : "#64748b", cursor: "pointer", fontSize: 15, padding: "0 4px" }}>↑</button>
-                      <button onClick={() => movePriority(i, 1)} disabled={i === config.priorities.length - 1} style={{ background: "none", border: "none", color: i === config.priorities.length - 1 ? "#1e293b" : "#64748b", cursor: "pointer", fontSize: 15, padding: "0 4px" }}>↓</button>
+                {FILE_TYPES.map(ft => activeTab === ft.id && (
+                  <div key={ft.id}>
+                    <div style={{ padding: "12px 16px", background: "#0c1929", border: "1px solid #1e3a5f", borderRadius: 0, fontSize: 12, color: "#7dd3fc", lineHeight: 1.6 }}>
+                      <strong>{ft.layer} — {ft.label}</strong>: {ft.desc} <span style={{ color: "#475569" }}>(~{ft.lines} lines)</span>
+                      {generated[ft.id]?.refined && <span style={{ ...S.tag, marginLeft: 8 }}>♻️ Auto-refined</span>}
                     </div>
-                  ))}
-                </div>
-                <div>
-                  <label style={S.label}>Blueprint Rigor</label>
-                  <div style={{ fontSize: 12, color: "#64748b", marginBottom: 10 }}>Controls planning depth, test coverage, and security requirements in generated Blueprints.</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
-                    {RIGOR_LEVELS.map(r => (
-                      <button key={r.id}
-                        onClick={() => upd("rigor", r.id)}
-                        style={{
-                          padding: "14px 12px", borderRadius: 10, cursor: "pointer", textAlign: "left",
-                          background: config.rigor === r.id ? "#1e293b" : "#0f172a",
-                          border: `2px solid ${config.rigor === r.id ? (r.id === "strict" ? "#3b82f6" : r.id === "rapid" ? "#f59e0b" : "#fb923c") : "#1e293b"}`,
-                          transition: "all 0.2s",
-                        }}>
-                        <div style={{ fontSize: 16, marginBottom: 4 }}>{r.label}</div>
-                        <div style={{ fontSize: 11, color: config.rigor === r.id ? "#e2e8f0" : "#64748b", fontWeight: 600, marginBottom: 4 }}>{r.name}</div>
-                        <div style={{ fontSize: 10, color: "#475569", lineHeight: 1.4 }}>{r.desc}</div>
+                    <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, padding: "8px 12px", background: "#111827", borderBottom: "1px solid #1e293b" }}>
+                      {generated[ft.id]?.output && <CopyButton text={generated[ft.id].output} />}
+                      <button onClick={() => handleGenerateFile(ft.id)} disabled={!!generating || !apiKey} style={S.btn(false, !!generating || !apiKey)}>
+                        {generating?.startsWith(ft.id) ? "⏳ ..." : generated[ft.id]?.output ? "↻ Regen" : "▶ Generate"}
                       </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div style={S.nav}>
-                <button style={S.btn(false)} onClick={() => setStep(2)}>← Stack</button>
-                <button style={S.btn(true, !canProceed[3]())} onClick={() => canProceed[3]() && setStep(4)}>Review & Generate →</button>
-              </div>
-            </div>
-          )}
-
-          {/* ═══════════════════════════════════════════ */}
-          {/* ═══ STEP 4: GENERATE & REVIEW ═══ */}
-          {/* ═══════════════════════════════════════════ */}
-          {step === 4 && (
-            <>
-              {/* Review Panel */}
-              <div style={S.card}>
-                <SectionTitle icon="🔍" title="Review Configuration" subtitle="Verify before generating." />
-                <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 20 }}>
-                  <div>
-                    <div style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", fontWeight: 600 }}>Project</div>
-                    <div style={{ fontSize: 18, fontWeight: 800, color: "#fb923c", marginTop: 4 }}>{config.projectName}</div>
-                    <div style={{ fontSize: 13, color: "#94a3b8", marginTop: 6, lineHeight: 1.5 }}>{config.mission}</div>
-                  </div>
-                  <div style={{ textAlign: "right" }}>
-                    <span style={{ fontSize: 32 }}>{domain?.icon}</span>
-                    <div style={{ fontSize: 13, color: "#64748b" }}>{domain?.name}</div>
-                    <div style={{ display: "flex", gap: 4, justifyContent: "flex-end", marginTop: 6 }}>
-                      <span style={S.badge(true)}>{currentIde.icon} {currentIde.name}</span>
                     </div>
-                    <div style={{ fontSize: 11, color: "#475569", marginTop: 6 }}>Priorities: {config.priorities.join(" > ")}</div>
-                    <div style={{ marginTop: 4 }}><span style={{ ...S.badge(true), background: config.rigor === "strict" ? "#1e3a5f" : config.rigor === "rapid" ? "#422006" : "#3b1a08" }}>{RIGOR_LEVELS.find(r => r.id === config.rigor)?.label} {RIGOR_LEVELS.find(r => r.id === config.rigor)?.name}</span></div>
-                  </div>
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginTop: 16 }}>
-                  {Object.entries(config.stack).map(([k, v]) => (
-                    <div key={k} style={{ padding: "6px 10px", background: "#0f172a", borderRadius: 6, fontSize: 11 }}>
-                      <span style={{ color: "#475569" }}>{k}: </span><span style={{ color: "#e2e8f0", fontWeight: 600 }}>{v}</span>
-                    </div>
-                  ))}
-                </div>
-                {!apiKey && <InfoBox type="warn">You need to enter your API key above before generating.</InfoBox>}
-                <div style={S.nav}>
-                  <button style={S.btn(false)} onClick={() => setStep(3)}>← Edit</button>
-                  <div style={{ display: "flex", gap: 8 }}>
-                    {Object.keys(generated).length > 0 && (
-                      <button style={{ ...S.btn(false), ...(saveStatus === "saved" ? { borderColor: "#22c55e", color: "#22c55e" } : saveStatus === "error" ? { borderColor: "#ef4444", color: "#ef4444" } : saveStatus === "saving" ? { opacity: 0.7 } : {}) }} onClick={handleSave} disabled={saveStatus === "saving"}>{saveStatus === "saving" ? "⏳ Saving..." : saveStatus === "saved" ? "✅ Saved!" : saveStatus === "error" ? "❌ Error" : "💾 Save"}</button>
+                    {/* Update Mode: only visible when file already generated */}
+                    {generated[ft.id]?.output && (
+                      <div style={{ display: "flex", gap: 8, padding: "6px 12px", background: "#0f172a", borderBottom: "1px solid #1e293b", alignItems: "center" }}>
+                        <input
+                          type="text"
+                          placeholder="Describe what changed (e.g., 'added Redis caching', 'switched to GraphQL')..."
+                          value={updateInput[ft.id] || ""}
+                          onChange={e => setUpdateInput(p => ({ ...p, [ft.id]: e.target.value }))}
+                          onKeyDown={e => e.key === "Enter" && handleUpdateFile(ft.id)}
+                          disabled={!!generating}
+                          style={{ ...S.input, flex: 1, fontSize: 12, padding: "6px 10px" }}
+                        />
+                        <button onClick={() => handleUpdateFile(ft.id)} disabled={!!generating || !apiKey || !updateInput[ft.id]?.trim()}
+                          style={{ ...S.btn(false, !!generating || !apiKey || !updateInput[ft.id]?.trim()), fontSize: 12, padding: "6px 12px", whiteSpace: "nowrap" }}>
+                          🔄 Update
+                        </button>
+                      </div>
                     )}
-                    <button style={S.btn(true, !!generating || !apiKey)} onClick={handleGenerateAll} disabled={!!generating || !apiKey}>
-                      {generating ? `⏳ ${generating}...` : "⚡ Generate All Blueprint Files"}
-                    </button>
-                  </div>
-                </div>
 
-                {/* Progress Bar for Generate All */}
-                {generationProgress && (
-                  <div style={{ marginTop: 12, padding: "12px 16px", background: "#0c1929", borderRadius: 10, border: "1px solid #1e3a5f" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                      <span style={{ fontSize: 12, fontWeight: 600, color: "#7dd3fc" }}>
-                        ⚡ Generating {generationProgress.label}...
-                      </span>
-                      <span style={{ fontSize: 11, color: "#64748b" }}>
-                        {generationProgress.current}/{generationProgress.total} files
-                      </span>
-                    </div>
-                    <div style={{ height: 6, background: "#1e293b", borderRadius: 3, overflow: "hidden" }}>
-                      <div style={{
-                        height: "100%",
-                        width: `${(generationProgress.current / generationProgress.total) * 100}%`,
-                        background: "linear-gradient(90deg, #fb923c, #f97316, #ef4444)",
-                        borderRadius: 3,
-                        transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
-                        boxShadow: "0 0 10px #fb923c66",
-                      }} />
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Overall Quality Score */}
-              {avgQuality() !== null && (
-                <div style={{ ...S.card, borderColor: "#065f46", background: "#021c14" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: "#6ee7b7" }}>📊 Overall Blueprint Quality</div>
-                    <QualityScore quality={{ score: avgQuality(), grade: avgQuality() >= 90 ? "A" : avgQuality() >= 75 ? "B" : avgQuality() >= 60 ? "C" : "D", breakdown: null, issues: [] }} compact={true} />
-                    <span style={{ fontSize: 11, color: "#64748b" }}>
-                      {Object.values(generated).filter(r => r?.quality).length}/{FILE_TYPES.length} files scored
-                      {Object.values(generated).some(r => r?.refined) && " · ♻️ Some files were auto-refined"}
-                    </span>
-                  </div>
-                </div>
-              )}
-
-              {/* ═══ BLUEPRINT TABS (new tabbed view) ═══ */}
-              <div ref={resultRef} style={S.card}>
-                <BlueprintTabs
-                  generated={generated}
-                  config={config}
-                  ideTarget={ideTarget}
-                  avgQuality={avgQuality()}
-                  domain={domain}
-                  currentIde={currentIde}
-                  FILE_TYPES={FILE_TYPES}
-                >
-                  <InfoBox type="info">Each file serves a specific purpose. Generate all, or click individual tabs. Quality scores show how production-ready each file is.</InfoBox>
-                  <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginTop: 12 }}>
-                    {FILE_TYPES.map(ft => {
-                      const result = generated[ft.id];
-                      const hasScore = result?.quality?.score;
-                      return (
-                        <button key={ft.id} style={{
-                          padding: "8px 14px", borderRadius: "8px 8px 0 0", border: "1px solid #1e293b",
-                          borderBottom: activeTab === ft.id ? "2px solid #fb923c" : "1px solid #1e293b",
-                          background: activeTab === ft.id ? "#111827" : "#0a0f1a",
-                          color: activeTab === ft.id ? "#fb923c" : "#64748b",
-                          cursor: "pointer", fontSize: 11, fontWeight: 600, display: "flex", alignItems: "center", gap: 4,
-                        }} onClick={() => setActiveTab(ft.id)}>
-                          {result?.output ? "✓ " : generating?.startsWith(ft.id) ? "⏳ " : ""}{ft.label}
-                          {hasScore && <QualityScore quality={result.quality} compact={true} />}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {FILE_TYPES.map(ft => activeTab === ft.id && (
-                    <div key={ft.id}>
-                      <div style={{ padding: "12px 16px", background: "#0c1929", border: "1px solid #1e3a5f", borderRadius: 0, fontSize: 12, color: "#7dd3fc", lineHeight: 1.6 }}>
-                        <strong>{ft.layer} — {ft.label}</strong>: {ft.desc} <span style={{ color: "#475569" }}>(~{ft.lines} lines)</span>
-                        {generated[ft.id]?.refined && <span style={{ ...S.tag, marginLeft: 8 }}>♻️ Auto-refined</span>}
+                    {/* Quality Score for this file */}
+                    {generated[ft.id]?.quality && (
+                      <div style={{ padding: "12px 16px", background: "#0a0f1a", borderBottom: "1px solid #1e293b" }}>
+                        <QualityScore quality={generated[ft.id].quality} />
                       </div>
-                      <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, padding: "8px 12px", background: "#111827", borderBottom: "1px solid #1e293b" }}>
-                        {generated[ft.id]?.output && <CopyButton text={generated[ft.id].output} />}
-                        <button onClick={() => handleGenerateFile(ft.id)} disabled={!!generating || !apiKey} style={S.btn(false, !!generating || !apiKey)}>
-                          {generating?.startsWith(ft.id) ? "⏳ ..." : generated[ft.id]?.output ? "↻ Regen" : "▶ Generate"}
-                        </button>
-                      </div>
-                      {/* Update Mode: only visible when file already generated */}
-                      {generated[ft.id]?.output && (
-                        <div style={{ display: "flex", gap: 8, padding: "6px 12px", background: "#0f172a", borderBottom: "1px solid #1e293b", alignItems: "center" }}>
-                          <input
-                            type="text"
-                            placeholder="Describe what changed (e.g., 'added Redis caching', 'switched to GraphQL')..."
-                            value={updateInput[ft.id] || ""}
-                            onChange={e => setUpdateInput(p => ({ ...p, [ft.id]: e.target.value }))}
-                            onKeyDown={e => e.key === "Enter" && handleUpdateFile(ft.id)}
-                            disabled={!!generating}
-                            style={{ ...S.input, flex: 1, fontSize: 12, padding: "6px 10px" }}
-                          />
-                          <button onClick={() => handleUpdateFile(ft.id)} disabled={!!generating || !apiKey || !updateInput[ft.id]?.trim()}
-                            style={{ ...S.btn(false, !!generating || !apiKey || !updateInput[ft.id]?.trim()), fontSize: 12, padding: "6px 12px", whiteSpace: "nowrap" }}>
-                            🔄 Update
-                          </button>
-                        </div>
-                      )}
+                    )}
 
-                      {/* Quality Score for this file */}
-                      {generated[ft.id]?.quality && (
-                        <div style={{ padding: "12px 16px", background: "#0a0f1a", borderBottom: "1px solid #1e293b" }}>
-                          <QualityScore quality={generated[ft.id].quality} />
-                        </div>
-                      )}
-
-                      <div style={{ background: "#0a0f1a", border: "1px solid #1e293b", borderRadius: "0 0 8px 8px", padding: 16, fontSize: 12, lineHeight: 1.6, whiteSpace: "pre-wrap", overflowX: "auto", maxHeight: 500, overflowY: "auto", color: "#cbd5e1", fontFamily: "JetBrains Mono, monospace" }}>
-                        {generating?.startsWith(ft.id) ? (
-                          <div style={{ textAlign: "center", padding: 40 }}>
-                            <div style={{ fontSize: 28, marginBottom: 8, animation: "pulse 1.5s infinite" }}>⚡</div>
-                            <div style={{ color: "#fb923c", fontWeight: 600 }}>Compiling {ft.label}...</div>
-                            <div style={{ color: "#475569", fontSize: 11, marginTop: 6 }}>
-                              {generating.includes("validating") ? "🔍 Validating output quality..." :
-                                generating.includes("refining") ? "♻️ Auto-refining for better quality..." :
-                                  "📡 Generating with Claude Sonnet 4..."}
-                            </div>
+                    <div style={{ background: "#0a0f1a", border: "1px solid #1e293b", borderRadius: "0 0 8px 8px", padding: 16, fontSize: 12, lineHeight: 1.6, whiteSpace: "pre-wrap", overflowX: "auto", maxHeight: 500, overflowY: "auto", color: "#cbd5e1", fontFamily: "JetBrains Mono, monospace" }}>
+                      {generating?.startsWith(ft.id) ? (
+                        <div style={{ textAlign: "center", padding: 40 }}>
+                          <div style={{ fontSize: 28, marginBottom: 8, animation: "pulse 1.5s infinite" }}>⚡</div>
+                          <div style={{ color: "#fb923c", fontWeight: 600 }}>Compiling {ft.label}...</div>
+                          <div style={{ color: "#475569", fontSize: 11, marginTop: 6 }}>
+                            {generating.includes("validating") ? "🔍 Validating output quality..." :
+                              generating.includes("refining") ? "♻️ Auto-refining for better quality..." :
+                                "📡 Generating with Claude Sonnet 4..."}
                           </div>
-                        ) : generated[ft.id]?.output ? generated[ft.id].output : (
-                          <div style={{ textAlign: "center", padding: 40, color: "#334155" }}>Click "Generate" or use "Generate All" above</div>
-                        )}
-                      </div>
+                        </div>
+                      ) : generated[ft.id]?.output ? generated[ft.id].output : (
+                        <div style={{ textAlign: "center", padding: 40, color: "#334155" }}>Click "Generate" or use "Generate All" above</div>
+                      )}
                     </div>
-                  ))}
-                </BlueprintTabs>
-              </div>
-
-              {/* ═══ FEEDBACK BAR (post-generation) ═══ */}
-              {Object.values(generated).some(r => r?.output) && (
-                <FeedbackBar
-                  blueprintId={config.projectName || "untitled"}
-                  config={config}
-                  userId={user?.id}
-                />
-              )}
-
-              {error && <div style={{ ...S.card, borderColor: "#991b1b", background: "#1c0a0a" }}><span style={{ color: "#fca5a5", fontSize: 13 }}>⚠️ {error}</span></div>}
-
-              {/* Global Files (Layer 1) */}
-              {Object.keys(generated).length > 0 && (
-                <div style={{ ...S.card, borderColor: "#065f46", background: "#021c14" }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: "#6ee7b7", marginBottom: 8 }}>📁 Global Files (Layer 1) — Create Once, Use Forever</div>
-                  <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.6, marginBottom: 12 }}>
-                    These go in <code style={{ color: "#fb923c" }}>~/.gemini/</code> and are identical for ALL projects. Create them once.
                   </div>
-                  <pre style={{ background: "#0a0f1a", border: "1px solid #1e293b", borderRadius: 8, padding: 16, fontSize: 11, lineHeight: 1.6, whiteSpace: "pre-wrap", maxHeight: 180, overflow: "auto", color: "#cbd5e1" }}>{`# ~/.gemini/GEMINI.md
+                ))}
+              </BlueprintTabs>
+            </div>
+
+            {/* ═══ FEEDBACK BAR (post-generation) ═══ */}
+            {Object.values(generated).some(r => r?.output) && (
+              <FeedbackBar
+                blueprintId={config.projectName || "untitled"}
+                config={config}
+                userId={user?.id}
+              />
+            )}
+
+            {error && <div style={{ ...S.card, borderColor: "#991b1b", background: "#1c0a0a" }}><span style={{ color: "#fca5a5", fontSize: 13 }}>⚠️ {error}</span></div>}
+
+            {/* Global Files (Layer 1) */}
+            {Object.keys(generated).length > 0 && (
+              <div style={{ ...S.card, borderColor: "#065f46", background: "#021c14" }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#6ee7b7", marginBottom: 8 }}>📁 Global Files (Layer 1) — Create Once, Use Forever</div>
+                <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.6, marginBottom: 12 }}>
+                  These go in <code style={{ color: "#fb923c" }}>~/.gemini/</code> and are identical for ALL projects. Create them once.
+                </div>
+                <pre style={{ background: "#0a0f1a", border: "1px solid #1e293b", borderRadius: 8, padding: 16, fontSize: 11, lineHeight: 1.6, whiteSpace: "pre-wrap", maxHeight: 180, overflow: "auto", color: "#cbd5e1" }}>{`# ~/.gemini/GEMINI.md
 # Global Agent Rules
 
 ## Thinking Protocol
@@ -1083,59 +1086,59 @@ Before every complex action, use a <thought> block to:
 - Commit messages: feat:, fix:, refactor:, docs:, test:, chore:
 - One commit = one logical change
 - Branch: feat/feature-name, fix/bug-name, refactor/module-name`}</pre>
-                  <CopyButton text={`# Global Agent Rules\n\n## Thinking Protocol\nBefore every complex action, use a <thought> block to:\n1. Analyze requirements and constraints\n2. Identify edge cases and security risks\n3. Evaluate architectural alternatives\n4. Plan implementation sequence\n\n## Git Discipline\n- Commit messages: feat:, fix:, refactor:, docs:, test:, chore:\n- One commit = one logical change\n- Branch: feat/feature-name, fix/bug-name, refactor/module-name`} />
-                </div>
-              )}
+                <CopyButton text={`# Global Agent Rules\n\n## Thinking Protocol\nBefore every complex action, use a <thought> block to:\n1. Analyze requirements and constraints\n2. Identify edge cases and security risks\n3. Evaluate architectural alternatives\n4. Plan implementation sequence\n\n## Git Discipline\n- Commit messages: feat:, fix:, refactor:, docs:, test:, chore:\n- One commit = one logical change\n- Branch: feat/feature-name, fix/bug-name, refactor/module-name`} />
+              </div>
+            )}
 
-              {/* Export Actions */}
-              {Object.keys(generated).length > 0 && (
-                <div style={{ ...S.card, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: "#e2e8f0" }}>📦 Export Blueprint</div>
-                  <div style={{ display: "flex", gap: 8 }}>
-                    <button onClick={handleSave} disabled={saveStatus === "saving"} style={{ ...S.btn(false), ...(saveStatus === "saved" ? { borderColor: "#22c55e", color: "#22c55e" } : saveStatus === "error" ? { borderColor: "#ef4444", color: "#ef4444" } : saveStatus === "saving" ? { opacity: 0.7 } : {}) }}>{saveStatus === "saving" ? "⏳ Saving..." : saveStatus === "saved" ? "✅ Saved!" : saveStatus === "error" ? "❌ Error" : "💾 Save to Library"}</button>
-                    <button onClick={() => {
-                      if (!tierLimits.hasExportZip) {
-                        setShowUpgradeModal({ reason: "zip_locked", data: {} });
-                        return;
-                      }
-                      exportAsZip({ config, ideTarget, generated });
-                    }} style={S.btn(false)}>
-                      📥 Export ZIP {!tierLimits.hasExportZip && <span style={{ fontSize: 9, background: "linear-gradient(135deg, #f59e0b, #fb923c)", color: "#0a0f1a", padding: "1px 5px", borderRadius: 4, fontWeight: 800, marginLeft: 4 }}>PRO</span>}
-                    </button>
-                    <button onClick={() => {
-                      const allText = FILE_TYPES.map(ft => generated[ft.id]?.output ? `\n${"=".repeat(60)}\n# ${ft.label} (${ft.layer})\n${"=".repeat(60)}\n\n${generated[ft.id].output}` : "").join("\n");
-                      navigator.clipboard.writeText(allText);
-                    }} style={S.btn(true)}>📋 Copy All</button>
-                  </div>
+            {/* Export Actions */}
+            {Object.keys(generated).length > 0 && (
+              <div style={{ ...S.card, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: "#e2e8f0" }}>📦 Export Blueprint</div>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <button onClick={handleSave} disabled={saveStatus === "saving"} style={{ ...S.btn(false), ...(saveStatus === "saved" ? { borderColor: "#22c55e", color: "#22c55e" } : saveStatus === "error" ? { borderColor: "#ef4444", color: "#ef4444" } : saveStatus === "saving" ? { opacity: 0.7 } : {}) }}>{saveStatus === "saving" ? "⏳ Saving..." : saveStatus === "saved" ? "✅ Saved!" : saveStatus === "error" ? "❌ Error" : "💾 Save to Library"}</button>
+                  <button onClick={() => {
+                    if (!tierLimits.hasExportZip) {
+                      setShowUpgradeModal({ reason: "zip_locked", data: {} });
+                      return;
+                    }
+                    exportAsZip({ config, ideTarget, generated });
+                  }} style={S.btn(false)}>
+                    📥 Export ZIP {!tierLimits.hasExportZip && <span style={{ fontSize: 9, background: "linear-gradient(135deg, #f59e0b, #fb923c)", color: "#0a0f1a", padding: "1px 5px", borderRadius: 4, fontWeight: 800, marginLeft: 4 }}>PRO</span>}
+                  </button>
+                  <button onClick={() => {
+                    const allText = FILE_TYPES.map(ft => generated[ft.id]?.output ? `\n${"=".repeat(60)}\n# ${ft.label} (${ft.layer})\n${"=".repeat(60)}\n\n${generated[ft.id].output}` : "").join("\n");
+                    navigator.clipboard.writeText(allText);
+                  }} style={S.btn(true)}>📋 Copy All</button>
                 </div>
-              )}
-            </>
-          )}
+              </div>
+            )}
+          </>
+        )}
 
-          {/* ═══ FOOTER ═══ */}
-          <div style={{ textAlign: "center", padding: "24px 0", borderTop: "1px solid #1e293b", marginTop: 24, fontSize: 11, color: "#334155" }}>
-            <p>
-              Blueprint Compiler v2.0 — Multi-IDE · Agentic Generation · Quality Scoring
-            </p>
-            <div style={{ marginTop: 10, display: "flex", justifyContent: "center", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-              <a href="/" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>🏠 Home</a>
-              <a href="/#features" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>✨ Features</a>
-              <a href="/#pricing" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>💰 Pricing</a>
-              <a href="/docs.html" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>📖 Docs</a>
-              <a href="https://github.com/skywalker76/blueprint-compiler" target="_blank" rel="noreferrer" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>🐙 GitHub</a>
-            </div>
-            <div style={{ marginTop: 8, display: "flex", justifyContent: "center", alignItems: "center", gap: 12 }}>
-              <span>Powered by Context Engineering</span>
-              <span>·</span>
-              <button onClick={() => {
-                const newVal = !telemetry;
-                setTelemetry(newVal);
-                setTelemetryPreference(newVal);
-              }} style={{ background: "none", border: "none", color: telemetry ? "#64748b" : "#475569", cursor: "pointer", fontSize: 11, textDecoration: "underline" }}>
-                Telemetry: {telemetry ? "On" : "Off"}
-              </button>
-            </div>
+        {/* ═══ FOOTER ═══ */}
+        <div style={{ textAlign: "center", padding: "24px 0", borderTop: "1px solid #1e293b", marginTop: 24, fontSize: 11, color: "#334155" }}>
+          <p>
+            Blueprint Compiler v2.0 — Multi-IDE · Agentic Generation · Quality Scoring
+          </p>
+          <div style={{ marginTop: 10, display: "flex", justifyContent: "center", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+            <a href="/" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>🏠 Home</a>
+            <a href="/#features" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>✨ Features</a>
+            <a href="/#pricing" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>💰 Pricing</a>
+            <a href="/docs.html" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>📖 Docs</a>
+            <a href="https://github.com/skywalker76/blueprint-compiler" target="_blank" rel="noreferrer" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>🐙 GitHub</a>
           </div>
+          <div style={{ marginTop: 8, display: "flex", justifyContent: "center", alignItems: "center", gap: 12 }}>
+            <span>Powered by Context Engineering</span>
+            <span>·</span>
+            <button onClick={() => {
+              const newVal = !telemetry;
+              setTelemetry(newVal);
+              setTelemetryPreference(newVal);
+            }} style={{ background: "none", border: "none", color: telemetry ? "#64748b" : "#475569", cursor: "pointer", fontSize: 11, textDecoration: "underline" }}>
+              Telemetry: {telemetry ? "On" : "Off"}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
