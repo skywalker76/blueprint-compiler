@@ -477,6 +477,21 @@ export default function App() {
           </div>
         )}
 
+        {/* ═══ COMMUNITY FEEDBACK ═══ */}
+        {step === 0 && Object.keys(generated).length === 0 && !showLibrary && (
+          <div style={{ marginBottom: 28, background: 'rgba(14, 165, 233, 0.05)', border: '1px solid rgba(14, 165, 233, 0.2)', borderRadius: 8, padding: 16 }}>
+            <div style={{ color: '#38bdf8', fontWeight: 700, fontSize: 13, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span>💬</span> From the Community: Real-world results
+            </div>
+            <div style={{ color: '#cbd5e1', fontSize: 13, fontStyle: 'italic', lineHeight: 1.6, paddingLeft: 12, borderLeft: '2px solid #0ea5e9' }}>
+              "Finalmente ha finito, <strong>sono stupefatto per come è venuto...</strong> Questo progetto è una figata, soprattutto per chi non è un programmatore. La differenza tra un vibe coding claudicante e rozzo ad un prodotto maturo."
+              <div style={{ marginTop: 8, fontSize: 11, color: '#64748b', fontStyle: 'normal' }}>
+                — Andrea D. (Tested the <strong>React to WP</strong> preset on a real production app)
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* ═══ QUICK START ═══ */}
         {step === 0 && Object.keys(generated).length === 0 && (
           <QuickStartBar presets={PRESETS} onSelect={handlePresetSelect} />
