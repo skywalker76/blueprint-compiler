@@ -313,7 +313,7 @@ export default function LandingPage() {
             <span style={{ fontSize: 20 }}>💬</span> From the Community: Real-world results
           </div>
           <div style={{ color: '#cbd5e1', fontSize: 16, fontStyle: 'italic', lineHeight: 1.6, paddingLeft: 16, borderLeft: '3px solid #0ea5e9' }}>
-            "Finalmente ha finito, <strong>sono stupefatto per come è venuto...</strong> Questo progetto è una figata, soprattutto per chi non è un programmatore. La differenza tra un vibe coding claudicante e rozzo ad un prodotto maturo."
+            "It finally finished, <strong>I'm amazed by how it turned out...</strong> This project is incredible, especially for non-programmers. It's the difference between clumsy, raw vibe-coding and a truly mature product."
             <div style={{ marginTop: 12, fontSize: 14, color: '#64748b', fontStyle: 'normal' }}>
               — Andrea D. (Tested the <strong>React to WP</strong> preset on a real production app)
             </div>
