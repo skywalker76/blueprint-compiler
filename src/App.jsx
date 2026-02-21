@@ -451,6 +451,32 @@ export default function App() {
           Now supporting <strong>4 IDEs</strong>: Antigravity, Cursor, GitHub Copilot, and Windsurf.
         </InfoBox>
 
+        {/* ═══ WHAT IT DOES / DOESN'T DO ═══ */}
+        {step === 0 && Object.keys(generated).length === 0 && !showLibrary && (
+          <div style={{ display: 'flex', gap: 16, marginBottom: 28, flexDirection: 'row', flexWrap: 'wrap' }}>
+            <div style={{ flex: 1, minWidth: 300, background: 'rgba(239, 68, 68, 0.05)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: 8, padding: 16 }}>
+              <div style={{ color: '#ef4444', fontWeight: 700, fontSize: 13, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span>❌</span> What it DOESN'T do (Generic Vibe Coding)
+              </div>
+              <ul style={{ color: '#94a3b8', fontSize: 12, lineHeight: 1.6, paddingLeft: 20, margin: 0 }}>
+                <li style={{ marginBottom: 4 }}>It doesn't write the app code directly for you.</li>
+                <li style={{ marginBottom: 4 }}>It doesn't let the AI guess your architecture randomly.</li>
+                <li>It doesn't produce bloated or non-standard code.</li>
+              </ul>
+            </div>
+            <div style={{ flex: 1, minWidth: 300, background: 'rgba(34, 197, 94, 0.05)', border: '1px solid rgba(34, 197, 94, 0.2)', borderRadius: 8, padding: 16 }}>
+              <div style={{ color: '#22c55e', fontWeight: 700, fontSize: 13, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span>✅</span> What it DOES (Architectural Governance)
+              </div>
+              <ul style={{ color: '#e2e8f0', fontSize: 12, lineHeight: 1.6, paddingLeft: 20, margin: 0 }}>
+                <li style={{ marginBottom: 4 }}><strong>Instructs your AI IDE</strong> on the exact stack & rules to use.</li>
+                <li style={{ marginBottom: 4 }}><strong>Forces Senior Dev standards</strong> before writing a single line of code.</li>
+                <li><strong>Generates the rule files</strong> (.cursorrules, memory, workflows) that turn your AI into a 10x Architect.</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
         {/* ═══ QUICK START ═══ */}
         {step === 0 && Object.keys(generated).length === 0 && (
           <QuickStartBar presets={PRESETS} onSelect={handlePresetSelect} />
@@ -566,8 +592,8 @@ export default function App() {
         {showScanner && (
           <div style={{ ...S.card, borderColor: "#0c4a6e55", background: "#0c192988" }}>
             <SectionTitle icon="🔍" title="Project Scanner" subtitle="Upload or paste your package.json — we'll auto-detect your stack" />
-            
-            <div 
+
+            <div
               onDragOver={e => { e.preventDefault(); e.stopPropagation(); }}
               onDrop={e => {
                 e.preventDefault(); e.stopPropagation();
@@ -589,16 +615,16 @@ export default function App() {
               onMouseEnter={e => e.currentTarget.style.background = "rgba(14, 165, 233, 0.08)"}
               onMouseLeave={e => e.currentTarget.style.background = "rgba(14, 165, 233, 0.03)"}
             >
-              <input 
-                id="package-upload" 
-                type="file" 
-                accept=".json,application/json" 
-                style={{ display: 'none' }} 
+              <input
+                id="package-upload"
+                type="file"
+                accept=".json,application/json"
+                style={{ display: 'none' }}
                 onChange={e => {
                   if (e.target.files && e.target.files[0]) {
                     handleFileUpload(e.target.files[0]);
                   }
-                }} 
+                }}
               />
               <div style={{ fontSize: 24, marginBottom: 8 }}>📁</div>
               <div style={{ fontSize: 13, color: "#e2e8f0", fontWeight: 600 }}>Drag & Drop your package.json here</div>
