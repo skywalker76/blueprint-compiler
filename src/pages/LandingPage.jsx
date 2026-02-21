@@ -275,6 +275,52 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ━━━ What It Is vs What It Isn't ━━━ */}
+      <section className="section" id="what-it-does">
+        <div className="section-label">Philosophy</div>
+        <h2>Vibe Coding vs<br />Architectural Governance</h2>
+        <p className="section-desc">
+          The difference between a broken prototype and production-ready software.
+        </p>
+
+        <div style={{ display: 'flex', gap: 24, marginTop: 40, flexDirection: 'row', flexWrap: 'wrap', maxWidth: 900, margin: '40px auto 0' }}>
+          <div style={{ flex: 1, minWidth: 300, background: 'rgba(239, 68, 68, 0.05)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: 12, padding: 32, textAlign: 'left' }}>
+            <div style={{ color: '#ef4444', fontWeight: 700, fontSize: 18, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{ fontSize: 24 }}>❌</span> What it DOESN'T do<br /><span style={{ fontSize: 13, opacity: 0.8 }}>(Generic Vibe Coding)</span>
+            </div>
+            <ul style={{ color: '#94a3b8', fontSize: 15, lineHeight: 1.6, paddingLeft: 20, margin: 0 }}>
+              <li style={{ marginBottom: 12 }}>It doesn't write the app code directly for you.</li>
+              <li style={{ marginBottom: 12 }}>It doesn't let the AI guess your architecture randomly.</li>
+              <li>It doesn't produce bloated or non-standard code.</li>
+            </ul>
+          </div>
+
+          <div style={{ flex: 1, minWidth: 300, background: 'rgba(34, 197, 94, 0.05)', border: '1px solid rgba(34, 197, 94, 0.2)', borderRadius: 12, padding: 32, textAlign: 'left' }}>
+            <div style={{ color: '#22c55e', fontWeight: 700, fontSize: 18, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{ fontSize: 24 }}>✅</span> What it DOES<br /><span style={{ fontSize: 13, opacity: 0.8 }}>(Architectural Governance)</span>
+            </div>
+            <ul style={{ color: '#e2e8f0', fontSize: 15, lineHeight: 1.6, paddingLeft: 20, margin: 0 }}>
+              <li style={{ marginBottom: 12 }}><strong>Instructs your AI IDE</strong> on the exact stack & rules to use.</li>
+              <li style={{ marginBottom: 12 }}><strong>Forces Senior Dev standards</strong> before writing a single line of code.</li>
+              <li><strong>Generates the rule files</strong> (.cursorrules, memory, workflows) that turn your AI into a 10x Architect.</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* ═══ COMMUNITY FEEDBACK ═══ */}
+        <div style={{ marginTop: 40, maxWidth: 900, margin: '40px auto 0', background: 'rgba(14, 165, 233, 0.05)', border: '1px solid rgba(14, 165, 233, 0.2)', borderRadius: 12, padding: 32, textAlign: 'left' }}>
+          <div style={{ color: '#38bdf8', fontWeight: 700, fontSize: 16, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 20 }}>💬</span> From the Community: Real-world results
+          </div>
+          <div style={{ color: '#cbd5e1', fontSize: 16, fontStyle: 'italic', lineHeight: 1.6, paddingLeft: 16, borderLeft: '3px solid #0ea5e9' }}>
+            "Finalmente ha finito, <strong>sono stupefatto per come è venuto...</strong> Questo progetto è una figata, soprattutto per chi non è un programmatore. La differenza tra un vibe coding claudicante e rozzo ad un prodotto maturo."
+            <div style={{ marginTop: 12, fontSize: 14, color: '#64748b', fontStyle: 'normal' }}>
+              — Andrea D. (Tested the <strong>React to WP</strong> preset on a real production app)
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ━━━ How It Works ━━━ */}
       <section className="section" id="how-it-works">
         <div className="section-label">How It Works</div>
