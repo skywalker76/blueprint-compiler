@@ -256,6 +256,21 @@ export const PRESETS = [
         },
     },
     {
+        id: "react-to-wp-theme", category: "content",
+        icon: "🔄", title: "React to WP Converter",
+        subtitle: "Convert static React sites to block themes",
+        gradient: "linear-gradient(135deg, #fbbf24, #d97706)",
+        stackPills: ["WP 6.7+", "Gutenberg", "FSE", "React"],
+        ideTarget: "antigravity",
+        config: {
+            domain: "wordpress", projectName: "wp-react-theme",
+            mission: "Convert a static React website into a professional WordPress block-based theme (FSE). Preserve the exact design system, colors, and components from the React source. Replace client-side routing (react-router) with native WP permalinks, swap complex React state (useState) for native HTML elements (like <details>) or lightweight JS where necessary (e.g. for dark mode/localization), and ensure components are mapped to reusable Gutenberg blocks and template parts.",
+            langConvo: "en", langCode: "en",
+            stack: { wpversion: "WordPress 6.7+", builder: "Gutenberg (Block Editor)", customfields: "None", seo: "Yoast SEO", caching: "WP Rocket + Redis", hosting: "Managed WordPress" },
+            customDomain: "", customStack: "", priorities: ["maintainability", "performance", "scalability", "security"], rigor: "strict",
+        },
+    },
+    {
         id: "wp-headless", category: "content",
         icon: "⚡", title: "WordPress Headless",
         subtitle: "WP backend + Next.js frontend via REST API",
