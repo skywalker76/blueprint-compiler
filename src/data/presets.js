@@ -256,6 +256,21 @@ export const PRESETS = [
         },
     },
     {
+        id: "wp-plugin-pro", category: "content",
+        icon: "🔌", title: "WP Plugin Pro",
+        subtitle: "Enterprise-grade OOP WordPress Plugin",
+        gradient: "linear-gradient(135deg, #4f46e5, #4338ca)",
+        stackPills: ["WP 6.7+", "OOP", "REST API", "PHPStan"],
+        ideTarget: "antigravity",
+        config: {
+            domain: "wordpress", projectName: "my-custom-plugin",
+            mission: "Develop a professional, enterprise-grade WordPress plugin using strict Object-Oriented Programming (OOP) and PSR-12 coding standards. Avoid bloated procedural code and spaghetti architecture. Implement a clean MVC or Action/Filter class architecture, use native WP_REST_API endpoints for frontend/backend communication (instead of admin-ajax.php), enforce strict sanitization/escaping on every variable, and use Nonces for robust security against CSRF attacks. Setup PHPStan for static analysis.",
+            langConvo: "en", langCode: "en",
+            stack: { wpversion: "WordPress 6.7+", architecture: "OOP / MVC / REST API", database: "Custom Tables ($wpdb)", security: "Nonces + Roles", testing: "PHPStan + Pest", ide: "Antigravity" },
+            customDomain: "", customStack: "", priorities: ["security", "maintainability", "performance", "scalability"], rigor: "strict",
+        },
+    },
+    {
         id: "react-to-wp-theme", category: "content",
         icon: "🔄", title: "React to WP Converter",
         subtitle: "Convert static React sites to block themes",
