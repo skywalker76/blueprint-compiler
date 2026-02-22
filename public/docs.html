@@ -208,6 +208,19 @@
             border-left: 4px solid var(--orange)
         }
 
+        .terminal-mockup {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 16px 0 32px 0;
+            font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #e2e8f0;
+            overflow-x: auto;
+        }
+
         .info-box {
             padding: 14px 18px;
             background: var(--bg3);
@@ -1952,10 +1965,60 @@ npx blueprint-compiler scan</code></pre>
                 <p>After generating a file, an update input field appears below the Generate button. Type your change
                     description (e.g., "switched from REST to GraphQL") and click 🔄 Update.</p>
             </div>
-            <div class="card">
-                <h4>CLI</h4>
-                <p>Run <code>npx blueprint-compiler update</code> from your project root. The CLI auto-detects your IDE,
-                    finds existing Blueprint files, and prompts for the change description.</p>
+            <div class="card card-accent" id="cli-guide">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                    <h3 style="margin: 0;">🖥️ Developer First CLI</h3>
+                    <span class="badge" style="background: var(--blue-glow); color: var(--blue);">v2.1+</span>
+                </div>
+                <p>The Blueprint Compiler includes a fully-featured CLI tool designed for senior engineers. It allows
+                    you to scaffold, scan, and update your architectural context entirely from the terminal, making it
+                    ideal for fast development cycles or CI/CD pipelines.</p>
+
+                <h4>1. Auto-Scan & Init</h4>
+                <p>Run the <code>init</code> command inside any existing project. The Compiler will read your
+                    <code>package.json</code>,
+                    auto-detect your framework, database, UI libraries, and testing tools, and pre-fill the wizard.</p>
+                <div class="terminal-mockup">
+                    <div style="color: #94a3b8; margin-bottom: 8px;">$ npx blueprint-compiler init</div>
+                    <div style="color: #6ee7b7;">📦 Found package.json — auto-detecting stack...</div>
+                    <div style="color: #6ee7b7;">✓ Detected: frontend: Next.js App Router (99% confidence)</div>
+                    <div style="color: #6ee7b7;">✓ Detected: ui: Tailwind CSS (100% confidence)</div>
+                    <div style="color: #6ee7b7;">✓ Detected: backend: Supabase (85% confidence)</div>
+                    <div style="margin-top: 12px; color: #7dd3fc;">1/7 Select LLM Provider:</div>
+                    <div> 1) 🟠 Anthropic</div>
+                    <div style="color: #6ee7b7;">→ Choose (1-1): 1</div>
+                </div>
+
+                <h4>2. Surgical Updates</h4>
+                <p>Added a new technology to your stack? (e.g., Redis). Don't regenerate everything. Use the
+                    <code>update</code> command.
+                    The CLI will read your current Blueprint, surgically modify only the relevant layers (like adding a
+                    Redis Skill), and leave the rest intact.</p>
+                <div class="terminal-mockup">
+                    <div style="color: #94a3b8; margin-bottom: 8px;">$ npx blueprint-compiler update</div>
+                    <div style="color: #7dd3fc;">✓ Found existing Blueprint for Next.js in .cursor/rules</div>
+                    <br>
+                    <div style="color: #7dd3fc;">What has changed in your architecture?</div>
+                    <div style="color: #e2e8f0;">> We just added Redis for caching API responses.</div>
+                    <br>
+                    <div style="color: #fb923c;">⚙️ Analyzing impact and fetching skills...</div>
+                    <div style="color: #6ee7b7;">✓ Downloaded Official Skill: Redis Best Practices</div>
+                    <div style="color: #6ee7b7;">✓ Updated rules.md to require Redis caching patterns</div>
+                </div>
+
+                <h4>3. Project Profiling</h4>
+                <p>If you just want to test the detection engine without generating files, use the <code>scan</code>
+                    command.</p>
+                <div class="terminal-mockup">
+                    <div style="color: #94a3b8; margin-bottom: 8px;">$ npx blueprint-compiler scan</div>
+                    <div style="color: #fb923c; font-weight: bold;">⚡ Project Scan Results</div>
+                    <div style="margin-top: 8px;">Project: my-saas-app</div>
+                    <div>Total deps: 42</div>
+                    <br>
+                    <div style="color: #7dd3fc; margin-bottom: 4px;">Detected Stack:</div>
+                    <div> framework: Next.js App Router <span style="color: #27c93f;">(98%)</span></div>
+                    <div> database: PostgreSQL (Prisma) <span style="color: #27c93f;">(95%)</span></div>
+                </div>
             </div>
 
             <div class="info-box green">Update Mode preserves [CORE] sections (security, types, clean code) and updates

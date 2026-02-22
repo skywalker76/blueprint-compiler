@@ -243,33 +243,23 @@ export default function LandingPage() {
                   <p>Each detection shows a % confidence so you know what was certain</p>
                 </div>
               </div>
+              <a href="/app" className="btn-primary" style={{ display: "inline-flex", marginTop: 24 }}>
+                Try Scanner — Upgrade to Pro
+              </a>
             </div>
-            <a href="/app" className="btn-primary" style={{ display: "inline-flex", marginTop: 24 }}>
-              Try Scanner — Upgrade to Pro
-            </a>
-          </div>
-          <div className="scanner-demo">
-            <div className="scanner-terminal">
-              <div className="terminal-header">
-                <span className="dot-red" /><span className="dot-yellow" /><span className="dot-green" />
-                <span className="terminal-title">package.json → Blueprint Compiler Scanner</span>
-              </div>
-              <div className="terminal-body">
-                <div className="terminal-line"><span className="t-dim">$</span> <span className="t-cmd">blueprint-compiler scan package.json</span></div>
-                <div className="terminal-line t-space"> </div>
-                <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Framework:</span> <span className="t-val">Next.js App Router</span> <span className="t-conf">99%</span></div>
-                <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Database:</span> <span className="t-val">PostgreSQL (Prisma)</span> <span className="t-conf">97%</span></div>
-                <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Auth:</span> <span className="t-val">Supabase Auth</span> <span className="t-conf">95%</span></div>
-                <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Styling:</span> <span className="t-val">Tailwind CSS</span> <span className="t-conf">100%</span></div>
-                <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Testing:</span> <span className="t-val">Vitest + RTL</span> <span className="t-conf">94%</span></div>
-                <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Deploy:</span> <span className="t-val">Vercel</span> <span className="t-conf">98%</span></div>
-                <div className="terminal-line t-space"> </div>
-                <div className="terminal-line"><span className="t-info">→</span> <span className="t-bright">Detected 6 technologies from 87 dependencies</span></div>
-                <div className="terminal-line"><span className="t-info">→</span> <span className="t-bright">Blueprint wizard pre-filled. Ready to generate.</span></div>
-                <div className="terminal-line t-space"> </div>
-                <div className="terminal-line terminal-cursor"><span className="t-dim">$</span> <span className="cursor-blink">▋</span></div>
-              </div>
-            </div>
+            <div className="terminal-line"><span className="t-dim">$</span> <span className="t-cmd">blueprint-compiler scan package.json</span></div>
+            <div className="terminal-line t-space"> </div>
+            <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Framework:</span> <span className="t-val">Next.js App Router</span> <span className="t-conf">99%</span></div>
+            <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Database:</span> <span className="t-val">PostgreSQL (Prisma)</span> <span className="t-conf">97%</span></div>
+            <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Auth:</span> <span className="t-val">Supabase Auth</span> <span className="t-conf">95%</span></div>
+            <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Styling:</span> <span className="t-val">Tailwind CSS</span> <span className="t-conf">100%</span></div>
+            <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Testing:</span> <span className="t-val">Vitest + RTL</span> <span className="t-conf">94%</span></div>
+            <div className="terminal-line"><span className="t-ok">✓</span> <span className="t-label">Deploy:</span> <span className="t-val">Vercel</span> <span className="t-conf">98%</span></div>
+            <div className="terminal-line t-space"> </div>
+            <div className="terminal-line"><span className="t-info">→</span> <span className="t-bright">Detected 6 technologies from 87 dependencies</span></div>
+            <div className="terminal-line"><span className="t-info">→</span> <span className="t-bright">Blueprint wizard pre-filled. Ready to generate.</span></div>
+            <div className="terminal-line t-space"> </div>
+            <div className="terminal-line terminal-cursor"><span className="t-dim">$</span> <span className="cursor-blink">▋</span></div>
           </div>
         </div>
       </section>
@@ -318,10 +308,80 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section >
+
+      {/* ━━━ CLI Spotlight ━━━ */}
+      < section className="section cli-spotlight" id="cli" >
+        <div className="cli-inner">
+          <div className="cli-demo">
+            <div className="mac-terminal">
+              <div className="terminal-header">
+                <div className="mac-dots">
+                  <span className="dot-red"></span>
+                  <span className="dot-yellow"></span>
+                  <span className="dot-green"></span>
+                </div>
+                <span className="terminal-title">skywalker@mbp: ~/projects/nova</span>
+              </div>
+              <div className="terminal-body" style={{ fontFamily: "var(--mono)", fontSize: "12px", lineHeight: "1.6", color: "#e2e8f0" }}>
+                <div><span style={{ color: "#6ee7b7" }}>➜</span> <span style={{ color: "#7dd3fc", fontWeight: "bold" }}>nova</span> <span style={{ color: "#fb923c" }}>npx blueprint-compiler init</span></div>
+                <br />
+                <div><span style={{ color: "#94a3b8" }}>📦 Found package.json — auto-detecting stack...</span></div>
+                <div><span style={{ color: "#6ee7b7" }}>✓ Detected: backend: Supabase (85% confidence)</span></div>
+                <br />
+                <div><span style={{ color: "#fb923c", fontWeight: "bold" }}>⚡ Blueprint Compiler CLI v2.1</span></div>
+                <div><span style={{ color: "#94a3b8" }}>Transform requirements into production-ready AI agent Blueprints</span></div>
+                <br />
+                <div><span style={{ color: "#7dd3fc" }}>1/7</span> Select LLM Provider:</div>
+                <div>  1) 🟠 Anthropic</div>
+                <div><span style={{ color: "#6ee7b7" }}>→ Choose (1-1): 1</span></div>
+                <br />
+                <div><span style={{ color: "#7dd3fc" }}>2/7</span> Select Model:</div>
+                <div>  1) Claude Opus 4.5 — Potente, ottimo per ragionamenti complessi</div>
+                <div>  2) Claude Sonnet 3.7 — Il più usato e stabile</div>
+                <div>  3) Claude Haiku — Veloce ed economico</div>
+                <div><span style={{ color: "#6ee7b7" }}>→ Choose (1-3): 1</span></div>
+                <br />
+                <div><span style={{ color: "#7dd3fc" }}>3/7</span> Enter your Anthropic API key: <span style={{ color: "#fb923c" }}>sk-ant-api03-...W5dwAA</span></div>
+                <div><span style={{ color: "#6ee7b7" }}>✓ Key format valid</span></div>
+                <br />
+                <div className="cursor-blink" style={{ display: "inline-block", width: "8px", height: "14px", backgroundColor: "#6ee7b7", verticalAlign: "middle" }}></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="cli-text">
+            <div className="section-label" style={{ color: "#7dd3fc" }}>🖥️ Developer First CLI</div>
+            <h2>Never Leave Your <span className="gradient-text">Terminal</span></h2>
+            <p className="section-desc" style={{ textAlign: "left", maxWidth: 480 }}>
+              The Blueprint Compiler isn't just a web app. It's a fully-fledged CLI tool designed for senior engineers who live in the terminal.
+              Run <code>npx blueprint-compiler init</code> to scaffold, update, or scan your architectural context in seconds.
+            </p>
+            <div className="cli-benefits">
+              <div className="cli-benefit">
+                <span className="benefit-icon">🚀</span>
+                <div>
+                  <strong>Zero-Config Injection</strong>
+                  <p>Infects your codebase with the `.cursor/rules` or `.windsurfrules` perfectly formatted for your IDE.</p>
+                </div>
+              </div>
+              <div className="cli-benefit">
+                <span className="benefit-icon">🔄</span>
+                <div>
+                  <strong>Smart CLI Updates</strong>
+                  <p>Added Redis? Run <code>update</code>. The CLI intelligently diffs and surgically patches your existing Blueprint.</p>
+                </div>
+              </div>
+            </div>
+            <a href="https://github.com/skywalker76/blueprint-compiler" target="_blank" rel="noreferrer" className="btn-secondary" style={{ display: "inline-flex", marginTop: 24, padding: "12px 24px" }}>
+              npm view blueprint-compiler
+            </a>
+          </div>
+        </div>
+      </section >
 
       {/* ━━━ How It Works ━━━ */}
-      <section className="section" id="how-it-works">
+      < section className="section" id="how-it-works" >
         <div className="section-label">How It Works</div>
         <h2>5 Steps to Production-Ready<br />AI Blueprints</h2>
         <p className="section-desc">
@@ -337,10 +397,10 @@ export default function LandingPage() {
             </div>
           ))}
         </div>
-      </section>
+      </section >
 
       {/* ━━━ Live Demo ━━━ */}
-      <section className="section" id="demo">
+      < section className="section" id="demo" >
         <div className="section-label">Live Preview</div>
         <h2>See It In Action</h2>
         <p className="section-desc">
@@ -367,10 +427,10 @@ export default function LandingPage() {
             <span className="demo-cta-hint">No credit card · No API key required to explore presets</span>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* ━━━ v1 vs v2 Comparison ━━━ */}
-      <section className="section">
+      < section className="section" >
         <div className="section-label">Evolution</div>
         <h2>v1.0 vs v2.1 — A Quantum Leap</h2>
         <p className="section-desc">
@@ -397,10 +457,10 @@ export default function LandingPage() {
             </tbody>
           </table>
         </div>
-      </section>
+      </section >
 
       {/* ━━━ Pricing ━━━ */}
-      <section className="section" id="pricing">
+      < section className="section" id="pricing" >
         <div className="section-label">Pricing</div>
         <h2>Simple, Transparent Pricing</h2>
         <p className="section-desc">
@@ -431,10 +491,10 @@ export default function LandingPage() {
             </div>
           ))}
         </div>
-      </section>
+      </section >
 
       {/* ━━━ Final CTA ━━━ */}
-      <section className="cta-section">
+      < section className="cta-section" >
         <div className="cta-box">
           <h2>Ready to Build Smarter Agents?</h2>
           <p>
@@ -445,10 +505,10 @@ export default function LandingPage() {
             ⚡ Launch Blueprint Compiler
           </Link>
         </div>
-      </section>
+      </section >
 
       {/* ━━━ Footer ━━━ */}
-      <footer className="footer">
+      < footer className="footer" >
         <div className="footer-inner">
           <p>© 2026 Blueprint Compiler — Built with Context Engineering</p>
           <div className="footer-links">
@@ -457,7 +517,7 @@ export default function LandingPage() {
             <Link to="/app">Launch App</Link>
           </div>
         </div>
-      </footer>
-    </div>
+      </footer >
+    </div >
   );
 }

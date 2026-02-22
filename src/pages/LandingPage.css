@@ -1210,6 +1210,138 @@
   color: #22c55e;
 }
 
+/* ━━━ CLI Spotlight ━━━ */
+.cli-spotlight {
+  padding: 100px 24px;
+  background: var(--bg-card);
+  /* slightly different background */
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.cli-spotlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+}
+
+.cli-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  position: relative;
+  z-index: 2;
+}
+
+.cli-demo {
+  flex: 1;
+  perspective: 1000px;
+}
+
+.mac-terminal {
+  background: #0f172a;
+  /* Slate 900 */
+  border: 1px solid #334155;
+  /* Slate 700 */
+  border-radius: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(56, 189, 248, 0.1);
+  overflow: hidden;
+  transform: rotateY(5deg) rotateX(2deg);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mac-terminal:hover {
+  transform: rotateY(0deg) rotateX(0deg) scale(1.02);
+}
+
+.mac-dots {
+  display: flex;
+  gap: 6px;
+  margin-right: 16px;
+}
+
+.dot-red {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f56;
+}
+
+.dot-yellow {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffbd2e;
+}
+
+.dot-green {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #27c93f;
+}
+
+.cli-text {
+  flex: 1;
+}
+
+.cli-benefits {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cli-benefit {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: rgba(15, 23, 42, 0.3);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  transition: border-color 0.3s;
+}
+
+.cli-benefit:hover {
+  border-color: var(--blue);
+}
+
+.cli-benefit .benefit-icon {
+  font-size: 24px;
+  background: var(--blue-glow);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.cli-benefit strong {
+  display: block;
+  font-size: 16px;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.cli-benefit p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+
 /* ─── Responsive ─── */
 @media (max-width: 900px) {
   .features-grid {
@@ -1241,6 +1373,11 @@
 
   .scanner-spotlight {
     padding: 60px 32px !important;
+  }
+
+  .cli-inner {
+    flex-direction: column;
+    gap: 40px;
   }
 }
 
