@@ -1861,69 +1861,90 @@ export function exampleFunction(): Result {
             <!-- ═══════════════════════════════════════════════════════ -->
             <!-- ═══ NEW: CLI TOOL ═══ -->
             <!-- ═══════════════════════════════════════════════════════ -->
-            <h2 id="cli-tool"><span class="emoji">⌨️</span> CLI Tool</h2>
-            <p>Generate Blueprints directly from your terminal — no browser needed. Install nothing, just use
-                <code>npx</code>:
-            </p>
+            <h2 id="cli-tool"><span class="emoji">⌨️</span> CLI Tool (Local Terminal)</h2>
+            <p>Generate Blueprints directly from your computer without opening the website. This is the fastest way to
+                add Blueprints to an existing project.</p>
 
-            <pre><code># Generate a full Blueprint (interactive wizard)
-npx blueprint-compiler init
-
-# Update existing Blueprint after changes
-npx blueprint-compiler update
-
-# Scan project stack from package.json
-npx blueprint-compiler scan</code></pre>
-
-            <h3>CLI Wizard Steps</h3>
-            <div class="flow-steps">
-                <div class="flow-step">
-                    <div class="flow-num">🟠</div>
-                    <div class="flow-label">Provider</div>
-                    <div class="flow-desc">Anthropic or OpenAI</div>
-                </div>
-                <span class="flow-arrow">→</span>
-                <div class="flow-step">
-                    <div class="flow-num">🧠</div>
-                    <div class="flow-label">Model</div>
-                    <div class="flow-desc">Select from 7 models</div>
-                </div>
-                <span class="flow-arrow">→</span>
-                <div class="flow-step">
-                    <div class="flow-num">🔑</div>
-                    <div class="flow-label">API Key</div>
-                    <div class="flow-desc">Validated on input</div>
-                </div>
-                <span class="flow-arrow">→</span>
-                <div class="flow-step">
-                    <div class="flow-num">🎯</div>
-                    <div class="flow-label">Domain</div>
-                    <div class="flow-desc">Auto-detected or manual</div>
-                </div>
-                <span class="flow-arrow">→</span>
-                <div class="flow-step">
-                    <div class="flow-num">⚡</div>
-                    <div class="flow-label">Generate</div>
-                    <div class="flow-desc">Write files to disk</div>
-                </div>
+            <div class="info-box green">
+                <span style="font-size: 16px; margin-right: 8px;">🎓</span>
+                <strong>Not a programmer? Don't panic!</strong> The "CLI" (Command Line Interface) is just a black
+                window where you type text commands. Follow the 3 simple steps below, and you'll feel like a hacker in 2
+                minutes.
             </div>
+
+            <h3>Step-by-Step Guide for Beginners</h3>
+
+            <div class="card card-accent">
+                <h4>Step 1: Install Node.js (One-time setup)</h4>
+                <p>To run the tool, your computer needs a helper program called Node.js.</p>
+                <ol style="margin-left: 20px; color: var(--text2); line-height: 1.6;">
+                    <li>Go to <a href="https://nodejs.org" target="_blank">nodejs.org</a></li>
+                    <li>Download the "LTS" (Long Term Support) version</li>
+                    <li>Install it just like any normal program (click Next, Next, Finish)</li>
+                </ol>
+            </div>
+
+            <div class="card card-accent">
+                <h4>Step 2: Open your Terminal</h4>
+                <p>You need to open the "black window" (Terminal) directly inside the folder where you want to create
+                    your project.</p>
+                <ul style="margin-left: 20px; color: var(--text2); line-height: 1.6;">
+                    <li><strong>Windows:</strong> Open your project folder, click on the address bar at the top of the
+                        window, type <code>cmd</code>, and press Enter.</li>
+                    <li><strong>Mac:</strong> Open your project folder, right-click on the folder, and select "New
+                        Terminal at Folder".</li>
+                    <li><strong>VS Code / Cursor:</strong> Open your project folder in your code editor, click
+                        "Terminal" in the top menu, then "New Terminal".</li>
+                </ul>
+            </div>
+
+            <div class="card card-accent">
+                <h4>Step 3: Run the Magic Command</h4>
+                <p>Now that the black window is open inside your folder, type this exact command and press Enter:</p>
+                <pre><code>npx blueprint-compiler init</code></pre>
+                <p style="margin-top: 10px;">The tool will wake up and start asking you questions (like "What is your
+                    API key?", "Which language do you want?"). Just use your arrow keys to select answers and press
+                    Enter. When it's done, it will automatically save the Blueprints straight into your folder.</p>
+            </div>
+
+            <h3 style="margin-top: 32px;">Advanced Commands</h3>
+            <p>Once you are comfortable with the basics, you can use these commands:</p>
+            <table>
+                <tr>
+                    <th>Command</th>
+                    <th>What it does</th>
+                </tr>
+                <tr>
+                    <td><code>npx blueprint-compiler init</code></td>
+                    <td><strong>Start a new project.</strong> If you already have a <code>package.json</code> file, it
+                        will automatically detect your stack so you don't even have to answer the questions!</td>
+                </tr>
+                <tr>
+                    <td><code>npx blueprint-compiler update</code></td>
+                    <td><strong>Update an existing project.</strong> If you added a new technology (like Redis or
+                        Stripe), run this. It asks what changed, and only updates the necessary files without erasing
+                        anything else.</td>
+                </tr>
+                <tr>
+                    <td><code>npx blueprint-compiler scan</code></td>
+                    <td><strong>Test detection.</strong> It just looks at your folder and tells you what technologies it
+                        thinks you are using, without generating any files.</td>
+                </tr>
+            </table>
 
             <h3>Key Features</h3>
-            <div class="card">
-                <h4>📦 Auto-Detection</h4>
-                <p>If a <code>package.json</code> exists in the current directory, the CLI automatically scans it and
-                    pre-fills your technology stack. No manual configuration needed.</p>
-            </div>
-            <div class="card">
-                <h4>💾 IDE-Aware Writer</h4>
-                <p>Files are written to the correct IDE-specific paths. Existing files are backed up before overwrite
-                    (<code>.backup</code>). Unchanged files are skipped.</p>
-            </div>
-            <div class="card">
-                <h4>📦 Zero Dependencies</h4>
-                <p>The CLI uses only Node.js built-in modules (<code>readline</code>, <code>fs</code>,
-                    <code>path</code>). No external packages needed.
-                </p>
+            <div class="feature-grid"
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+                <div class="card" style="margin: 0;">
+                    <h4 style="margin-top: 0;">📦 Auto-Detection</h4>
+                    <p style="margin-bottom: 0;">If a <code>package.json</code> exists, the CLI automatically scans it
+                        and pre-fills your technology stack. Zero manual configuration needed.</p>
+                </div>
+                <div class="card" style="margin: 0;">
+                    <h4 style="margin-top: 0;">💾 IDE-Aware Writer</h4>
+                    <p style="margin-bottom: 0;">Files are written to the exact hidden folders your IDE (Cursor,
+                        Windsurf, etc.) expects. Existing files are safely backed up.</p>
+                </div>
             </div>
 
             <!-- ═══════════════════════════════════════════════════════ -->
@@ -1977,7 +1998,8 @@ npx blueprint-compiler scan</code></pre>
                 <h4>1. Auto-Scan & Init</h4>
                 <p>Run the <code>init</code> command inside any existing project. The Compiler will read your
                     <code>package.json</code>,
-                    auto-detect your framework, database, UI libraries, and testing tools, and pre-fill the wizard.</p>
+                    auto-detect your framework, database, UI libraries, and testing tools, and pre-fill the wizard.
+                </p>
                 <div class="terminal-mockup">
                     <div style="color: #94a3b8; margin-bottom: 8px;">$ npx blueprint-compiler init</div>
                     <div style="color: #6ee7b7;">📦 Found package.json — auto-detecting stack...</div>
@@ -1993,7 +2015,8 @@ npx blueprint-compiler scan</code></pre>
                 <p>Added a new technology to your stack? (e.g., Redis). Don't regenerate everything. Use the
                     <code>update</code> command.
                     The CLI will read your current Blueprint, surgically modify only the relevant layers (like adding a
-                    Redis Skill), and leave the rest intact.</p>
+                    Redis Skill), and leave the rest intact.
+                </p>
                 <div class="terminal-mockup">
                     <div style="color: #94a3b8; margin-bottom: 8px;">$ npx blueprint-compiler update</div>
                     <div style="color: #7dd3fc;">✓ Found existing Blueprint for Next.js in .cursor/rules</div>

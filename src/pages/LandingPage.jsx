@@ -351,30 +351,29 @@ export default function LandingPage() {
           </div>
 
           <div className="cli-text">
-            <div className="section-label" style={{ color: "#7dd3fc" }}>🖥️ Developer First CLI</div>
-            <h2>Never Leave Your <span className="gradient-text">Terminal</span></h2>
+            <div className="section-label" style={{ color: "#7dd3fc" }}>🖥️ CLI Tool</div>
+            <h2>Easy for Beginners. <br /><span className="gradient-text">Powerful for Pros.</span></h2>
             <p className="section-desc" style={{ textAlign: "left", maxWidth: 480 }}>
-              The Blueprint Compiler isn't just a web app. It's a fully-fledged CLI tool designed for senior engineers who live in the terminal.
-              Run <code>npx blueprint-compiler init</code> to scaffold, update, or scan your architectural context in seconds.
+              Not a programmer? Using the terminal might seem scary, but it's just opening a window and typing <code>npx blueprint-compiler init</code>. We built a beautiful, step-by-step wizard that asks simple questions and automatically injects the perfect architecture directly into your folder. No coding required.
             </p>
             <div className="cli-benefits">
               <div className="cli-benefit">
                 <span className="benefit-icon">🚀</span>
                 <div>
                   <strong>Zero-Config Injection</strong>
-                  <p>Infects your codebase with the `.cursor/rules` or `.windsurfrules` perfectly formatted for your IDE.</p>
+                  <p>Automatically creates the <code>.cursor/rules</code> or <code>.windsurfrules</code> perfectly structured for your IDE.</p>
                 </div>
               </div>
               <div className="cli-benefit">
                 <span className="benefit-icon">🔄</span>
                 <div>
                   <strong>Smart CLI Updates</strong>
-                  <p>Added Redis? Run <code>update</code>. The CLI intelligently diffs and surgically patches your existing Blueprint.</p>
+                  <p>Added a new technology? Run <code>update</code>. The CLI intelligently patches your existing Blueprint.</p>
                 </div>
               </div>
             </div>
-            <a href="https://github.com/skywalker76/blueprint-compiler" target="_blank" rel="noreferrer" className="btn-secondary" style={{ display: "inline-flex", marginTop: 24, padding: "12px 24px" }}>
-              npm view blueprint-compiler
+            <a href="/docs.html#cli-tool" className="btn-secondary" style={{ display: "inline-flex", marginTop: 24, padding: "12px 24px" }}>
+              📖 Read the Beginner's Guide
             </a>
           </div>
         </div>
