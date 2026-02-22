@@ -6,7 +6,7 @@
 [![Multi-IDE](https://img.shields.io/badge/IDEs-4_Targets-fb923c.svg)](#supported-ides)
 [![CLI](https://img.shields.io/badge/CLI-npx_ready-22c55e.svg)](#-cli-tool)
 
-> Transform project requirements into production-ready AI agent Blueprints — with **7 LLM models**, **CLI tool**, **smart Update Mode**, and **4 IDE targets**.
+> Transform project requirements into production-ready AI agent Blueprints — with **Anthropic Models**, **CLI tool**, **smart Update Mode**, and **4 IDE targets**.
 
 🌐 **Live:** [blueprint-compiler.vercel.app](https://blueprint-compiler.vercel.app)
 
@@ -22,7 +22,7 @@ Instead of repeating instructions every chat, your agent starts with deep knowle
 
 | Feature | Description |
 |---------|-------------|
-| **🧠 Multi-Provider LLM** | Anthropic (Claude Opus 4.6, Sonnet 4, Opus 4, Haiku 3.5) + OpenAI (GPT-5.2, GPT-4o, GPT-4.1, GPT-4o Mini, o3-mini) |
+| **🧠 Anthropic Models** | Powered by Anthropic (Claude 3.7 Sonnet, Claude 3.5 Sonnet, Claude 3.5 Haiku) for optimal coding performance |
 | **⌨️ CLI Tool** | `npx blueprint-compiler init` — interactive terminal wizard with auto-detection |
 | **🔄 Update Mode** | Describe what changed → AI intelligently updates your Blueprint, preserving valid sections |
 | **🤖 Agentic Generation** | Generate → Validate → Score → Refine autonomous loop |
@@ -232,7 +232,7 @@ cli/
 
 - **React 18** — UI framework
 - **Vite 6** — Build tool
-- **Anthropic Claude + OpenAI GPT** — Multi-provider AI generation
+- **Anthropic Claude** — Specialized AI generation using the best coding models available
 - **Supabase** — Authentication + cloud storage
 - **JSZip** — ZIP file generation for exports
 - **Node.js readline** — CLI (zero external dependencies)

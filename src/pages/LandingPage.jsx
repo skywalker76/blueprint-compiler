@@ -10,7 +10,7 @@ import "./LandingPage.css";
 
 // ─── DATA ───
 const FEATURES = [
-  { icon: "🧠", title: "Multi-Provider LLM", desc: "Choose Anthropic (Opus 4.6, Sonnet 4) or OpenAI (GPT-5.2, GPT-4o). Select the perfect model for your budget and quality needs.", color: "orange" },
+  { icon: "🧠", title: "Anthropic Power", desc: "Powered by Anthropic's state-of-the-art models (Claude 3.7 Sonnet, Claude 3.5 Sonnet, Haiku) for maximum coding capability.", color: "orange" },
   { icon: "🤖", title: "Agentic Generation", desc: "Generate → Validate → Score → Refine. An autonomous loop that iterates until quality exceeds your threshold.", color: "blue" },
   { icon: "🔍", title: "Project Scanner", desc: "Paste your package.json and AI auto-detects framework, ORM, DB, auth provider and pre-fills your entire config. Zero manual setup.", color: "green", badge: "PRO" },
   { icon: "🔄", title: "Update Mode", desc: "Changed your stack? Describe what changed and the AI intelligently updates your Blueprint — preserving what's still valid.", color: "purple" },
@@ -136,7 +136,7 @@ export default function LandingPage() {
 
         <div className="hero-badge">
           <span className="dot" />
-          Now with CLI + Multi-Provider LLM
+          Now with CLI + Anthropic Models
         </div>
 
         <h1>
@@ -146,7 +146,7 @@ export default function LandingPage() {
 
         <p className="subtitle">
           Stop repeating context. Generate production-ready Blueprints with
-          <strong> 7 LLM models</strong>, a <strong>CLI tool</strong>,
+          <strong> Anthropic Models</strong>, a <strong>CLI tool</strong>,
           and <strong>smart Update Mode</strong> —
           for Cursor, Antigravity, Copilot & Windsurf.
         </p>
