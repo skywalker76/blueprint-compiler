@@ -764,16 +764,24 @@
             <p>AI coding agents (Google Antigravity, GitHub Copilot, Cursor) are only as good as the context you give
                 them. Most developers provide minimal context — a file or two. Context Engineering provides
                 <strong>systematic, layered context</strong> that covers architecture, security, testing, deployment,
-                and coding style. The result: dramatically better code output with fewer iterations.
+                and coding style. The result: dramatically better code output with fewer iterations. An AI reading a
+                Blueprint stops being an assistant and becomes a <strong>Senior Architect</strong> executing your exact
+                standards.
             </p>
         </div>
 
-        <h3>The Blueprint Compiler</h3>
+        <h3>The Blueprint Compiler: An Architectural Standardization Engine</h3>
         <p>The <strong>Blueprint Compiler</strong> is a full platform — <strong>web app + CLI</strong> — that generates
             production-ready Blueprint files
-            through a guided wizard. Choose your <strong>LLM provider</strong> (Anthropic or OpenAI), select a model,
-            configure your stack, and the Compiler generates 5 complete Blueprint files. Use <strong>Update
-                Mode</strong> to evolve your Blueprint as your project changes.</p>
+            through a guided wizard and an intelligent agent loop.
+
+            By injecting curated, community-vetted best practices from the <strong>Enterprise Skill Registry</strong>,
+            it guarantees your AI writes code following perfectly structured, safe, and scalable architectural patterns.
+            Choose your <strong>LLM provider</strong> (Anthropic), select a model,
+            configure your stack, and the Compiler generates the 5 complete files your AI needs to succeed. Use
+            <strong>Update
+                Mode</strong> to systematically evolve your Blueprint as your project changes.
+        </p>
 
         <!-- ═══ HOW IT WORKS ═══ -->
         <h2 id="how-it-works"><span class="emoji">🔄</span> How It Works</h2>
@@ -1358,10 +1366,12 @@ export function exampleFunction(): Result {
         <!-- ═══════════════════════════════════════════════════════ -->
         <!-- ═══ NEW SECTION 1: QUICK START PRESETS ═══ -->
         <!-- ═══════════════════════════════════════════════════════ -->
-        <h2 id="presets"><span class="emoji">🚀</span> Quick Start Presets</h2>
-        <p>The Blueprint Compiler includes <strong>25 one-click preset templates</strong> across 8 categories. Each
-            preset pre-fills the entire wizard (domain, IDE, stack, project name, mission) so you can generate a full
-            Blueprint instantly.</p>
+        <h2 id="presets"><span class="emoji">🚀</span> 39 Enterprise Quick Start Presets</h2>
+        <p>The Blueprint Compiler includes <strong>39 one-click preset templates</strong> representing high-value,
+            production-ready industry architectures. Each
+            preset instantly pre-fills the wizard (domain, IDE, stack, project name, mission) and seamlessly hooks into
+            the <strong>Enterprise Skill Registry</strong> to guarantee your AI is operating with the highest possible
+            engineering standard from day one.</p>
         <div class="info-box">Click any preset in the <a href="/app">Compiler app</a> to skip the wizard and go straight
             to generation. Each preset represents a real-world project type with a battle-tested technology stack.</div>
 
@@ -2524,9 +2534,19 @@ npx blueprint-compiler scan</code></pre>
                 <div class="glossary-term">
                     <dt>Skill</dt>
                     <dd>A Layer 3 file that teaches the agent a specific competency. Each skill has: Goal (what),
-                        Instructions (how), Template (compilable code), Constraints (boundaries). Loaded on-demand, not
-                        always active. Examples: <code>new-api-endpoint.md</code>, <code>database-migration.md</code>.
+                        Instructions (how), Template (compilable code), Constraints (boundaries).
+                        By default, the Compiler now automatically injects community-vetted Official Skills from the
+                        <strong>Enterprise Skill Registry</strong> saving thousands of tokens and enforcing perfect
+                        architectural patterns.
                     </dd>
+                </div>
+
+                <div class="glossary-term">
+                    <dt>Enterprise Skill Registry</dt>
+                    <dd>The public repository of official, heavily vetted Markdown skills (e.g. Next.js Routing,
+                        Supabase Security). The Compiler's AI engine automatically selects the perfect skills from this
+                        registry based on your tech stack, injecting them into your Blueprint without generating
+                        token-heavy boilerplate.</dd>
                 </div>
 
                 <div class="glossary-term">

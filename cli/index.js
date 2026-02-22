@@ -133,7 +133,7 @@ async function commandInit() {
     }
 
     // Write files
-    writeBlueprint(results, ideTarget);
+    await writeBlueprint(results, ideTarget);
 }
 
 // ─── UPDATE COMMAND ───
@@ -233,7 +233,7 @@ async function commandUpdate() {
     }
 
     // Write updated files
-    writeBlueprint(results, detectedIde.id);
+    await writeBlueprint(results, detectedIde.id);
 }
 
 // ─── MAIN ───

@@ -11,11 +11,11 @@ import "./LandingPage.css";
 // ─── DATA ───
 const FEATURES = [
   { icon: "🧠", title: "Anthropic Power", desc: "Powered by Anthropic's state-of-the-art models (Claude Opus 4.5, Claude 3.7 Sonnet, Haiku) for maximum coding capability.", color: "orange" },
-  { icon: "🤖", title: "Agentic Generation", desc: "Generate → Validate → Score → Refine. An autonomous loop that iterates until quality exceeds your threshold.", color: "blue" },
+  { icon: "📚", title: "Enterprise Skill Registry", desc: "Access a massively valuable repository of official, community-vetted architectural skills. Your AI injects exact, high-level standard operating procedures directly into your project, transforming it into an enterprise-grade architect.", color: "blue" },
   { icon: "🔍", title: "Project Scanner", desc: "Paste your package.json and AI auto-detects framework, ORM, DB, auth provider and pre-fills your entire config. Zero manual setup.", color: "green", badge: "PRO" },
   { icon: "🔄", title: "Update Mode", desc: "Changed your stack? Describe what changed and the AI intelligently updates your Blueprint — preserving what's still valid.", color: "purple" },
   { icon: "🎯", title: "4 IDE Targets", desc: "One wizard, four outputs. Antigravity, Cursor, GitHub Copilot, and Windsurf — each with native file structure.", color: "cyan" },
-  { icon: "⚡", title: "36 Quick Start Presets", desc: "SaaS, CRM, AI Agent, Real-time Chat, Healthcare, Real Estate and more. Click a card → skip the wizard → generate instantly.", color: "orange" },
+  { icon: "⚡", title: "39 Quick Start Presets", desc: "SaaS, CRM, AI Agent, Real-time Chat, Healthcare, Real Estate and more. Click a card → skip the wizard → generate instantly.", color: "orange" },
 ];
 
 const STEPS_DATA = [
@@ -33,7 +33,7 @@ const COMPARISON = [
   { feature: "Updates", before: "Regenerate all", after: "Smart Update Mode" },
   { feature: "IDE Support", before: "1 IDE", after: "4 IDEs" },
   { feature: "Generation", before: "Single-shot", after: "Agentic loop" },
-  { feature: "Quick Start", before: "✕", after: "36 preset templates" },
+  { feature: "Quick Start", before: "✕", after: "39 preset templates" },
   { feature: "Export", before: "Copy only", after: "JSON + YAML + ZIP" },
   { feature: "Architecture", before: "Monolith", after: "Modular (24 files)" },
 ];
@@ -136,7 +136,7 @@ export default function LandingPage() {
 
         <div className="hero-badge">
           <span className="dot" />
-          Now with CLI + Anthropic Models
+          Powered by Enterprise Skill Registry & Anthropic
         </div>
 
         <h1>
@@ -145,9 +145,8 @@ export default function LandingPage() {
         </h1>
 
         <p className="subtitle">
-          Stop repeating context. Generate production-ready Blueprints with
-          <strong> Anthropic Models</strong>, a <strong>CLI tool</strong>,
-          and <strong>smart Update Mode</strong> —
+          An undeniable Architectural Standardization Engine. Stop repeating context. Generate enterprise-grade, production-ready Blueprints injected with
+          <strong> Official Community Skills</strong>, powered by <strong>Anthropic Models</strong> —
           for Cursor, Antigravity, Copilot & Windsurf.
         </p>
 
@@ -171,7 +170,7 @@ export default function LandingPage() {
       {/* ━━━ Stats Bar ━━━ */}
       <div className="stats-bar">
         <div className="stat-item">
-          <div className="stat-number">36</div>
+          <div className="stat-number">39</div>
           <div className="stat-label">Quick Start Presets</div>
         </div>
         <div className="stat-item">
@@ -193,8 +192,8 @@ export default function LandingPage() {
         <div className="section-label">Features</div>
         <h2>Everything You Need to<br />Build Better Agents</h2>
         <p className="section-desc">
-          From auto-detection to agentic refinement — every feature is designed
-          to produce blueprints that actually make your AI agent smarter.
+          From auto-detection to our proprietary Enterprise Skill Registry — every feature is designed
+          to produce standard-setting blueprints that elevate your AI agent from an assistant to a Senior Architect.
         </p>
 
         <div className="features-grid">

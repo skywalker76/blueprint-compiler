@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { getZipFileTree, exportAsZip } from "../engine/persistence.js";
 
 // ─── FILE TYPE ICONS ───
@@ -117,8 +117,21 @@ function TreeNode({ node, depth = 0 }) {
 // ─── MAIN COMPONENT ───
 export function ZipPreview({ blueprint, onClose }) {
     const [downloading, setDownloading] = useState(false);
+    const [files, setFiles] = useState([]);
+    const [loadingTree, setLoadingTree] = useState(true);
 
-    const files = useMemo(() => getZipFileTree(blueprint), [blueprint]);
+    useEffect(() => {
+        let mounted = true;
+        setLoadingTree(true);
+        getZipFileTree(blueprint).then(f => {
+            if (mounted) {
+                setFiles(f);
+                setLoadingTree(false);
+            }
+        });
+        return () => { mounted = false; };
+    }, [blueprint]);
+
     const tree = useMemo(() => buildTree(files), [files]);
     const totalSize = useMemo(() => files.reduce((sum, f) => sum + f.size, 0), [files]);
 
@@ -171,7 +184,7 @@ export function ZipPreview({ blueprint, onClose }) {
                         borderRadius: 10,
                         fontFamily: "monospace",
                     }}>
-                        {files.length} files · {formatBytes(totalSize)}
+                        {loadingTree ? "Calculating..." : `${files.length} files · ${formatBytes(totalSize)}`}
                     </span>
                 </div>
                 <button
@@ -213,7 +226,13 @@ export function ZipPreview({ blueprint, onClose }) {
                 maxHeight: 300,
                 overflowY: "auto",
             }}>
-                <TreeNode node={tree} depth={0} />
+                {loadingTree ? (
+                    <div style={{ padding: 20, textAlign: "center", color: "#64748b", fontSize: 13 }}>
+                        Calculating tree footprint...
+                    </div>
+                ) : (
+                    <TreeNode node={tree} depth={0} />
+                )}
             </div>
 
             {/* Footer with download button */}

@@ -411,7 +411,7 @@ All files are plain Markdown. Open and edit directly — no compilation needed.
 
 // ─── ZIP FILE TREE (A3) ───
 // Returns tree structure for preview without generating the actual ZIP
-export function getZipFileTree(blueprint) {
+export async function getZipFileTree(blueprint) {
     const ide = blueprint.ideTarget || "antigravity";
     const generated = blueprint.generated || {};
     const files = [];
@@ -427,13 +427,48 @@ export function getZipFileTree(blueprint) {
     for (const [fileType, result] of Object.entries(generated)) {
         if (result?.output) {
             if (fileType === "skills") {
-                const skills = parseSkillsIntoFiles(result.output);
                 const basePath = getSkillsBasePath(ide);
+                let contentToParse = result.output;
+                let registrySkills = [];
+
+                // Extract official registry skills JSON block
+                const match = contentToParse.match(/```(?:json)?\s*(\{[\s\S]*?"selected_registry_skills"[\s\S]*?\})\s*```/i) ||
+                    contentToParse.match(/(\{[\s\S]*?"selected_registry_skills"[\s\S]*?\})/i);
+
+                if (match) {
+                    try {
+                        const json = JSON.parse(match[1] || match[0]);
+                        registrySkills = json.selected_registry_skills || [];
+                        contentToParse = contentToParse.replace(match[0], "");
+                    } catch (e) { }
+                }
+
+                // Custom skills
+                const skills = parseSkillsIntoFiles(contentToParse);
                 for (const skill of skills) {
                     files.push({
                         path: `${basePath}/${skill.folderName}/SKILL.md`,
                         size: new Blob([skill.content]).size,
                         description: skill.name,
+                        type: "skill",
+                    });
+                }
+
+                // Official skills (async fetch for accurate sizes, or fallback)
+                for (const skillId of registrySkills) {
+                    let size = 2048; // Estimate 2KB if fetch fails
+                    try {
+                        const res = await fetch(`/registry/skills/${skillId}.md`);
+                        if (res.ok) {
+                            const content = await res.text();
+                            size = new Blob([content]).size;
+                        }
+                    } catch (e) { }
+
+                    files.push({
+                        path: `${basePath}/${skillId}/SKILL.md`,
+                        size,
+                        description: `Official: ${skillId}`,
                         type: "skill",
                     });
                 }
@@ -551,11 +586,47 @@ export async function exportAsZip(blueprint) {
     for (const [fileType, result] of Object.entries(blueprint.generated || {})) {
         if (result?.output) {
             if (fileType === "skills") {
-                // A1: Split skills into individual folders
-                const skills = parseSkillsIntoFiles(result.output);
                 const basePath = getSkillsBasePath(ide);
+                let contentToParse = result.output;
+                let registrySkills = [];
+
+                // Extract official registry skills JSON block
+                const match = contentToParse.match(/```(?:json)?\s*(\{[\s\S]*?"selected_registry_skills"[\s\S]*?\})\s*```/i) ||
+                    contentToParse.match(/(\{[\s\S]*?"selected_registry_skills"[\s\S]*?\})/i);
+
+                if (match) {
+                    try {
+                        const json = JSON.parse(match[1] || match[0]);
+                        registrySkills = json.selected_registry_skills || [];
+                        contentToParse = contentToParse.replace(match[0], "");
+                    } catch (e) {
+                        console.error("Failed to parse registry skills JSON", e);
+                    }
+                }
+
+                // A1: Split custom skills into individual folders
+                const skills = parseSkillsIntoFiles(contentToParse);
                 for (const skill of skills) {
                     zip.file(`${basePath}/${skill.folderName}/SKILL.md`, skill.content);
+                }
+
+                // Add official registry skills
+                for (const skillId of registrySkills) {
+                    try {
+                        const res = await fetch(`/registry/skills/${skillId}.md`);
+                        if (res.ok) {
+                            let content = await res.text();
+                            // Adapt for Cursor (needs .mdc frontmatter if missing)
+                            if (ide === "cursor" && !content.trim().startsWith("---")) {
+                                content = `---\ndescription: "Official ${skillId} best practices"\nglobs: ["*"]\nalwaysApply: false\n---\n\n` + content;
+                            }
+                            zip.file(`${basePath}/${skillId}/SKILL.md`, content);
+                        } else {
+                            console.warn("Skill not found in registry:", skillId);
+                        }
+                    } catch (e) {
+                        console.error("Failed to fetch official skill", skillId, e);
+                    }
                 }
             } else {
                 const path = getOutputFilename(fileType, ide);

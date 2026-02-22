@@ -1,5 +1,6 @@
 // ─── CLI FILE WRITER ───
 // Writes generated Blueprint files to the correct IDE-specific paths
+import https from "https";
 
 import * as fs from "fs";
 import * as path from "path";
@@ -35,7 +36,7 @@ export function getFilePath(fileTypeId, ideTarget) {
 }
 
 // ─── WRITE ALL FILES ───
-export function writeBlueprint(results, ideTarget, projectDir = ".") {
+export async function writeBlueprint(results, ideTarget, projectDir = ".") {
     console.log(`\n${C.bold}${C.orange}  ═══ Writing Blueprint Files ═══${C.reset}\n`);
 
     const written = [];
@@ -44,6 +45,64 @@ export function writeBlueprint(results, ideTarget, projectDir = ".") {
     for (const [fileTypeId, result] of Object.entries(results)) {
         if (!result.output || result.error) {
             skipped.push({ id: fileTypeId, reason: result.error || "No output" });
+            continue;
+        }
+
+        // SPECAL CASE FOR SKILLS
+        if (fileTypeId === "skills") {
+            const ide = IDE_TARGETS.find(t => t.id === ideTarget);
+            const basePath = ide ? ide.skillsPath : ".agent/skills/";
+
+            let contentToParse = result.output;
+            let registrySkills = [];
+
+            // Extract official registry skills
+            const match = contentToParse.match(/```(?:json)?\s*(\{[\s\S]*?"selected_registry_skills"[\s\S]*?\})\s*```/i) ||
+                contentToParse.match(/(\{[\s\S]*?"selected_registry_skills"[\s\S]*?\})/i);
+
+            if (match) {
+                try {
+                    const json = JSON.parse(match[1] || match[0]);
+                    registrySkills = json.selected_registry_skills || [];
+                    contentToParse = contentToParse.replace(match[0], "");
+                } catch (e) { }
+            }
+
+            // Write custom skills
+            const skills = parseSkillsIntoFiles(contentToParse);
+            let totalSkillsWritten = 0;
+
+            for (const skill of skills) {
+                const fullSkillPath = path.resolve(projectDir, basePath, skill.folderName, "SKILL.md");
+                const dir = path.dirname(fullSkillPath);
+                if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+                fs.writeFileSync(fullSkillPath, skill.content, "utf-8");
+                totalSkillsWritten++;
+                console.log(`  ${C.green}✓${C.reset} ${basePath}${skill.folderName}/SKILL.md ${C.dim}(custom skill)${C.reset}`);
+            }
+
+            // Download official skills
+            for (const skillId of registrySkills) {
+                try {
+                    const content = await fetchSkillFromRegistry(skillId);
+                    if (content) {
+                        let finalContent = content;
+                        if (ideTarget === "cursor" && !finalContent.trim().startsWith("---")) {
+                            finalContent = `---\ndescription: "Official ${skillId} best practices"\nglobs: ["*"]\nalwaysApply: false\n---\n\n` + finalContent;
+                        }
+                        const fullSkillPath = path.resolve(projectDir, basePath, skillId, "SKILL.md");
+                        const dir = path.dirname(fullSkillPath);
+                        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+                        fs.writeFileSync(fullSkillPath, finalContent, "utf-8");
+                        totalSkillsWritten++;
+                        console.log(`  ${C.green}✓${C.reset} ${basePath}${skillId}/SKILL.md ${C.dim}(official registry)${C.reset}`);
+                    }
+                } catch (e) {
+                    console.log(`  ${C.red}✗${C.reset} Failed to download official skill: ${skillId}`);
+                }
+            }
+
+            written.push({ id: fileTypeId, path: basePath, lines: 0, score: result.quality?.score || 0, grade: result.quality?.grade || "?" });
             continue;
         }
 
@@ -102,4 +161,72 @@ export function writeBlueprint(results, ideTarget, projectDir = ".") {
     console.log(`\n${C.green}${C.bold}  ✨ Blueprint ready! ${C.reset}${C.dim}Your AI coding agent now has superpowers.${C.reset}\n`);
 
     return { written, skipped };
+}
+
+// ─── HELPER: FETCH REGISTRY SKILL ───
+function fetchSkillFromRegistry(skillId) {
+    return new Promise((resolve, reject) => {
+        const url = `https://blueprint-compiler.vercel.app/registry/skills/${skillId}.md`;
+        https.get(url, (res) => {
+            if (res.statusCode !== 200) {
+                return resolve(null);
+            }
+            let data = "";
+            res.on("data", chunk => data += chunk);
+            res.on("end", () => resolve(data));
+        }).on("error", err => reject(err));
+    });
+}
+
+// ─── HELPER: PARSE SKILLS ───
+export function parseSkillsIntoFiles(skillsOutput) {
+    // This splits a single giant markdown blob into individual skill objects
+    // Look for lines starting with "---"
+    const lines = skillsOutput.split("\\n");
+    const skills = [];
+    let currentSkill = null;
+    let inFrontmatter = false;
+    let frontmatterLines = [];
+    let contentLines = [];
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        if (line.trim() === "---") {
+            if (!inFrontmatter) {
+                // Starting a new skill
+                if (currentSkill) {
+                    currentSkill.content = frontmatterLines.join("\\n") + "\\n" + contentLines.join("\\n");
+                    skills.push(currentSkill);
+                }
+                currentSkill = { name: "Untitled_Skill", folderName: "untitled", content: "" };
+                inFrontmatter = true;
+                frontmatterLines = ["---"];
+                contentLines = [];
+            } else {
+                // Ending frontmatter
+                inFrontmatter = false;
+                frontmatterLines.push("---");
+                // Try to parse name from frontmatter
+                const nameMatch = frontmatterLines.find(l => l.startsWith("name:"));
+                if (nameMatch) {
+                    currentSkill.name = nameMatch.replace("name:", "").replace(/['"]/g, "").trim();
+                    currentSkill.folderName = currentSkill.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+                }
+            }
+        } else {
+            if (inFrontmatter) {
+                frontmatterLines.push(line);
+            } else {
+                if (currentSkill) contentLines.push(line);
+            }
+        }
+    }
+
+    if (currentSkill) {
+        currentSkill.content = frontmatterLines.join("\\n") + "\\n" + contentLines.join("\\n");
+        skills.push(currentSkill);
+    }
+
+    return skills;
 }

@@ -3,6 +3,7 @@
 import { IDE_TARGETS, FILE_TYPES } from "../data/constants.js";
 import { validateOutput } from "./validator.js";
 import { getProvider } from "./providers/index.js";
+import { SKILL_REGISTRY } from "../data/skillRegistry.js";
 
 // ─── META-TEMPLATE SYSTEM PROMPT ───
 const META_TEMPLATE_SYSTEM = `You are a Context Engineering Blueprint Compiler. You generate production-ready Blueprint files for AI coding agents.
@@ -154,8 +155,18 @@ You MUST structure your output using EXACTLY these headings in this order. Do no
 
     "skills": `\n## MANDATORY OUTPUT SKELETON
 You MUST structure your output using exactly this format:
+1. First, evaluate the stack and return a JSON block selecting up to 4 official skills from the SKILL_REGISTRY provided below.
+2. Underneath, write any remaining CUSTOM skills that are required by the stack but NOT available in the registry.
+
+\`\`\`json
+{
+  "selected_registry_skills": ["id-1", "id-2"] // ONLY use IDs from the provided registry
+}
+\`\`\`
+
+For any CUSTOM skills required (do not rewrite official ones), use exactly this format:
 ---
-name: [Skill Name]
+name: [Custom Skill Name]
 description: [Actionable description]
 ---
 # Trigger (When to activate)
@@ -205,6 +216,8 @@ ${stackSummary || "Native language defaults"}
 - Context path: ${ide.contextPath}
 - Config format: ${ide.configFormat}
 ${skeleton}
+
+${fileType === 'skills' ? `## 📚 OFFICIAL SKILL REGISTRY\nYou must select applicable skills from this registry instead of writing them from scratch. Only write a custom skill if a crucial stack requirement is completely missing from this list:\n\`\`\`json\n${JSON.stringify(SKILL_REGISTRY, null, 2)}\n\`\`\`` : ""}
 
 ## DENSITY & OPTIMIZATION CONSTRAINT
 **Target Density: Maximum.**
