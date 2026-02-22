@@ -27,7 +27,7 @@ const STEPS_DATA = [
 ];
 
 const COMPARISON = [
-  { feature: "LLM Support", before: "Claude only", after: "7 models (Anthropic + OpenAI)" },
+  { feature: "LLM Support", before: "Claude 3 Sonnet", after: "Latest Anthropic Models (Opus, Sonnet, Haiku)" },
   { feature: "Interface", before: "Web only", after: "Web App + CLI" },
   { feature: "Stack Detection", before: "Manual input", after: "🔍 Auto-detect from package.json" },
   { feature: "Updates", before: "Regenerate all", after: "Smart Update Mode" },
