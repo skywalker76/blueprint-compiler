@@ -7,3 +7,9 @@ dist
 .vscode
 
 .vercel
+
+# CLI Output
+.agent/
+.antigravity/
+.context/
+PROMPT_START.md
