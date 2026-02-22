@@ -22,7 +22,7 @@ Instead of repeating instructions every chat, your agent starts with deep knowle
 
 | Feature | Description |
 |---------|-------------|
-| **🧠 Anthropic Models** | Powered by Anthropic (Claude 3.7 Sonnet, Claude 3.5 Sonnet, Claude 3.5 Haiku) for optimal coding performance |
+| **🧠 Anthropic Models** | Powered by Anthropic (Claude Opus 4.5, Claude 3.7 Sonnet, Claude 3.5 Sonnet, Haiku) for optimal coding performance |
 | **⌨️ CLI Tool** | `npx blueprint-compiler init` — interactive terminal wizard with auto-detection |
 | **🔄 Update Mode** | Describe what changed → AI intelligently updates your Blueprint, preserving valid sections |
 | **🤖 Agentic Generation** | Generate → Validate → Score → Refine autonomous loop |

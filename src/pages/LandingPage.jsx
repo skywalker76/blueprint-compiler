@@ -10,7 +10,7 @@ import "./LandingPage.css";
 
 // ─── DATA ───
 const FEATURES = [
-  { icon: "🧠", title: "Anthropic Power", desc: "Powered by Anthropic's state-of-the-art models (Claude 3.7 Sonnet, Claude 3.5 Sonnet, Haiku) for maximum coding capability.", color: "orange" },
+  { icon: "🧠", title: "Anthropic Power", desc: "Powered by Anthropic's state-of-the-art models (Claude Opus 4.5, Claude 3.7 Sonnet, Haiku) for maximum coding capability.", color: "orange" },
   { icon: "🤖", title: "Agentic Generation", desc: "Generate → Validate → Score → Refine. An autonomous loop that iterates until quality exceeds your threshold.", color: "blue" },
   { icon: "🔍", title: "Project Scanner", desc: "Paste your package.json and AI auto-detects framework, ORM, DB, auth provider and pre-fills your entire config. Zero manual setup.", color: "green", badge: "PRO" },
   { icon: "🔄", title: "Update Mode", desc: "Changed your stack? Describe what changed and the AI intelligently updates your Blueprint — preserving what's still valid.", color: "purple" },
