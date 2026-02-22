@@ -94,6 +94,12 @@ export default function App() {
   const resultRef = useRef(null);
   const libraryRef = useRef(null);
 
+  // ─── Beta Access ───
+  const [isUnlocked, setIsUnlocked] = useState(() => {
+    try { return localStorage.getItem("bc_beta_unlocked") === "true"; } catch { return false; }
+  });
+  const [passInput, setPassInput] = useState("");
+
   // ─── Load library (async, depends on auth) ───
   useEffect(() => {
     if (authLoading) return;
@@ -385,6 +391,49 @@ export default function App() {
     if (scores.length === 0) return null;
     return Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
   };
+
+  if (!isUnlocked) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#0a0f1a", color: "#e2e8f0", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 20 }}>
+        <h1 style={{ fontSize: 28, fontWeight: 800, color: "#fb923c", margin: "0 0 10px 0", letterSpacing: "-0.5px" }}>⚡ Blueprint Compiler</h1>
+        <p style={{ fontSize: 13, color: "#94a3b8", marginBottom: 32, fontWeight: 500, letterSpacing: "1px", textTransform: "uppercase" }}>🛡️ Closed Beta Validat10n</p>
+        <div style={{ ...S.card, width: "100%", maxWidth: 320, padding: 32, textAlign: "center", border: "1px solid #1e293b", background: "#0f172a" }}>
+          <input
+            type="password"
+            placeholder="Enter access code"
+            value={passInput}
+            onChange={e => setPassInput(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === "Enter") {
+                if (passInput === "blueprint2026") {
+                  localStorage.setItem("bc_beta_unlocked", "true");
+                  setIsUnlocked(true);
+                } else {
+                  alert("Access Denied: Invalid beta code");
+                  setPassInput("");
+                }
+              }
+            }}
+            style={{ ...S.input, width: "100%", textAlign: "center", marginBottom: 16, fontSize: 16, padding: "12px 16px", borderRadius: 8, background: "#1e293b", border: "1px solid #334155", color: "#f8fafc" }}
+          />
+          <button
+            onClick={() => {
+              if (passInput === "blueprint2026") {
+                localStorage.setItem("bc_beta_unlocked", "true");
+                setIsUnlocked(true);
+              } else {
+                alert("Access Denied: Invalid beta code");
+                setPassInput("");
+              }
+            }}
+            style={{ ...S.btn(true, false), width: "100%", padding: "12px", fontSize: 14 }}
+          >
+            Unlock System
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ minHeight: "100vh", background: "#0a0f1a", color: "#e2e8f0" }}>
