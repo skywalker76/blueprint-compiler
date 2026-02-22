@@ -1,7 +1,7 @@
 // ─── LANGUAGES ───
 export const LANGUAGES = [
-    { code: "it", label: "🇮🇹 Italiano" },
     { code: "en", label: "🇬🇧 English" },
+    { code: "it", label: "🇮🇹 Italiano" },
     { code: "es", label: "🇪🇸 Español" },
     { code: "de", label: "🇩🇪 Deutsch" },
     { code: "fr", label: "🇫🇷 Français" },

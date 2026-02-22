@@ -321,7 +321,7 @@ export default function LandingPage() {
                   <span className="dot-yellow"></span>
                   <span className="dot-green"></span>
                 </div>
-                <span className="terminal-title">skywalker@mbp: ~/projects/nova</span>
+                <span className="terminal-title">alex.dev@mbp: ~/projects/nova</span>
               </div>
               <div className="terminal-body" style={{ fontFamily: "var(--mono)", fontSize: "12px", lineHeight: "1.6", color: "#e2e8f0" }}>
                 <div><span style={{ color: "#6ee7b7" }}>➜</span> <span style={{ color: "#7dd3fc", fontWeight: "bold" }}>nova</span> <span style={{ color: "#fb923c" }}>npx blueprint-compiler init</span></div>
@@ -337,9 +337,9 @@ export default function LandingPage() {
                 <div><span style={{ color: "#6ee7b7" }}>→ Choose (1-1): 1</span></div>
                 <br />
                 <div><span style={{ color: "#7dd3fc" }}>2/7</span> Select Model:</div>
-                <div>  1) Claude Opus 4.5 — Potente, ottimo per ragionamenti complessi</div>
-                <div>  2) Claude Sonnet 3.7 — Il più usato e stabile</div>
-                <div>  3) Claude Haiku — Veloce ed economico</div>
+                <div>  1) Claude Opus 4.5 — Powerful, best for complex reasoning</div>
+                <div>  2) Claude Sonnet 3.7 — Balanced and stable</div>
+                <div>  3) Claude Haiku — Fast and cost-effective</div>
                 <div><span style={{ color: "#6ee7b7" }}>→ Choose (1-3): 1</span></div>
                 <br />
                 <div><span style={{ color: "#7dd3fc" }}>3/7</span> Enter your Anthropic API key: <span style={{ color: "#fb923c" }}>sk-ant-api03-...W5dwAA</span></div>

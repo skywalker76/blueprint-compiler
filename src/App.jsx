@@ -58,7 +58,7 @@ export default function App() {
   const [config, setConfig] = useState(() => {
     const defaultConf = {
       domain: "", projectName: "", mission: "",
-      langConvo: "it", langCode: "en",
+      langConvo: "en", langCode: "en",
       stack: {}, customDomain: "", customStack: "",
       priorities: ["performance", "security", "maintainability", "scalability"],
       rigor: "balanced",

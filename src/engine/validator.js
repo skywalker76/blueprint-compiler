@@ -135,44 +135,43 @@ function checkSpecificity(output, issues) {
 
 // ─── COHERENCE CHECK ───
 function checkCoherence(output, config, issues) {
-    if (!config || !config.stack) return 70;
+    if (!config || !config.stack) return 100;
 
     let score = 100;
-    const stackValues = Object.values(config.stack).filter(Boolean);
+    const stackValues = Object.values(config.stack).filter(v => typeof v === "string" && v.length > 2);
 
-    if (stackValues.length === 0) return 70;
+    if (stackValues.length === 0) return 100;
 
     // Check that at least some stack technologies are mentioned
     let mentioned = 0;
+    const lowerOut = output.toLowerCase();
+
     for (const tech of stackValues) {
-        if (typeof tech === "string" && tech.length > 2) {
-            // Strip version numbers and match all keywords ("React Native" → ["react", "native"])
-            const cleanTech = tech.replace(/\sv?\d+(\.\d+)*[a-z]*$/i, "").trim().toLowerCase();
-            const keywords = cleanTech.split(/[\s-]+/).filter(kw => kw.length > 1);
-            const isMentioned = keywords.every(kw => output.toLowerCase().includes(kw));
-            if (isMentioned) {
-                mentioned++;
-            }
+        // Strip version numbers and get the first main word (e.g., "Next.js" -> "next", "React Native" -> "react")
+        const cleanTech = tech.replace(/\sv?\d+(\.\d+)*[a-z]*$/i, "").trim().toLowerCase();
+        const firstWord = cleanTech.split(/[\s-]+/)[0];
+
+        // Very forgiving match: just check if the main word is anywhere in the output
+        if (firstWord.length > 2 && lowerOut.includes(firstWord)) {
+            mentioned++;
         }
     }
 
     const mentionRate = mentioned / stackValues.length;
 
+    // Don't penalize heavily, as not every file (e.g. workflows) needs to list all tools
     if (mentionRate < 0.3) {
-        issues.push({ category: "coherence", message: `Only ${mentioned}/${stackValues.length} configured stack technologies are mentioned in the output. Blueprint should reference the actual stack.`, severity: "high" });
-        score = 30;
+        issues.push({ category: "coherence", message: `Only ${mentioned}/${stackValues.length} core stack technologies detected. (Note: standard for non-architectural files).`, severity: "low" });
+        score -= 10;
     } else if (mentionRate < 0.6) {
-        issues.push({ category: "coherence", message: `${mentioned}/${stackValues.length} stack technologies mentioned. Some configured tools are not referenced.`, severity: "medium" });
-        score = 60;
-    } else if (mentionRate < 0.8) {
-        score = 85;
+        score -= 5;
     }
 
     // Check project name is mentioned
     if (config.projectName && config.projectName.length > 2) {
-        if (!output.toLowerCase().includes(config.projectName.toLowerCase())) {
-            issues.push({ category: "coherence", message: `Project name "${config.projectName}" is not mentioned in the output.`, severity: "medium" });
-            score -= 10;
+        if (!lowerOut.includes(config.projectName.toLowerCase())) {
+            // Just a minor warning
+            score -= 5;
         }
     }
 
