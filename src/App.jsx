@@ -1176,6 +1176,11 @@ Before every complex action, use a <thought> block to:
             <a href="/docs.html" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>📖 Docs</a>
             <a href="https://github.com/skywalker76/blueprint-compiler" target="_blank" rel="noreferrer" style={{ color: "#64748b", textDecoration: "none", fontSize: 11 }}>🐙 GitHub</a>
           </div>
+          <div style={{ marginTop: 10, display: "flex", justifyContent: "center", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+            <a href="/privacy.html" style={{ color: "#475569", textDecoration: "none", fontSize: 11 }}>Privacy Policy</a>
+            <a href="/terms.html" style={{ color: "#475569", textDecoration: "none", fontSize: 11 }}>Terms of Service</a>
+            <a href="/cookies.html" style={{ color: "#475569", textDecoration: "none", fontSize: 11 }}>Cookie Policy</a>
+          </div>
           <div style={{ marginTop: 8, display: "flex", justifyContent: "center", alignItems: "center", gap: 12 }}>
             <span>Powered by Context Engineering</span>
             <span>·</span>
