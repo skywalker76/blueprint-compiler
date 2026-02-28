@@ -515,6 +515,11 @@ export default function LandingPage() {
             <a href="https://github.com/skywalker76/blueprint-compiler/blob/master/LICENSE" target="_blank" rel="noreferrer">MIT License</a>
             <Link to="/app">Launch App</Link>
           </div>
+          <div className="footer-links" style={{ marginTop: 8 }}>
+            <a href="/privacy.html">Privacy Policy</a>
+            <a href="/terms.html">Terms of Service</a>
+            <a href="/cookies.html">Cookie Policy</a>
+          </div>
         </div>
       </footer >
     </div >
