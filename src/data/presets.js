@@ -21,7 +21,7 @@ export const PRESETS = [
     {
         id: "saas-starter", category: "business",
         icon: "🏢", title: "SaaS Starter",
-        subtitle: "Multi-tenant B2B app with auth & billing",
+        subtitle: "Launch a production-ready B2B SaaS with teams, billing & multi-tenancy",
         gradient: "linear-gradient(135deg, #6366f1, #8b5cf6)",
         stackPills: ["Next.js 15", "tRPC", "Drizzle", "Stripe"],
         ideTarget: "cursor",
@@ -36,7 +36,7 @@ export const PRESETS = [
     {
         id: "crm-platform", category: "business",
         icon: "🤝", title: "CRM Platform",
-        subtitle: "Customer management with real-time pipeline",
+        subtitle: "Track every deal from first contact to closed-won in real time",
         gradient: "linear-gradient(135deg, #ec4899, #be185d)",
         stackPills: ["Next.js 15", "Supabase", "Prisma", "Stripe"],
         ideTarget: "cursor",
@@ -51,7 +51,7 @@ export const PRESETS = [
     {
         id: "crm-sme", category: "business",
         icon: "🏭", title: "CRM for SMEs",
-        subtitle: "Complete CRM for small businesses with pipeline, invoicing & multi-channel",
+        subtitle: "Run your entire sales cycle — pipeline, invoices, WhatsApp & email — in one place",
         gradient: "linear-gradient(135deg, #0891b2, #0e7490)",
         stackPills: ["Next.js 15", "Supabase", "Prisma", "Resend"],
         ideTarget: "cursor",
@@ -66,7 +66,7 @@ export const PRESETS = [
     {
         id: "admin-dashboard", category: "business",
         icon: "📋", title: "Admin Dashboard",
-        subtitle: "Internal tools with charts + RBAC",
+        subtitle: "Build internal tools your team actually wants to use, with full access control",
         gradient: "linear-gradient(135deg, #64748b, #475569)",
         stackPills: ["Next.js 15", "Prisma", "Recharts", "NextAuth"],
         ideTarget: "cursor",
@@ -81,7 +81,7 @@ export const PRESETS = [
     {
         id: "project-mgmt", category: "business",
         icon: "📌", title: "Project Manager",
-        subtitle: "Kanban boards, sprints, team workspaces",
+        subtitle: "Plan sprints, track tasks & ship faster with your whole team",
         gradient: "linear-gradient(135deg, #3b82f6, #1d4ed8)",
         stackPills: ["Next.js 15", "Prisma", "Supabase", "DnD Kit"],
         ideTarget: "cursor",
@@ -96,7 +96,7 @@ export const PRESETS = [
     {
         id: "hr-platform", category: "business",
         icon: "👥", title: "HR Platform",
-        subtitle: "Employee management, leave & payroll",
+        subtitle: "Manage your people — from hiring to payroll — without the spreadsheet chaos",
         gradient: "linear-gradient(135deg, #f59e0b, #d97706)",
         stackPills: ["Next.js 15", "Prisma", "NextAuth", "Resend"],
         ideTarget: "cursor",
@@ -111,7 +111,7 @@ export const PRESETS = [
     {
         id: "invoice-app", category: "business",
         icon: "🧾", title: "Invoice & Billing",
-        subtitle: "Invoicing, estimates, payment tracking",
+        subtitle: "Send professional invoices, track payments & get paid faster",
         gradient: "linear-gradient(135deg, #22c55e, #16a34a)",
         stackPills: ["Next.js 15", "Prisma", "Stripe", "PDF"],
         ideTarget: "cursor",
@@ -130,7 +130,7 @@ export const PRESETS = [
     {
         id: "ai-saas", category: "ai",
         icon: "🤖", title: "AI SaaS Product",
-        subtitle: "LLM-powered app with usage billing",
+        subtitle: "Ship an AI product with API keys, usage metering & per-token billing",
         gradient: "linear-gradient(135deg, #a855f7, #7c3aed)",
         stackPills: ["Next.js 15", "OpenAI", "Prisma", "Stripe"],
         ideTarget: "cursor",
@@ -145,7 +145,7 @@ export const PRESETS = [
     {
         id: "chatbot-builder", category: "ai",
         icon: "💬", title: "Chatbot Builder",
-        subtitle: "Custom AI chatbots with RAG + knowledge base",
+        subtitle: "Create chatbots that answer from your own docs — no hallucinations",
         gradient: "linear-gradient(135deg, #06b6d4, #0891b2)",
         stackPills: ["Next.js 15", "LangChain", "Pinecone", "OpenAI"],
         ideTarget: "cursor",
@@ -160,7 +160,7 @@ export const PRESETS = [
     {
         id: "ai-content-gen", category: "ai",
         icon: "✍️", title: "AI Content Studio",
-        subtitle: "Blog, social, email generation with templates",
+        subtitle: "Generate blog posts, social captions & emails in your brand voice",
         gradient: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
         stackPills: ["Next.js 15", "OpenAI", "Tiptap", "Supabase"],
         ideTarget: "cursor",
@@ -175,7 +175,7 @@ export const PRESETS = [
     {
         id: "ai-image-gen", category: "ai",
         icon: "🎨", title: "AI Image Platform",
-        subtitle: "Image generation, editing, gallery",
+        subtitle: "Generate, edit & organize AI images — from prompt to polished gallery",
         gradient: "linear-gradient(135deg, #f472b6, #db2777)",
         stackPills: ["Next.js 15", "Replicate", "Cloudinary", "Stripe"],
         ideTarget: "cursor",
@@ -194,7 +194,7 @@ export const PRESETS = [
     {
         id: "headless-shop", category: "commerce",
         icon: "🛒", title: "Headless Shop",
-        subtitle: "Shopify + Next.js storefront with search",
+        subtitle: "A blazing-fast storefront powered by Shopify data and Next.js speed",
         gradient: "linear-gradient(135deg, #f97316, #ef4444)",
         stackPills: ["Shopify", "Next.js 15", "Algolia", "Stripe"],
         ideTarget: "cursor",
@@ -209,7 +209,7 @@ export const PRESETS = [
     {
         id: "marketplace", category: "commerce",
         icon: "🏪", title: "Marketplace",
-        subtitle: "Two-sided platform with vendor management",
+        subtitle: "Connect buyers and sellers with split payments, reviews & vendor tools",
         gradient: "linear-gradient(135deg, #f43f5e, #e11d48)",
         stackPills: ["Medusa.js", "Next.js 15", "Stripe", "Algolia"],
         ideTarget: "cursor",
@@ -224,7 +224,7 @@ export const PRESETS = [
     {
         id: "subscription-box", category: "commerce",
         icon: "📦", title: "Subscription Box",
-        subtitle: "Recurring commerce with curation",
+        subtitle: "Launch a subscription box business — curation, billing & gifting included",
         gradient: "linear-gradient(135deg, #fb923c, #ea580c)",
         stackPills: ["Next.js 15", "Stripe", "Prisma", "Resend"],
         ideTarget: "cursor",
@@ -239,7 +239,7 @@ export const PRESETS = [
     {
         id: "booking-platform", category: "commerce",
         icon: "📅", title: "Booking Platform",
-        subtitle: "Appointments, calendar, payments",
+        subtitle: "Let clients book, pay & reschedule themselves — zero back-and-forth",
         gradient: "linear-gradient(135deg, #0ea5e9, #0284c7)",
         stackPills: ["Next.js 15", "Prisma", "Stripe", "Cal.com"],
         ideTarget: "cursor",
@@ -258,7 +258,7 @@ export const PRESETS = [
     {
         id: "wordpress-pro", category: "content",
         icon: "📝", title: "WordPress Pro",
-        subtitle: "Block theme + WooCommerce + performance",
+        subtitle: "A VIP-grade WordPress site with WooCommerce — fast, secure & scalable",
         gradient: "linear-gradient(135deg, #0ea5e9, #06b6d4)",
         stackPills: ["WP 6.7+", "Gutenberg", "WooCommerce", "WP Rocket"],
         ideTarget: "antigravity",
@@ -273,7 +273,7 @@ export const PRESETS = [
     {
         id: "wp-plugin-pro", category: "content",
         icon: "🔌", title: "WP Plugin Pro",
-        subtitle: "Enterprise-grade OOP WordPress Plugin",
+        subtitle: "Build a WordPress plugin the right way — OOP, secure & marketplace-ready",
         gradient: "linear-gradient(135deg, #4f46e5, #4338ca)",
         stackPills: ["WP 6.7+", "OOP", "REST API", "PHPStan"],
         ideTarget: "antigravity",
@@ -288,7 +288,7 @@ export const PRESETS = [
     {
         id: "react-to-wp-theme", category: "content",
         icon: "🔄", title: "React to WP Converter",
-        subtitle: "Convert static React sites to block themes",
+        subtitle: "Turn any static React site into a fully editable WordPress block theme",
         gradient: "linear-gradient(135deg, #fbbf24, #d97706)",
         stackPills: ["WP 6.7+", "Gutenberg", "FSE", "React"],
         ideTarget: "antigravity",
@@ -303,7 +303,7 @@ export const PRESETS = [
     {
         id: "wp-headless", category: "content",
         icon: "⚡", title: "WordPress Headless",
-        subtitle: "WP backend + Next.js frontend via REST API",
+        subtitle: "Keep WordPress as your CMS, get Next.js speed on the frontend",
         gradient: "linear-gradient(135deg, #14b8a6, #0d9488)",
         stackPills: ["WP 6.7+", "REST API", "Next.js", "Vercel"],
         ideTarget: "cursor",
@@ -318,7 +318,7 @@ export const PRESETS = [
     {
         id: "wp-corporate-nonprofit", category: "content",
         icon: "🏛️", title: "WP Corporate Non-Profit",
-        subtitle: "Consortium portal with reserved areas & store locator",
+        subtitle: "Member portal with reserved areas, store locator & donation system",
         gradient: "linear-gradient(135deg, #1e3a5f, #2d6a9f)",
         stackPills: ["WP 6.7+", "Gutenberg", "ACF Pro", "Leaflet"],
         ideTarget: "antigravity",
@@ -333,7 +333,7 @@ export const PRESETS = [
     {
         id: "blog-platform", category: "content",
         icon: "📰", title: "Blog Platform",
-        subtitle: "MDX blog with newsletter & analytics",
+        subtitle: "A dev blog that grows your audience — MDX, newsletter & reader analytics",
         gradient: "linear-gradient(135deg, #84cc16, #65a30d)",
         stackPills: ["Next.js 15", "MDX", "Resend", "Plausible"],
         ideTarget: "cursor",
@@ -348,7 +348,7 @@ export const PRESETS = [
     {
         id: "lms-platform", category: "content",
         icon: "🎓", title: "LMS / Course Platform",
-        subtitle: "Online courses with video, quizzes, certs",
+        subtitle: "Sell courses with drip content, certificates & student progress tracking",
         gradient: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
         stackPills: ["Next.js 15", "Prisma", "Mux", "Stripe"],
         ideTarget: "cursor",
@@ -367,7 +367,7 @@ export const PRESETS = [
     {
         id: "api-platform", category: "devtools",
         icon: "🔌", title: "API Platform",
-        subtitle: "REST/GraphQL API with docs & rate limiting",
+        subtitle: "Ship a developer-friendly API with auto-docs, SDKs & usage analytics",
         gradient: "linear-gradient(135deg, #0ea5e9, #0369a1)",
         stackPills: ["Fastify", "Prisma", "Redis", "Swagger"],
         ideTarget: "cursor",
@@ -382,7 +382,7 @@ export const PRESETS = [
     {
         id: "devops-dashboard", category: "devtools",
         icon: "🖥️", title: "DevOps Dashboard",
-        subtitle: "Monitoring, logs, alerts, deployments",
+        subtitle: "See every deploy, alert & incident across your entire infrastructure",
         gradient: "linear-gradient(135deg, #10b981, #047857)",
         stackPills: ["Next.js 15", "Grafana", "Prometheus", "Docker"],
         ideTarget: "cursor",
@@ -397,7 +397,7 @@ export const PRESETS = [
     {
         id: "cli-tool", category: "devtools",
         icon: "⌨️", title: "CLI Tool",
-        subtitle: "Node.js CLI with interactive prompts",
+        subtitle: "Build a polished CLI tool that developers love to use",
         gradient: "linear-gradient(135deg, #a3a3a3, #737373)",
         stackPills: ["Node.js", "Commander", "Inquirer", "Chalk"],
         ideTarget: "windsurf",
@@ -418,7 +418,7 @@ export const PRESETS = [
     {
         id: "mobile-app", category: "mobile",
         icon: "📱", title: "Mobile App",
-        subtitle: "React Native + Expo with offline support",
+        subtitle: "Ship a cross-platform mobile app with offline mode & push notifications",
         gradient: "linear-gradient(135deg, #10b981, #059669)",
         stackPills: ["Expo", "Zustand", "Supabase", "EAS Build"],
         ideTarget: "copilot",
@@ -433,7 +433,7 @@ export const PRESETS = [
     {
         id: "fitness-app", category: "mobile",
         icon: "💪", title: "Fitness App",
-        subtitle: "Workouts, tracking, social challenges",
+        subtitle: "Help users crush their fitness goals with plans, tracking & challenges",
         gradient: "linear-gradient(135deg, #ef4444, #dc2626)",
         stackPills: ["Expo", "Supabase", "HealthKit", "Zustand"],
         ideTarget: "copilot",
@@ -448,7 +448,7 @@ export const PRESETS = [
     {
         id: "fintech-app", category: "mobile",
         icon: "💰", title: "FinTech App",
-        subtitle: "Banking, budgets, transaction tracking",
+        subtitle: "Secure financial app with bank sync, budgets & encrypted transactions",
         gradient: "linear-gradient(135deg, #22c55e, #15803d)",
         stackPills: ["Expo", "Plaid", "Supabase", "Charts"],
         ideTarget: "copilot",
@@ -467,7 +467,7 @@ export const PRESETS = [
     {
         id: "data-pipeline", category: "data",
         icon: "📊", title: "Data Pipeline",
-        subtitle: "Airflow + BigQuery + dbt analytics stack",
+        subtitle: "Orchestrate data pipelines from ingestion to dashboard — production-grade",
         gradient: "linear-gradient(135deg, #eab308, #f59e0b)",
         stackPills: ["Airflow", "BigQuery", "dbt", "Metabase"],
         ideTarget: "cursor",
@@ -482,7 +482,7 @@ export const PRESETS = [
     {
         id: "analytics-dashboard", category: "data",
         icon: "📈", title: "Analytics Dashboard",
-        subtitle: "Product analytics with funnels & cohorts",
+        subtitle: "Understand user behavior with funnels, cohorts & real-time dashboards",
         gradient: "linear-gradient(135deg, #06b6d4, #0e7490)",
         stackPills: ["Next.js 15", "ClickHouse", "Recharts", "Redis"],
         ideTarget: "cursor",
@@ -497,7 +497,7 @@ export const PRESETS = [
     {
         id: "etl-platform", category: "data",
         icon: "🔄", title: "ETL Platform",
-        subtitle: "Data sync with 50+ connectors",
+        subtitle: "Move data anywhere — 50+ connectors with scheduling & error recovery",
         gradient: "linear-gradient(135deg, #f59e0b, #b45309)",
         stackPills: ["Node.js", "PostgreSQL", "Redis", "Docker"],
         ideTarget: "cursor",
@@ -516,7 +516,7 @@ export const PRESETS = [
     {
         id: "realtime-chat", category: "social",
         icon: "💬", title: "Real-time Chat",
-        subtitle: "Rooms, DMs, typing indicators, files",
+        subtitle: "Real-time messaging with threads, reactions, files & typing indicators",
         gradient: "linear-gradient(135deg, #6366f1, #4f46e5)",
         stackPills: ["Next.js 15", "Socket.io", "Supabase", "Redis"],
         ideTarget: "cursor",
@@ -531,7 +531,7 @@ export const PRESETS = [
     {
         id: "social-platform", category: "social",
         icon: "🐦", title: "Social Platform",
-        subtitle: "Feed, follows, posts, notifications",
+        subtitle: "Build the next social network with algorithmic feeds & real-time engagement",
         gradient: "linear-gradient(135deg, #0ea5e9, #0284c7)",
         stackPills: ["Next.js 15", "Prisma", "Redis", "Uploadthing"],
         ideTarget: "cursor",
@@ -546,7 +546,7 @@ export const PRESETS = [
     {
         id: "video-platform", category: "social",
         icon: "🎥", title: "Video / Creator",
-        subtitle: "Upload, stream, monetize content",
+        subtitle: "A creator platform with video uploads, live streaming & built-in monetization",
         gradient: "linear-gradient(135deg, #f43f5e, #e11d48)",
         stackPills: ["Next.js 15", "Mux", "Prisma", "Stripe"],
         ideTarget: "cursor",
@@ -565,7 +565,7 @@ export const PRESETS = [
     {
         id: "ai-agent-framework", category: "ai",
         icon: "🔗", title: "AI Agent Framework",
-        subtitle: "Multi-agent orchestration with tools",
+        subtitle: "Orchestrate AI agents that reason, use tools & collaborate autonomously",
         gradient: "linear-gradient(135deg, #f59e0b, #d97706)",
         stackPills: ["Next.js 15", "LangGraph", "Prisma", "OpenAI"],
         ideTarget: "antigravity",
@@ -580,7 +580,7 @@ export const PRESETS = [
     {
         id: "voice-ai", category: "ai",
         icon: "🎤", title: "Voice AI App",
-        subtitle: "Speech-to-text, TTS, voice cloning",
+        subtitle: "Build voice-powered apps — transcription, text-to-speech & custom voices",
         gradient: "linear-gradient(135deg, #ec4899, #be185d)",
         stackPills: ["Next.js 15", "Whisper", "ElevenLabs", "Supabase"],
         ideTarget: "cursor",
@@ -599,7 +599,7 @@ export const PRESETS = [
     {
         id: "healthcare-portal", category: "business",
         icon: "🏥", title: "Healthcare Portal",
-        subtitle: "Telemedicine, records, appointments",
+        subtitle: "HIPAA-ready portal with video visits, health records & appointment booking",
         gradient: "linear-gradient(135deg, #14b8a6, #0d9488)",
         stackPills: ["Next.js 15", "Prisma", "NextAuth", "Twilio"],
         ideTarget: "cursor",
@@ -614,7 +614,7 @@ export const PRESETS = [
     {
         id: "real-estate", category: "business",
         icon: "🏘️", title: "Real Estate Platform",
-        subtitle: "Listings, maps, virtual tours",
+        subtitle: "Showcase properties with maps, virtual tours & lead capture forms",
         gradient: "linear-gradient(135deg, #84cc16, #65a30d)",
         stackPills: ["Next.js 15", "Prisma", "Mapbox", "Cloudinary"],
         ideTarget: "cursor",
@@ -633,7 +633,7 @@ export const PRESETS = [
     {
         id: "automation-platform", category: "devtools",
         icon: "⚡", title: "Automation Platform",
-        subtitle: "Visual workflows, webhooks, integrations",
+        subtitle: "Automate anything with a visual workflow builder — your own Zapier",
         gradient: "linear-gradient(135deg, #f97316, #ea580c)",
         stackPills: ["Node.js", "n8n", "PostgreSQL", "Redis"],
         ideTarget: "windsurf",
@@ -650,7 +650,7 @@ export const PRESETS = [
     {
         id: "status-monitoring", category: "devtools",
         icon: "📡", title: "Status & Monitoring",
-        subtitle: "Uptime, alerts, incident management",
+        subtitle: "Know when things break before your users do — uptime, alerts & incidents",
         gradient: "linear-gradient(135deg, #22c55e, #16a34a)",
         stackPills: ["Next.js 15", "ClickHouse", "Redis", "Resend"],
         ideTarget: "windsurf",
