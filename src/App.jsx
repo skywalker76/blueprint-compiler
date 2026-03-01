@@ -712,7 +712,7 @@ export default function App() {
           </div>
         )}
 
-        <StepBar steps={STEPS} current={step} onStepClick={(i) => setStep(i)} />
+        <StepBar steps={STEPS} current={step} onStepClick={(i) => { setStep(i); window.scrollTo(0, 0); }} />
 
         {/* ═══════════════════════════════════════════ */}
         {/* ═══ STEP 0: DOMAIN ═══ */}
@@ -829,7 +829,7 @@ export default function App() {
               </div>
             )}
             <div style={S.nav}>
-              <button style={S.btn(false)} onClick={() => setStep(0)}>← Domain</button>
+              <button style={S.btn(false)} onClick={() => { setStep(0); window.scrollTo(0, 0); }}>← Domain</button>
               <button style={S.btn(true)} onClick={() => setStep(2)}>Configure Stack →</button>
             </div>
           </div>
@@ -985,7 +985,7 @@ export default function App() {
               {!apiKey && <InfoBox type="warn">You need to enter your API key above before generating.</InfoBox>}
               <div style={S.nav}>
                 <div style={{ display: "flex", gap: 8 }}>
-                  <button style={{ ...S.btn(false), fontSize: 11, color: "#64748b" }} onClick={() => { setStep(0); setGenerated({}); }}>← Browse Presets</button>
+                  <button style={{ ...S.btn(false), fontSize: 11, color: "#64748b" }} onClick={() => { setStep(0); setGenerated({}); window.scrollTo(0, 0); }}>← Browse Presets</button>
                   <button style={S.btn(false)} onClick={() => setStep(3)}>← Edit</button>
                 </div>
                 <div style={{ display: "flex", gap: 8 }}>
