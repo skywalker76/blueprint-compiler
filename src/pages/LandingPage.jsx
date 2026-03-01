@@ -15,7 +15,7 @@ const FEATURES = [
   { icon: "🔍", title: "Project Scanner", desc: "Paste your package.json and AI auto-detects framework, ORM, DB, auth provider and pre-fills your entire config. Zero manual setup.", color: "green", badge: "PRO" },
   { icon: "🔄", title: "Update Mode", desc: "Changed your stack? Describe what changed and the AI intelligently updates your Blueprint — preserving what's still valid.", color: "purple" },
   { icon: "🎯", title: "4 IDE Targets", desc: "One wizard, four outputs. Antigravity, Cursor, GitHub Copilot, and Windsurf — each with native file structure.", color: "cyan" },
-  { icon: "⚡", title: "39 Quick Start Presets", desc: "SaaS, CRM, AI Agent, Real-time Chat, Healthcare, Real Estate and more. Click a card → skip the wizard → generate instantly.", color: "orange" },
+  { icon: "⚡", title: "40 Quick Start Presets", desc: "SaaS, CRM, AI Agent, Real-time Chat, Healthcare, Real Estate and more. Click a card → skip the wizard → generate instantly.", color: "orange" },
 ];
 
 const STEPS_DATA = [
@@ -33,7 +33,7 @@ const COMPARISON = [
   { feature: "Updates", before: "Regenerate all", after: "Smart Update Mode" },
   { feature: "IDE Support", before: "1 IDE", after: "4 IDEs" },
   { feature: "Generation", before: "Single-shot", after: "Agentic loop" },
-  { feature: "Quick Start", before: "✕", after: "39 preset templates" },
+  { feature: "Quick Start", before: "✕", after: "40 preset templates" },
   { feature: "Export", before: "Copy only", after: "JSON + YAML + ZIP" },
   { feature: "Architecture", before: "Monolith", after: "Modular (24 files)" },
 ];
@@ -136,7 +136,7 @@ export default function LandingPage() {
 
         <div className="hero-badge">
           <span className="dot" />
-          Powered by Enterprise Skill Registry & Anthropic
+          🚀 Open Beta — Full Access for Registered Users
         </div>
 
         <h1>
@@ -170,7 +170,7 @@ export default function LandingPage() {
       {/* ━━━ Stats Bar ━━━ */}
       <div className="stats-bar">
         <div className="stat-item">
-          <div className="stat-number">39</div>
+          <div className="stat-number">40</div>
           <div className="stat-label">Quick Start Presets</div>
         </div>
         <div className="stat-item">

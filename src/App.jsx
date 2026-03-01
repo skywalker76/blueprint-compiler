@@ -15,6 +15,7 @@ import { saveBlueprint, loadLibrary, deleteBlueprint, exportAsZip, exportAsJson,
 
 // ─── Auth ───
 import { useAuth } from "./context/AuthContext.jsx";
+import { supabase } from "./lib/supabaseClient.js";
 import { AuthModal } from "./components/AuthModal.jsx";
 import { UpgradeModal } from "./components/UpgradeModal.jsx";
 
@@ -365,6 +366,19 @@ export default function App() {
     setIdeTarget(preset.ideTarget);
     setGenerated({});
     setStep(4);
+
+    // ─── Analytics: track preset usage (fire-and-forget) ───
+    if (supabase) {
+      supabase.from("preset_analytics").insert({
+        preset_id: preset.id,
+        preset_category: preset.category,
+        preset_title: preset.title,
+        ide_target: preset.ideTarget,
+        user_id: user?.id || null,
+      }).then(({ error }) => {
+        if (error) console.warn("[Analytics] Preset tracking failed:", error.message);
+      });
+    }
   };
 
   // ─── Priority reorder ───
