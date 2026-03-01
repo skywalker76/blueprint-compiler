@@ -49,6 +49,21 @@ export const PRESETS = [
         },
     },
     {
+        id: "crm-sme", category: "business",
+        icon: "🏭", title: "CRM for SMEs",
+        subtitle: "Complete CRM for small businesses with pipeline, invoicing & multi-channel",
+        gradient: "linear-gradient(135deg, #0891b2, #0e7490)",
+        stackPills: ["Next.js 15", "Supabase", "Prisma", "Resend"],
+        ideTarget: "cursor",
+        config: {
+            domain: "saas", projectName: "my-sme-crm",
+            mission: "A comprehensive CRM platform purpose-built for small and medium enterprises. Core modules: (1) Contact Management — companies and contacts with custom fields, tags, import/export CSV, duplicate detection, and 360° activity timeline. (2) Sales Pipeline — multi-pipeline Kanban boards with drag-and-drop, deal stages, weighted revenue forecasting, win/loss analytics, and automated follow-up reminders. (3) Quoting & Invoicing — generate branded PDF quotes and invoices, convert quote-to-invoice in one click, payment tracking, overdue alerts, and recurring invoice schedules. (4) Multi-channel Communication — integrated email (send/receive via Resend with tracking), WhatsApp Business API messaging, call logging, and a unified conversation inbox per contact. (5) Task & Activity Management — tasks linked to deals/contacts, team calendar, daily planner, assignment with notifications, and overdue escalation. (6) Customer Portal — self-service portal where clients view their quotes, invoices, open tickets, and shared documents. (7) Reporting & KPIs — real-time dashboards with pipeline velocity, conversion rates, revenue by source/agent, monthly recurring revenue (MRR), customer acquisition cost (CAC), and exportable reports (PDF/CSV). (8) Team Management — role-based access (Admin, Manager, Sales Rep, Support), territory assignment, sales targets and leaderboard, and audit log of all CRM actions. (9) GDPR Compliance — consent management, data processing agreements, right-to-delete workflow, and data export for subject access requests. (10) Integrations — webhook system for Zapier/n8n, REST API for third-party integrations, and Google Calendar sync. Uses Supabase Realtime for live deal updates across team members and Supabase Storage for document attachments",
+            langConvo: "en", langCode: "en",
+            stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "Supabase Auth", billing: "Stripe", hosting: "Vercel" },
+            customDomain: "", customStack: "", priorities: ["security", "maintainability", "scalability", "performance"], rigor: "balanced",
+        },
+    },
+    {
         id: "admin-dashboard", category: "business",
         icon: "📋", title: "Admin Dashboard",
         subtitle: "Internal tools with charts + RBAC",
