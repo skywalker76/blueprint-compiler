@@ -693,7 +693,7 @@ export default function App() {
           </div>
         )}
 
-        <StepBar steps={STEPS} current={step} />
+        <StepBar steps={STEPS} current={step} onStepClick={(i) => setStep(i)} />
 
         {/* ═══════════════════════════════════════════ */}
         {/* ═══ STEP 0: DOMAIN ═══ */}
@@ -965,7 +965,10 @@ export default function App() {
               </div>
               {!apiKey && <InfoBox type="warn">You need to enter your API key above before generating.</InfoBox>}
               <div style={S.nav}>
-                <button style={S.btn(false)} onClick={() => setStep(3)}>← Edit</button>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <button style={{ ...S.btn(false), fontSize: 11, color: "#64748b" }} onClick={() => { setStep(0); setGenerated({}); }}>← Browse Presets</button>
+                  <button style={S.btn(false)} onClick={() => setStep(3)}>← Edit</button>
+                </div>
                 <div style={{ display: "flex", gap: 8 }}>
                   {Object.keys(generated).length > 0 && (
                     <button style={{ ...S.btn(false), ...(saveStatus === "saved" ? { borderColor: "#22c55e", color: "#22c55e" } : saveStatus === "error" ? { borderColor: "#ef4444", color: "#ef4444" } : saveStatus === "saving" ? { opacity: 0.7 } : {}) }} onClick={handleSave} disabled={saveStatus === "saving"}>{saveStatus === "saving" ? "⏳ Saving..." : saveStatus === "saved" ? "✅ Saved!" : saveStatus === "error" ? "❌ Error" : "💾 Save"}</button>
