@@ -145,9 +145,8 @@ export default function LandingPage() {
         </h1>
 
         <p className="subtitle">
-          An undeniable Architectural Standardization Engine. Stop repeating context. Generate enterprise-grade, production-ready Blueprints injected with
-          <strong> Official Community Skills</strong>, powered by <strong>Anthropic Models</strong> —
-          for Cursor, Antigravity, Copilot & Windsurf.
+          Generate production-ready instruction files that turn your AI coding assistant into a <strong>Senior Architect</strong>.
+          40 presets, 6-layer architecture, 4 IDEs — in under 2 minutes.
         </p>
 
         <div className="hero-actions">
@@ -244,7 +243,7 @@ export default function LandingPage() {
                 </div>
               </div>
               <a href="/app" className="btn-primary" style={{ display: "inline-flex", marginTop: 24 }}>
-                Try Scanner — Upgrade to Pro
+                Try the Scanner →
               </a>
             </div>
             <div className="terminal-line"><span className="t-dim">$</span> <span className="t-cmd">blueprint-compiler scan package.json</span></div>
@@ -458,37 +457,36 @@ export default function LandingPage() {
         </div>
       </section >
 
-      {/* ━━━ Pricing ━━━ */}
+      {/* ━━━ Pricing (Beta) ━━━ */}
       < section className="section" id="pricing" >
-        <div className="section-label">Pricing</div>
-        <h2>Simple, Transparent Pricing</h2>
+        <div className="section-label">Beta Access</div>
+        <h2>Open Beta — Everything Unlocked</h2>
         <p className="section-desc">
-          Start free, upgrade when you need more power. No credit card required.
+          During the beta, all registered users get full access. No credit card, no limits.
         </p>
 
         <div className="pricing-grid">
-          {PRICING.map((p, i) => (
-            <div className={`price-card${p.featured ? " featured" : ""}`} key={i}>
-              {p.badge && <div className="price-badge">{p.badge}</div>}
-              <div className="tier-name">{p.tier}</div>
-              <div className="price">{p.price}</div>
-              <div className="price-sub">{p.sub}</div>
-              <ul className="price-features">
-                {p.features.map((f, j) => (
-                  <li key={j}>
-                    <span className="check-icon">✓</span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => handlePricingCta(p.tier)}
-                className={`price-btn ${p.ctaStyle === "primary" ? "price-btn-primary" : "price-btn-outline"}`}
-              >
-                {p.cta}
-              </button>
-            </div>
-          ))}
+          <div className="price-card featured" style={{ maxWidth: 480, margin: '0 auto' }}>
+            <div className="price-badge">🎁 Beta</div>
+            <div className="tier-name">Full Access</div>
+            <div className="price">$0</div>
+            <div className="price-sub">during open beta</div>
+            <ul className="price-features">
+              <li><span className="check-icon">✓</span>Unlimited blueprints</li>
+              <li><span className="check-icon">✓</span>All 4 IDE targets</li>
+              <li><span className="check-icon">✓</span>🔍 Project Scanner</li>
+              <li><span className="check-icon">✓</span>All 40 presets</li>
+              <li><span className="check-icon">✓</span>Cloud persistence</li>
+              <li><span className="check-icon">✓</span>Export ZIP / JSON / YAML</li>
+              <li><span className="check-icon">✓</span>Advanced quality scoring</li>
+            </ul>
+            <button
+              onClick={() => handlePricingCta("Free")}
+              className="price-btn price-btn-primary"
+            >
+              Register Free →
+            </button>
+          </div>
         </div>
       </section >
 
