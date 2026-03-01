@@ -369,14 +369,19 @@ export default function App() {
 
     // ─── Analytics: track preset usage (fire-and-forget) ───
     if (supabase) {
-      supabase.from("preset_analytics").insert({
+      const payload = {
         preset_id: preset.id,
         preset_category: preset.category,
         preset_title: preset.title,
         ide_target: preset.ideTarget,
         user_id: user?.id || null,
-      }).then(({ error }) => {
-        if (error) console.warn("[Analytics] Preset tracking failed:", error.message);
+      };
+      supabase.from("preset_analytics").insert(payload).then(({ error }) => {
+        if (error) {
+          console.warn("[Analytics] Preset tracking failed:", error.message, error.details, error.hint);
+        } else {
+          console.log("[Analytics] ✓ Preset tracked:", preset.id);
+        }
       });
     }
   };
