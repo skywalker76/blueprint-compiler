@@ -27,7 +27,7 @@ Instead of repeating instructions every chat, your agent starts with deep knowle
 | **🔄 Update Mode** | Describe what changed → AI intelligently updates your Blueprint, preserving valid sections |
 | **🤖 Agentic Generation** | Generate → Validate → Score → Refine autonomous loop |
 | **🎯 4 IDE Support** | Antigravity, Cursor, GitHub Copilot, Windsurf |
-| **⚡ 36 Quick Start Presets** | One-click templates across 8 categories |
+| **⚡ 40 Quick Start Presets** | One-click templates across 8 categories (SaaS, AI/LLM, WordPress, CRM, Mobile, Data...) |
 | **🎮 Interactive Demo** | Explore a real generated Blueprint on the landing page — no API key required |
 | **📊 Progress Feedback** | Visual progress bar during generation + success toast with quality score |
 | **📦 Multi-Format Export** | JSON, YAML, ZIP (IDE-ready folder structure) |
@@ -39,8 +39,8 @@ Instead of repeating instructions every chat, your agent starts with deep knowle
 
 | Provider | Models | Default |
 |----------|--------|---------|
-| 🟠 **Anthropic** | Claude Opus 4.6, Claude Sonnet 4, Claude Opus 4, Claude 3.5 Haiku | Sonnet 4 |
-| 🟢 **OpenAI** | GPT-5.2, GPT-4o, GPT-4.1, GPT-4o Mini, o3-mini | GPT-4o |
+| 🟠 **Anthropic** | Claude Opus 4.5, Claude 3.7 Sonnet, Claude 3.5 Sonnet, Claude 3.5 Haiku | 3.7 Sonnet |
+| 🟢 **OpenAI** | GPT-4o, o3-mini, GPT-4o Mini | GPT-4o |
 
 Select your provider and model in the web UI dropdown or during the CLI wizard.
 
