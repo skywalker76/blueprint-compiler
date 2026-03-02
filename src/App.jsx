@@ -95,11 +95,9 @@ export default function App() {
   const resultRef = useRef(null);
   const libraryRef = useRef(null);
 
-  // ─── Beta Access ───
-  const [isUnlocked, setIsUnlocked] = useState(() => {
-    try { return localStorage.getItem("bc_beta_unlocked") === "true"; } catch { return false; }
-  });
-  const [passInput, setPassInput] = useState("");
+  // ─── Beta Access (OPEN BETA: gate disabled) ───
+  const [isUnlocked] = useState(true); // Open beta — no access code required
+  // const [passInput, setPassInput] = useState("");
 
   // ─── Load library (async, depends on auth) ───
   useEffect(() => {
