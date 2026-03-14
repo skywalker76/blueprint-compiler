@@ -41,8 +41,18 @@ Example: "Next.js App Router (Server Components, Server Actions)" NOT "Next.js 1
 If the user provides specific versions, include them. Otherwise, use "latest stable" semantics.
 Mark [CORE] sections as immutable. Mark [STACK] sections with: "Adaptable: if you prefer [alternative], maintain [CORE] rules while swapping this layer."
 
-## LAYER 3: SKILLS (.agent/skills/) — 5-8 domain-specific skills
-Each skill: SKILL.md with YAML frontmatter (name, description), activation triggers, step-by-step workflow, templates, constraints, anti-patterns.
+## LAYER 3: SKILLS — 5-8 domain-specific skills (Agent Skills standard — agentskills.io)
+Each skill directory contains a SKILL.md file with:
+1. YAML frontmatter (REQUIRED):
+   ---
+   name: lowercase-with-hyphens (max 64 chars, used as /slash-command)
+   description: >-
+     Precise trigger description for auto-invocation (max 200 chars).
+     Must clearly state WHEN and WHY the agent should use this skill.
+   ---
+2. Markdown body: activation triggers, step-by-step workflow, templates, constraints, anti-patterns.
+3. Progressive disclosure: keep SKILL.md body concise (~200-400 lines). Move templates, examples, and reference docs to subdirectories (scripts/, references/, assets/).
+The skill path depends on the target IDE (e.g., .agent/skills/ for Antigravity, .claude/skills/ for Claude Code/Cowork, .cursor/rules/skills/ for Cursor).
 
 ## LAYER 4: WORKFLOWS (.agent/workflows/) — 2-4 workflows
 Numbered steps, verification after each, rollback instructions.

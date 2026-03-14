@@ -12,6 +12,7 @@ export const PRESET_CATEGORIES = [
     { id: "devtools", label: "DevTools", icon: "🛠️" },
     { id: "mobile", label: "Mobile", icon: "📱" },
     { id: "data", label: "Data", icon: "📊" },
+    { id: "productivity", label: "Productivity", icon: "⚡" },
 ];
 
 export const PRESETS = [
@@ -660,6 +661,60 @@ export const PRESETS = [
             langConvo: "en", langCode: "en",
             stack: { framework: "Next.js 15", api: "tRPC", orm: "Prisma + PostgreSQL", auth: "NextAuth.js", billing: "Stripe", hosting: "Vercel" },
             customDomain: "", customStack: "", priorities: ["performance", "scalability", "security", "maintainability"], rigor: "strict",
+        },
+    },
+    // ═══════════════════════════════
+    //  ⚡ PRODUCTIVITY (Claude Cowork)
+    // ═══════════════════════════════
+    {
+        id: "marketing-manager", category: "productivity",
+        icon: "📣", title: "Marketing Manager",
+        subtitle: "Content calendar, campaign analysis, SEO writing & social media management",
+        gradient: "linear-gradient(135deg, #f97316, #ea580c)",
+        stackPills: ["Content", "SEO", "Analytics", "Social"],
+        ideTarget: "claude-cowork",
+        config: {
+            domain: "custom", projectName: "marketing-workspace",
+            mission: "A marketing management workspace for Claude Cowork. Core skills: (1) Content Calendar — plan weekly/monthly content across blog, social media, email, and video. Generate content briefs with target audience, key messages, CTA, and SEO keywords. Track content production pipeline (idea → draft → review → published). (2) Campaign Analysis — analyze campaign performance from exported CSV data (Google Analytics, Meta Ads, LinkedIn). Generate executive summaries with KPIs (CTR, CPA, ROAS, conversion rate). Identify top-performing content and underperformers with actionable recommendations. (3) SEO Content Writer — research-driven blog post creation with semantic keyword clusters. Generate meta titles (60 chars), meta descriptions (155 chars), H1-H3 structure, internal linking suggestions. Apply AIDA framework for conversion-focused copy. (4) Social Media Manager — batch-create platform-specific posts (LinkedIn professional, Twitter concise, Instagram visual-first). Maintain consistent brand voice across channels. Schedule suggestions based on optimal posting times per platform. (5) Email Marketing — draft email sequences (welcome, nurture, re-engagement). A/B test subject lines. Segment-aware personalization with merge tags. Track open/click benchmarks.",
+            langConvo: "en", langCode: "en",
+            stack: {},
+            customDomain: "Marketing Management — Content planning, campaign analytics, SEO writing, social media, and email marketing for a marketing manager using Claude Cowork",
+            customStack: "Claude Cowork (desktop agent), Google Workspace (Docs, Sheets, Slides), Gmail connector, file system access, web research",
+            priorities: ["maintainability", "scalability", "performance", "security"], rigor: "balanced",
+        },
+    },
+    {
+        id: "project-manager", category: "productivity",
+        icon: "📋", title: "Project Manager",
+        subtitle: "Sprint planning, standup notes, retrospectives & stakeholder reporting",
+        gradient: "linear-gradient(135deg, #8b5cf6, #7c3aed)",
+        stackPills: ["Agile", "Sprints", "Reports", "Tracking"],
+        ideTarget: "claude-cowork",
+        config: {
+            domain: "custom", projectName: "pm-workspace",
+            mission: "A project management workspace for Claude Cowork. Core skills: (1) Sprint Planning — break down epics into user stories with acceptance criteria. Estimate story points using Fibonacci scale. Generate sprint backlogs with priority ranking (MoSCoW). Capacity planning based on team velocity history. (2) Daily Standup Notes — structured standup format: what was done, what’s planned, blockers. Auto-generate summary email for stakeholders. Track recurring blockers for retrospective input. (3) Retrospective Facilitator — collect and categorize feedback (What went well, What didn’t, Actions). Generate action items with owners and due dates. Track improvement trend across sprints. (4) Stakeholder Report — weekly/monthly status reports with RAG status per workstream. executive summary with milestones hit, risks, and asks. Burndown chart data preparation. Budget tracking summary (planned vs actual). (5) Meeting Prep — generate agendas from project context. Post-meeting minutes with decisions, action items, and owners. Follow-up reminder drafts.",
+            langConvo: "en", langCode: "en",
+            stack: {},
+            customDomain: "Project Management — Agile sprint planning, standup notes, retrospectives, stakeholder reports, and meeting management for a project manager using Claude Cowork",
+            customStack: "Claude Cowork (desktop agent), Google Workspace (Docs, Sheets, Slides), Slack connector, Calendar connector, file system access",
+            priorities: ["maintainability", "scalability", "performance", "security"], rigor: "balanced",
+        },
+    },
+    {
+        id: "sales-manager", category: "productivity",
+        icon: "🤝", title: "Sales Manager",
+        subtitle: "Pipeline tracking, outreach sequences, deal analysis & forecasting",
+        gradient: "linear-gradient(135deg, #06b6d4, #0891b2)",
+        stackPills: ["Pipeline", "Outreach", "Forecast", "CRM"],
+        ideTarget: "claude-cowork",
+        config: {
+            domain: "custom", projectName: "sales-workspace",
+            mission: "A sales management workspace for Claude Cowork. Core skills: (1) Pipeline Tracker — maintain deal pipeline in local spreadsheet format. Track deal stages (Prospect → Qualified → Proposal → Negotiation → Closed). Calculate weighted pipeline value and win probability per stage. Flag stale deals (no activity > 14 days). Generate weekly pipeline summary with movement analysis. (2) Outreach Sequence Writer — generate personalized cold email sequences (3-5 touches). Research prospect company/role from web to personalize opening. Follow AIDA framework: hook, value prop, social proof, CTA. Create LinkedIn connection request and follow-up messages. A/B variants for subject lines and opening lines. (3) Deal Analysis — analyze won/lost deals from CSV export. Calculate win rate by segment, deal size, sales rep, and stage duration. Identify patterns in lost deals (common objections, competitor mentions). Generate coaching recommendations per rep. (4) Forecast Report — monthly/quarterly revenue forecast based on pipeline stages and historical win rates. Best-case, most-likely, worst-case scenarios. Gap-to-quota analysis per rep and team. Identify at-risk deals needing intervention. (5) Meeting Prep — pre-call research brief for prospect meetings. Company overview, recent news, tech stack, potential pain points. Suggested discovery questions tailored to prospect's industry.",
+            langConvo: "en", langCode: "en",
+            stack: {},
+            customDomain: "Sales Management — Deal pipeline tracking, personalized outreach sequences, deal analysis, revenue forecasting, and meeting prep for a sales manager using Claude Cowork",
+            customStack: "Claude Cowork (desktop agent), Google Workspace (Sheets, Docs, Gmail), Gmail connector, Calendar connector, web research, file system access",
+            priorities: ["performance", "maintainability", "scalability", "security"], rigor: "balanced",
         },
     },
 ];

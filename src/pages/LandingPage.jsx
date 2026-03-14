@@ -11,16 +11,16 @@ import "./LandingPage.css";
 // ─── DATA ───
 const FEATURES = [
   { icon: "🧠", title: "Anthropic Power", desc: "Powered by Anthropic's state-of-the-art models (Claude Opus 4.5, Claude 3.7 Sonnet, Haiku) for maximum coding capability.", color: "orange" },
-  { icon: "📚", title: "Enterprise Skill Registry", desc: "Access a massively valuable repository of official, community-vetted architectural skills. Your AI injects exact, high-level standard operating procedures directly into your project, transforming it into an enterprise-grade architect.", color: "blue" },
+  { icon: "📚", title: "Agent Skills Standard", desc: "Generates skills compliant with agentskills.io — the open standard adopted by OpenAI, Cursor, Copilot, Claude Code, Gemini CLI, and VS Code. Portable across all compatible tools.", color: "blue" },
   { icon: "🔍", title: "Project Scanner", desc: "Paste your package.json and AI auto-detects framework, ORM, DB, auth provider and pre-fills your entire config. Zero manual setup.", color: "green", badge: "PRO" },
   { icon: "🔄", title: "Update Mode", desc: "Changed your stack? Describe what changed and the AI intelligently updates your Blueprint — preserving what's still valid.", color: "purple" },
-  { icon: "🎯", title: "4 IDE Targets", desc: "One wizard, four outputs. Antigravity, Cursor, GitHub Copilot, and Windsurf — each with native file structure.", color: "cyan" },
+  { icon: "🎯", title: "6 IDE Targets", desc: "One wizard, six outputs. Antigravity, Cursor, Copilot, Windsurf, Claude Code, and Claude Cowork — each with native file structure.", color: "cyan" },
   { icon: "⚡", title: "40 Quick Start Presets", desc: "SaaS, CRM, AI Agent, Real-time Chat, Healthcare, Real Estate and more. Click a card → skip the wizard → generate instantly.", color: "orange" },
 ];
 
 const STEPS_DATA = [
   { num: "1", title: "Choose Domain", desc: "SaaS, WordPress, E-commerce, Mobile, Data, or Custom" },
-  { num: "2", title: "Select IDE", desc: "Antigravity, Cursor, Copilot, or Windsurf" },
+  { num: "2", title: "Select IDE", desc: "Antigravity, Cursor, Copilot, Windsurf, Claude Code, or Cowork" },
   { num: "3", title: "Configure Stack", desc: "Framework, ORM, Auth, DB with guided explanations" },
   { num: "4", title: "Define Project", desc: "Name, mission, language, architecture priorities" },
   { num: "5", title: "Generate", desc: "5 production-ready files with quality scoring" },
@@ -31,7 +31,7 @@ const COMPARISON = [
   { feature: "Interface", before: "Web only", after: "Web App + CLI" },
   { feature: "Stack Detection", before: "Manual input", after: "🔍 Auto-detect from package.json" },
   { feature: "Updates", before: "Regenerate all", after: "Smart Update Mode" },
-  { feature: "IDE Support", before: "1 IDE", after: "4 IDEs" },
+  { feature: "IDE Support", before: "1 IDE", after: "6 IDEs + Agent Skills standard" },
   { feature: "Generation", before: "Single-shot", after: "Agentic loop" },
   { feature: "Quick Start", before: "✕", after: "40 preset templates" },
   { feature: "Export", before: "Copy only", after: "JSON + YAML + ZIP" },
@@ -43,15 +43,15 @@ const PRICING = [
     tier: "Free",
     price: "$0",
     sub: "forever",
-    features: ["3 blueprints / month", "1 IDE target", "Basic quality scoring", "Local storage only", "Community support"],
+    features: ["3 blueprints / month", "2 IDE targets (Antigravity + Claude Cowork)", "Basic quality scoring", "Local storage only", "Agent Skills compliant output"],
     cta: "Get Started",
     ctaStyle: "outline",
   },
   {
     tier: "Pro",
-    price: "$19",
+    price: "$9",
     sub: "per month",
-    features: ["Unlimited blueprints", "All 4 IDE targets", "🔍 Project Scanner (auto-detect stack)", "Advanced quality scoring", "Cloud persistence", "Priority support", "Export ZIP / JSON"],
+    features: ["Unlimited blueprints", "All 6 IDE targets", "🔍 Project Scanner (auto-detect stack)", "Advanced quality scoring", "Cloud persistence", "Priority support", "Export ZIP / JSON"],
     cta: "Start Free Trial",
     ctaStyle: "primary",
     featured: true,
@@ -59,7 +59,7 @@ const PRICING = [
   },
   {
     tier: "Team",
-    price: "$49",
+    price: "$29",
     sub: "per month",
     features: ["Everything in Pro", "5 team members", "Shared blueprint library", "Custom templates", "API access", "SSO authentication"],
     cta: "Contact Sales",
@@ -145,8 +145,8 @@ export default function LandingPage() {
         </h1>
 
         <p className="subtitle">
-          Generate production-ready instruction files that turn your AI coding assistant into a <strong>Senior Architect</strong>.
-          40 presets, 6-layer architecture, 4 IDEs — in under 2 minutes.
+          The first <strong>Agent Skills generator</strong> — compliant with the open standard adopted by Cursor, Copilot, Claude Code, and more.
+          40 presets, 6-layer architecture, 6 IDEs — in under 2 minutes.
         </p>
 
         <div className="hero-actions">
@@ -163,6 +163,8 @@ export default function LandingPage() {
           <div className="ide-chip">⚡ Cursor</div>
           <div className="ide-chip">🐙 GitHub Copilot</div>
           <div className="ide-chip">🏄 Windsurf</div>
+          <div className="ide-chip">🧠 Claude Code</div>
+          <div className="ide-chip">💼 Claude Cowork</div>
         </div>
       </section>
 
@@ -173,7 +175,7 @@ export default function LandingPage() {
           <div className="stat-label">Quick Start Presets</div>
         </div>
         <div className="stat-item">
-          <div className="stat-number">4</div>
+          <div className="stat-number">6</div>
           <div className="stat-label">IDE Targets</div>
         </div>
         <div className="stat-item">
