@@ -15,7 +15,7 @@ const FEATURES = [
   { icon: "🔍", title: "Project Scanner", desc: "Paste your package.json and AI auto-detects framework, ORM, DB, auth provider and pre-fills your entire config. Zero manual setup.", color: "green", badge: "PRO" },
   { icon: "🔄", title: "Update Mode", desc: "Changed your stack? Describe what changed and the AI intelligently updates your Blueprint — preserving what's still valid.", color: "purple" },
   { icon: "🎯", title: "6 IDE Targets", desc: "One wizard, six outputs. Antigravity, Cursor, Copilot, Windsurf, Claude Code, and Claude Cowork — each with native file structure.", color: "cyan" },
-  { icon: "⚡", title: "40 Quick Start Presets", desc: "SaaS, CRM, AI Agent, Real-time Chat, Healthcare, Real Estate and more. Click a card → skip the wizard → generate instantly.", color: "orange" },
+  { icon: "⚡", title: "50 Quick Start Presets", desc: "SaaS, CRM, AI Agent, Marketing, Sales, HR, Legal and more — for developers and knowledge workers. Click a card → skip the wizard → generate instantly.", color: "orange" },
 ];
 
 const STEPS_DATA = [
@@ -33,7 +33,7 @@ const COMPARISON = [
   { feature: "Updates", before: "Regenerate all", after: "Smart Update Mode" },
   { feature: "IDE Support", before: "1 IDE", after: "6 IDEs + Agent Skills standard" },
   { feature: "Generation", before: "Single-shot", after: "Agentic loop" },
-  { feature: "Quick Start", before: "✕", after: "40 preset templates" },
+  { feature: "Quick Start", before: "✕", after: "50 preset templates" },
   { feature: "Export", before: "Copy only", after: "JSON + YAML + ZIP" },
   { feature: "Architecture", before: "Monolith", after: "Modular (24 files)" },
 ];
@@ -146,7 +146,7 @@ export default function LandingPage() {
 
         <p className="subtitle">
           The first <strong>Agent Skills generator</strong> — compliant with the open standard adopted by Cursor, Copilot, Claude Code, and more.
-          40 presets, 6-layer architecture, 6 IDEs — in under 2 minutes.
+          50 presets, 6-layer architecture, 6 IDEs — in under 2 minutes.
         </p>
 
         <div className="hero-actions">
@@ -171,7 +171,7 @@ export default function LandingPage() {
       {/* ━━━ Stats Bar ━━━ */}
       <div className="stats-bar">
         <div className="stat-item">
-          <div className="stat-number">40</div>
+          <div className="stat-number">50</div>
           <div className="stat-label">Quick Start Presets</div>
         </div>
         <div className="stat-item">
@@ -541,7 +541,7 @@ export default function LandingPage() {
               <li><span className="check-icon">✓</span>Unlimited blueprints</li>
               <li><span className="check-icon">✓</span>All 6 IDE targets</li>
               <li><span className="check-icon">✓</span>🔍 Project Scanner</li>
-              <li><span className="check-icon">✓</span>All 40 presets</li>
+              <li><span className="check-icon">✓</span>All 50 presets</li>
               <li><span className="check-icon">✓</span>Cloud persistence</li>
               <li><span className="check-icon">✓</span>Export ZIP / JSON / YAML</li>
               <li><span className="check-icon">✓</span>Advanced quality scoring</li>
