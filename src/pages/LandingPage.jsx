@@ -265,6 +265,70 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ━━━ Claude Cowork — Non-Developer Section ━━━ */}
+      <section className="section" id="cowork" style={{ position: 'relative', overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute', top: -100, right: -100, width: 400, height: 400,
+          background: 'radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%)',
+          borderRadius: '50%', pointerEvents: 'none',
+        }} />
+        <div className="section-label" style={{ color: '#a78bfa' }}>💼 Not a Developer?</div>
+        <h2>Works with <span className="gradient-text">Claude Cowork</span> too</h2>
+        <p className="section-desc">
+          Blueprint Compiler isn't just for programmers. If you use <strong>Claude Cowork</strong> as
+          your desktop AI assistant, we generate ready-made skills for your daily work —
+          no code, no terminal, just results.
+        </p>
+
+        <div style={{
+          display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: 20, maxWidth: 960, margin: '40px auto 0',
+        }}>
+          {[
+            { icon: '📣', role: 'Marketing Manager', skills: 'Content calendar, campaign analysis, SEO writing, social media, email marketing', gradient: 'linear-gradient(135deg, #f97316, #ea580c)' },
+            { icon: '📋', role: 'Project Manager', skills: 'Sprint planning, standup notes, retrospectives, stakeholder reports, meeting prep', gradient: 'linear-gradient(135deg, #8b5cf6, #7c3aed)' },
+            { icon: '🤝', role: 'Sales Manager', skills: 'Pipeline tracking, outreach sequences, deal analysis, revenue forecasting', gradient: 'linear-gradient(135deg, #06b6d4, #0891b2)' },
+          ].map((r, i) => (
+            <div key={i} style={{
+              background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: 16, padding: '28px 24px', textAlign: 'left',
+              transition: 'transform 0.2s, border-color 0.2s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.borderColor = 'rgba(167, 139, 250, 0.3)'; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                <div style={{
+                  width: 44, height: 44, borderRadius: 12, background: r.gradient,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22,
+                }}>{r.icon}</div>
+                <div style={{ fontSize: 18, fontWeight: 700, color: '#f1f5f9' }}>{r.role}</div>
+              </div>
+              <p style={{ color: '#94a3b8', fontSize: 14, lineHeight: 1.6, margin: 0 }}>
+                <strong style={{ color: '#cbd5e1' }}>Skills generated:</strong> {r.skills}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: 'center', marginTop: 36 }}>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 12,
+            background: 'rgba(139, 92, 246, 0.08)', border: '1px solid rgba(139, 92, 246, 0.2)',
+            borderRadius: 12, padding: '16px 24px', marginBottom: 24,
+          }}>
+            <span style={{ fontSize: 20 }}>📦</span>
+            <span style={{ color: '#cbd5e1', fontSize: 14 }}>
+              Generate → Download ZIP → Upload in <strong style={{ color: '#a78bfa' }}>Cowork Settings &gt; Skills</strong> → Done
+            </span>
+          </div>
+          <br />
+          <Link to="/app" className="btn-primary" style={{ display: 'inline-flex', marginTop: 8 }}>
+            💼 Try a Productivity Preset — Free
+          </Link>
+        </div>
+      </section>
+
       {/* ━━━ What It Is vs What It Isn't ━━━ */}
       <section className="section" id="what-it-does">
         <div className="section-label">Philosophy</div>
@@ -475,7 +539,7 @@ export default function LandingPage() {
             <div className="price-sub">during open beta</div>
             <ul className="price-features">
               <li><span className="check-icon">✓</span>Unlimited blueprints</li>
-              <li><span className="check-icon">✓</span>All 4 IDE targets</li>
+              <li><span className="check-icon">✓</span>All 6 IDE targets</li>
               <li><span className="check-icon">✓</span>🔍 Project Scanner</li>
               <li><span className="check-icon">✓</span>All 40 presets</li>
               <li><span className="check-icon">✓</span>Cloud persistence</li>
